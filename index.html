@@ -22,7 +22,7 @@
            1. THEME ENGINE & DESIGN TOKENS
            ========================================================================== */
         :root {
-            /* LIGHT THEME */
+            /* * LIGHT THEME (COLORFUL UPGRADE) */
             --theme-light-bg: #FCFBF9;
             --theme-light-bg-alt: rgba(255, 255, 255, 0.75);
             --theme-light-text: #2C2825;
@@ -33,13 +33,19 @@
             --theme-light-shadow: rgba(44, 40, 37, 0.08);
             --theme-light-grain: 0.04;
             
-            --ambient-color-1: #FFDAB9;
-            --ambient-color-2: #E0FFFF;
-            --ambient-color-3: #FFF0F5;
-            --ambient-color-4: #FFFACD;
-            --ambient-opacity: 0.9;
+            /* Ambient Palette Light */
+            --ambient-color-1: #FFB6C1;
+            --ambient-color-2: #ADD8E6;
+            --ambient-color-3: #D8BFD8;
+            --ambient-color-4: #F0E68C;
+            --ambient-opacity: 0.95;
+            
+            /* Cursor Light Mode Colors */
+            --cursor-color: #2C2825;
+            --cursor-outline-color: rgba(44, 40, 37, 0.5);
+            --cursor-hover-color: rgba(44, 40, 37, 0.08);
 
-            /* DARK THEME */
+            /* * DARK THEME */
             --theme-dark-bg: #0A0908;
             --theme-dark-bg-alt: rgba(20, 19, 18, 0.85);
             --theme-dark-text: #F2EFEA;
@@ -50,13 +56,19 @@
             --theme-dark-shadow: rgba(0, 0, 0, 0.95);
             --theme-dark-grain: 0.03;
 
+            /* Ambient Palette Dark */
             --ambient-dark-1: #1A1311;
             --ambient-dark-2: #0B131A;
             --ambient-dark-3: #1A0F14;
             --ambient-dark-4: #181810;
             --ambient-dark-opacity: 0.6;
 
-            /* ACTIVE THEME */
+            /* Cursor Dark Mode Colors */
+            --cursor-dark-color: #F2EFEA;
+            --cursor-dark-outline-color: rgba(242, 239, 234, 0.5);
+            --cursor-dark-hover-color: rgba(242, 239, 234, 0.1);
+
+            /* * ACTIVE THEME VARIABLES */
             --color-bg: var(--theme-light-bg);
             --color-bg-alt: var(--theme-light-bg-alt);
             --color-text: var(--theme-light-text);
@@ -73,7 +85,11 @@
             --active-ambient-4: var(--ambient-color-4);
             --active-ambient-opacity: var(--ambient-opacity);
             
-            /* BRAND ACCENTS */
+            --active-cursor-color: var(--cursor-color);
+            --active-cursor-outline: var(--cursor-outline-color);
+            --active-cursor-hover: var(--cursor-hover-color);
+            
+            /* * BRAND ACCENTS */
             --color-accent: #C29B45;
             --color-accent-hover: #A38032;
             --color-white: #FFFFFF;
@@ -81,11 +97,11 @@
             --color-error: #E74C3C;
             --color-success: #2ECC71;
             
-            /* TYPOGRAPHY */
+            /* * TYPOGRAPHY */
             --font-sans: 'Plus Jakarta Sans', sans-serif;
             --font-serif: 'Playfair Display', serif;
             
-            /* SPACING & LAYOUT */
+            /* * SPACING & LAYOUT */
             --spacing-xs: 0.5rem;
             --spacing-sm: 1rem;
             --spacing-md: 2rem;
@@ -100,7 +116,7 @@
             --radius-md: 16px;
             --radius-lg: 24px;
             
-            /* ANIMATION EASES */
+            /* * ANIMATION EASES */
             --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
             --transition-theme: background-color 0.8s var(--ease-out-expo), 
                                 color 0.8s var(--ease-out-expo), 
@@ -124,6 +140,10 @@
             --active-ambient-3: var(--ambient-dark-3);
             --active-ambient-4: var(--ambient-dark-4);
             --active-ambient-opacity: var(--ambient-dark-opacity);
+            
+            --active-cursor-color: var(--cursor-dark-color);
+            --active-cursor-outline: var(--cursor-dark-outline-color);
+            --active-cursor-hover: var(--cursor-dark-hover-color);
         }
 
         /* ==========================================================================
@@ -193,24 +213,33 @@
         h1, h2, h3, h4, h5, h6 { font-family: var(--font-serif); font-weight: 400; line-height: 1.1; color: var(--color-text); transition: color 0.8s ease; }
 
         /* ==========================================================================
-           3. CUSTOM CURSOR
+           3. CUSTOM CURSOR (NAPRAWIONY DLA JASNEJ STRONY)
            ========================================================================== */
         .cursor-wrapper {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            pointer-events: none; z-index: 999999; mix-blend-mode: difference; display: none;
+            pointer-events: none; z-index: 999999; display: none;
         }
         @media (pointer: fine) { .cursor-wrapper { display: block; } }
+        
         .cursor-dot {
-            position: fixed; top: 0; left: 0; width: 8px; height: 8px; background-color: #FFFFFF;
+            position: fixed; top: 0; left: 0; width: 8px; height: 8px; 
+            background-color: var(--active-cursor-color);
             border-radius: 50%; pointer-events: none; will-change: transform;
+            transition: background-color 0.8s var(--ease-out-expo);
         }
+        
         .cursor-outline {
-            position: fixed; top: 0; left: 0; width: 40px; height: 40px; border: 1px solid rgba(255, 255, 255, 0.5);
+            position: fixed; top: 0; left: 0; width: 40px; height: 40px; 
+            border: 1px solid var(--active-cursor-outline);
             border-radius: 50%; pointer-events: none; will-change: transform, width, height, background-color, border-color;
-            transition: width 0.3s var(--ease-out-expo), height 0.3s var(--ease-out-expo), background-color 0.3s var(--ease-out-expo), border-color 0.3s var(--ease-out-expo);
+            transition: width 0.3s var(--ease-out-expo), height 0.3s var(--ease-out-expo), 
+                        background-color 0.8s var(--ease-out-expo), border-color 0.8s var(--ease-out-expo);
         }
+        
         body.cursor-hover .cursor-outline {
-            width: 80px; height: 80px; background-color: rgba(255, 255, 255, 0.08); border-color: transparent;
+            width: 60px; height: 60px; 
+            background-color: var(--active-cursor-hover); 
+            border-color: transparent;
         }
 
         /* ==========================================================================
@@ -311,7 +340,6 @@
 
         .shop-controls { display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; }
         
-        /* Premium Input */
         .shop-search {
             background: transparent; border: none; border-bottom: 1px solid var(--color-border);
             color: var(--color-text); font-family: var(--font-sans); font-size: 0.9rem; padding: 0.5rem 0;
@@ -320,7 +348,6 @@
         .shop-search::placeholder { color: var(--color-text-light); }
         .shop-search:focus { border-color: var(--color-accent); }
         
-        /* Premium Select */
         .shop-sort {
             background: transparent; border: 1px solid var(--color-border); color: var(--color-text);
             font-family: var(--font-sans); font-size: 0.8rem; font-weight: 600; text-transform: uppercase;
@@ -336,7 +363,6 @@
             background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" fill="none" stroke="%239E9B96" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><polyline points="6 9 12 15 18 9"></polyline></svg>');
         }
 
-        /* View Toggles */
         .view-toggles { display: flex; gap: 0.5rem; }
         .view-toggles button {
             width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;
@@ -345,7 +371,6 @@
         .view-toggles button.active { color: var(--color-text); border-color: var(--color-border); }
         .view-toggles button svg { width: 16px; height: 16px; fill: currentColor; }
 
-        /* Grid Layout */
         .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 4rem 2rem; transition: opacity 0.4s ease; }
         .product-card { position: relative; display: flex; flex-direction: column; width: 100%; cursor: pointer; }
         .product-card-inner { perspective: 1500px; width: 100%; }
@@ -379,7 +404,6 @@
         .quick-add-btn::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--color-accent); transform: scale(0); border-radius: 50%; transition: transform 0.4s var(--ease-out-expo); z-index: -1; }
         .quick-add-btn svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
-        /* List View Modifier */
         .products-grid.list-view { display: flex; flex-direction: column; gap: 3rem; }
         .products-grid.list-view .product-card { flex-direction: row; align-items: center; gap: 3rem; }
         .products-grid.list-view .product-card-inner { width: 250px; flex-shrink: 0; }
@@ -493,23 +517,22 @@
             .logo-img { max-height: 60px; }
             header.scrolled .logo-img { max-height: 50px; }
             .nav-actions { gap: 1rem; }
-            .theme-toggle-btn .text, .lang-toggle-btn .text { display: none; } 
-            .theme-toggle-btn .icon { width: 22px; height: 22px; }
-            .lang-toggle-btn { font-size: 1rem; font-weight: 700; }
+            .theme-toggle-btn .text, .lang-toggle-btn .text { display: inline-block; font-size: 0.65rem; } 
+            .theme-toggle-btn, .lang-toggle-btn { gap: 4px; }
+            .theme-toggle-btn .icon { width: 16px; height: 16px; }
             .cart-btn { font-size: 0; padding: 0;} 
-            .cart-btn::before { content: ''; display: block; width: 24px; height: 24px; background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" fill="none" stroke="%232C2825" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>'); background-size: contain; background-repeat: no-repeat; }
+            .cart-btn::before { content: ''; display: block; width: 20px; height: 20px; background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" fill="none" stroke="%232C2825" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>'); background-size: contain; background-repeat: no-repeat; }
             html[data-theme="dark"] .cart-btn::before { background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" fill="none" stroke="%23F2EFEA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>'); }
             .cart-btn::after { display: none; }
-            .cart-count { top: -8px; right: -8px; width: 18px; height: 18px; font-size: 0.55rem; }
+            .cart-count { top: -8px; right: -8px; width: 16px; height: 16px; font-size: 0.55rem; }
             .hero-title { font-size: clamp(2.5rem, 12vw, 4rem); }
             .footer-top { grid-template-columns: 1fr; gap: 2.5rem; }
             
-            /* Enhanced Mobile Shop Toolbar */
             .shop-toolbar { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
             .shop-controls { width: 100%; justify-content: space-between; }
             .shop-search { width: 100%; flex: 1; min-width: 150px; }
             .shop-sort { max-width: 160px; }
-            .view-toggles { display: none; } /* Usually grid is enough for mobile */
+            .view-toggles { display: none; }
 
             .products-grid { grid-template-columns: 1fr; gap: 3rem; }
             .cart-sidebar { max-width: 100%; }
@@ -868,11 +891,14 @@
         const showToast = (msg) => {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
-            toast.className = 'toast'; toast.innerText = msg;
+            toast.className = 'toast'; 
+            toast.innerText = msg;
             container.appendChild(toast);
             
             gsap.to(toast, { y: 0, opacity: 1, duration: 0.4, ease: "back.out(1.5)" });
-            setTimeout(() => gsap.to(toast, { y: -20, opacity: 0, duration: 0.4, ease: "power2.in", onComplete: () => toast.remove() }), 3000);
+            setTimeout(() => {
+                gsap.to(toast, { y: -20, opacity: 0, duration: 0.4, ease: "power2.in", onComplete: () => toast.remove() });
+            }, 3000);
         };
 
         /**
@@ -910,7 +936,7 @@
                     });
                     
                     if (window.CartSys) window.CartSys.render();
-                    if (window.ShopRenderer) window.ShopRenderer.updateView(false); // Re-render shop silently
+                    if (window.ShopRenderer) window.ShopRenderer.updateView(false); 
                     
                     const themeBtnText = document.querySelector('.theme-toggle-btn .text');
                     const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
@@ -974,7 +1000,8 @@
                 gsap.set(this.outline, { xPercent: -50, yPercent: -50 });
 
                 window.addEventListener('mousemove', (e) => {
-                    this.mouse.x = e.clientX; this.mouse.y = e.clientY;
+                    this.mouse.x = e.clientX; 
+                    this.mouse.y = e.clientY;
                     gsap.to(this.dot, { x: this.mouse.x, y: this.mouse.y, duration: 0 });
                 });
                 
@@ -986,13 +1013,24 @@
                 });
                 
                 document.addEventListener('mouseover', (e) => {
-                    if (e.target.closest('.hover-target, a, button, .product-card, .cart-item')) document.body.classList.add('cursor-hover');
+                    if (e.target.closest('.hover-target, a, button, .product-card, .cart-item')) {
+                        document.body.classList.add('cursor-hover');
+                    }
                 });
+                
                 document.addEventListener('mouseout', (e) => {
-                    if (e.target.closest('.hover-target, a, button, .product-card, .cart-item')) document.body.classList.remove('cursor-hover');
+                    if (e.target.closest('.hover-target, a, button, .product-card, .cart-item')) {
+                        document.body.classList.remove('cursor-hover');
+                    }
                 });
-                document.addEventListener('mousedown', () => gsap.to(this.outline, { scale: 0.8, duration: 0.2 }));
-                document.addEventListener('mouseup', () => gsap.to(this.outline, { scale: 1, duration: 0.2 }));
+                
+                document.addEventListener('mousedown', () => {
+                    gsap.to(this.outline, { scale: 0.8, duration: 0.2 });
+                });
+                
+                document.addEventListener('mouseup', () => {
+                    gsap.to(this.outline, { scale: 1, duration: 0.2 });
+                });
             }
             refresh() {}
         }
@@ -1009,7 +1047,9 @@
                 this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
                 this.renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
                 this.particlesCount = AppState.isTouch ? 300 : 800;
-                this.mouseX = 0; this.mouseY = 0; this.scrollY = 0;
+                this.mouseX = 0; 
+                this.mouseY = 0; 
+                this.scrollY = 0;
                 this.clock = new THREE.Clock();
                 this.init();
             }
@@ -1021,15 +1061,26 @@
 
                 const geo = new THREE.BufferGeometry();
                 const pos = new Float32Array(this.particlesCount * 3);
+                
                 for(let i = 0; i < this.particlesCount * 3; i += 3) {
                     pos[i] = (Math.random() - 0.5) * 120;
                     pos[i+1] = (Math.random() - 0.5) * 120;
                     pos[i+2] = (Math.random() - 0.5) * 60;
                 }
+                
                 geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
 
-                const color = document.documentElement.getAttribute('data-theme') === 'dark' ? 0xC29B45 : 0xA38032;
-                this.mat = new THREE.PointsMaterial({ size: 0.15, color: color, transparent: true, opacity: 0.4, blending: THREE.AdditiveBlending });
+                const initialTheme = document.documentElement.getAttribute('data-theme') || 'light';
+                const color = initialTheme === 'dark' ? 0xC29B45 : 0xA38032;
+                
+                this.mat = new THREE.PointsMaterial({ 
+                    size: 0.15, 
+                    color: color, 
+                    transparent: true, 
+                    opacity: 0.4, 
+                    blending: THREE.AdditiveBlending 
+                });
+                
                 this.mesh = new THREE.Points(geo, this.mat);
                 this.scene.add(this.mesh);
 
@@ -1048,19 +1099,28 @@
                 
                 window.addEventListener('themeChanged', e => {
                     const c = e.detail.theme === 'dark' ? 0xC29B45 : 0xA38032;
-                    gsap.to(this.mat.color, { r: new THREE.Color(c).r, g: new THREE.Color(c).g, b: new THREE.Color(c).b, duration: 1 });
+                    gsap.to(this.mat.color, { 
+                        r: new THREE.Color(c).r, 
+                        g: new THREE.Color(c).g, 
+                        b: new THREE.Color(c).b, 
+                        duration: 1 
+                    });
                 });
                 
                 this.animate();
             }
-            setScroll(y) { this.scrollY = y; }
+            setScroll(y) { 
+                this.scrollY = y; 
+            }
             animate() {
                 requestAnimationFrame(() => this.animate());
+                
                 const time = this.clock.getElapsedTime();
                 this.mesh.rotation.y += (this.mouseX * 0.5 - this.mesh.rotation.y) * 0.05;
                 this.mesh.rotation.x += (-this.mouseY * 0.5 - this.mesh.rotation.x) * 0.05;
                 this.mesh.position.y = this.scrollY * 0.015;
                 this.mesh.rotation.z = Math.sin(time * 0.1) * 0.05;
+                
                 this.renderer.render(this.scene, this.camera);
             }
         }
@@ -1078,7 +1138,8 @@
                 this.imgWrap = document.getElementById('modal-img-wrapper');
                 this.img = document.getElementById('modal-img');
                 this.fallback = document.getElementById('modal-fallback');
-                this.isOpen = false; this.currId = null;
+                this.isOpen = false; 
+                this.currId = null;
                 
                 this.initCanvas();
                 this.bind();
@@ -1086,32 +1147,66 @@
             initCanvas() {
                 const cvs = document.getElementById('modal-canvas');
                 const ctx = cvs.getContext('2d');
-                let pts = [], w, h;
-                const rs = () => { w = cvs.width = window.innerWidth; h = cvs.height = window.innerHeight; };
-                window.addEventListener('resize', rs); rs();
+                let pts = [];
+                let w, h;
+                
+                const rs = () => { 
+                    w = cvs.width = window.innerWidth; 
+                    h = cvs.height = window.innerHeight; 
+                };
+                
+                window.addEventListener('resize', rs); 
+                rs();
                 
                 class Pt {
-                    constructor() { this.x = Math.random() * w; this.y = Math.random() * h; this.s = Math.random() * 2 + 0.5; this.sy = Math.random() * -1 - 0.5; this.a = Math.random() * 0.5 + 0.1; }
-                    update() { this.y += this.sy; if (this.y < 0) { this.y = h; this.x = Math.random() * w; } }
+                    constructor() { 
+                        this.x = Math.random() * w; 
+                        this.y = Math.random() * h; 
+                        this.s = Math.random() * 2 + 0.5; 
+                        this.sy = Math.random() * -1 - 0.5; 
+                        this.a = Math.random() * 0.5 + 0.1; 
+                    }
+                    update() { 
+                        this.y += this.sy; 
+                        if (this.y < 0) { 
+                            this.y = h; 
+                            this.x = Math.random() * w; 
+                        } 
+                    }
                     draw() { 
                         const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
                         ctx.fillStyle = isDark ? `rgba(194, 155, 69,${this.a})` : `rgba(163, 128, 50,${this.a})`; 
-                        ctx.beginPath(); ctx.arc(this.x, this.y, this.s, 0, Math.PI * 2); ctx.fill(); 
+                        ctx.beginPath(); 
+                        ctx.arc(this.x, this.y, this.s, 0, Math.PI * 2); 
+                        ctx.fill(); 
                     }
                 }
+                
                 const cnt = AppState.isTouch ? 30 : 80;
-                for(let i = 0; i < cnt; i++) pts.push(new Pt());
+                for(let i = 0; i < cnt; i++) {
+                    pts.push(new Pt());
+                }
                 
                 const loop = () => {
-                    if (this.isOpen) { ctx.clearRect(0, 0, w, h); pts.forEach(p => { p.update(); p.draw(); }); }
+                    if (this.isOpen) { 
+                        ctx.clearRect(0, 0, w, h); 
+                        pts.forEach(p => { 
+                            p.update(); 
+                            p.draw(); 
+                        }); 
+                    }
                     requestAnimationFrame(loop);
-                }; loop();
+                }; 
+                loop();
             }
             bind() {
                 document.getElementById('close-modal').addEventListener('click', () => this.close());
                 this.ovl.addEventListener('click', () => this.close());
+                
                 document.getElementById('modal-add-btn').addEventListener('click', () => {
-                    if (this.currId) window.CartSys.add(this.currId);
+                    if (this.currId) {
+                        window.CartSys.add(this.currId);
+                    }
                 });
                 
                 if (!AppState.isTouch) {
@@ -1119,49 +1214,127 @@
                         const r = this.imgWrap.getBoundingClientRect();
                         const rx = ((e.clientY - r.top - r.height / 2) / (r.height / 2)) * -15;
                         const ry = ((e.clientX - r.left - r.width / 2) / (r.width / 2)) * 15;
-                        gsap.to([this.img, this.fallback], { rotationX: rx, rotationY: ry, duration: 0.5, ease: "power2.out" });
+                        gsap.to([this.img, this.fallback], { 
+                            rotationX: rx, 
+                            rotationY: ry, 
+                            duration: 0.5, 
+                            ease: "power2.out" 
+                        });
                     });
+                    
                     this.imgWrap.addEventListener('mouseleave', () => {
-                        gsap.to([this.img, this.fallback], { rotationX: 0, rotationY: 0, duration: 1, ease: "elastic.out(1,0.3)" });
+                        gsap.to([this.img, this.fallback], { 
+                            rotationX: 0, 
+                            rotationY: 0, 
+                            duration: 1, 
+                            ease: "elastic.out(1,0.3)" 
+                        });
                     });
                 }
             }
             open(id) {
                 const baseP = productsDB.find(x => x.id === id);
                 if (!baseP) return;
-                const pInfo = ProductsTranslations[id][AppState.lang];
                 
-                this.currId = id; this.isOpen = true;
-                if (AppState.lenis) AppState.lenis.stop();
+                const pInfo = ProductsTranslations[id][AppState.lang];
+                this.currId = id; 
+                this.isOpen = true;
+                
+                if (AppState.lenis) {
+                    AppState.lenis.stop();
+                }
 
                 document.getElementById('modal-title').textContent = pInfo.title;
                 document.getElementById('modal-desc').textContent = pInfo.desc;
                 document.getElementById('modal-price').textContent = formatPrice(baseP.price);
                 document.getElementById('modal-category').textContent = pInfo.category;
                 
-                this.img.style.display = 'block'; this.fallback.style.display = 'none';
-                this.fallback.textContent = pInfo.title; this.img.src = baseP.img;
+                this.img.style.display = 'block'; 
+                this.fallback.style.display = 'none';
+                this.fallback.textContent = pInfo.title; 
+                this.img.src = baseP.img;
 
-                this.wrap.style.visibility = 'visible'; this.wrap.style.pointerEvents = 'auto';
+                this.wrap.style.visibility = 'visible'; 
+                this.wrap.style.pointerEvents = 'auto';
 
                 const tl = gsap.timeline();
-                tl.to(this.ovl, { opacity: 1, duration: 0.5, ease: 'power2.out' })
-                  .to('#modal-canvas', { opacity: 1, duration: 0.5 }, "<")
-                  .fromTo(this.cont, { clipPath: 'polygon(0 100%, 100% 100%, 100% 100%, 0 100%)', y: 100 }, 
-                                     { clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)', y: 0, duration: 0.8, ease: 'power4.out' }, "-=0.3")
-                  .fromTo(this.imgWrap, { opacity: 0, y: 50, scale: 0.9 }, 
-                                        { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: 'back.out(1.2)' }, "-=0.4")
-                  .fromTo('.modal-anim-el', { opacity: 0, y: 30 }, 
-                                            { opacity: 1, y: 0, stagger: 0.1, duration: 0.6, ease: 'power3.out' }, "-=0.6");
+                
+                tl.to(this.ovl, { 
+                    opacity: 1, 
+                    duration: 0.5, 
+                    ease: 'power2.out' 
+                })
+                .to('#modal-canvas', { 
+                    opacity: 1, 
+                    duration: 0.5 
+                }, "<")
+                .fromTo(this.cont, { 
+                    clipPath: 'polygon(0 100%, 100% 100%, 100% 100%, 0 100%)', 
+                    y: 100 
+                }, { 
+                    clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)', 
+                    y: 0, 
+                    duration: 0.8, 
+                    ease: 'power4.out' 
+                }, "-=0.3")
+                .fromTo(this.imgWrap, { 
+                    opacity: 0, 
+                    y: 50, 
+                    scale: 0.9 
+                }, { 
+                    opacity: 1, 
+                    y: 0, 
+                    scale: 1, 
+                    duration: 0.8, 
+                    ease: 'back.out(1.2)' 
+                }, "-=0.4")
+                .fromTo('.modal-anim-el', { 
+                    opacity: 0, 
+                    y: 30 
+                }, { 
+                    opacity: 1, 
+                    y: 0, 
+                    stagger: 0.1, 
+                    duration: 0.6, 
+                    ease: 'power3.out' 
+                }, "-=0.6");
             }
             close() {
                 if (!this.isOpen) return;
                 this.isOpen = false;
-                gsap.timeline({ onComplete: () => { this.wrap.style.visibility = 'hidden'; this.wrap.style.pointerEvents = 'none'; if (AppState.lenis) AppState.lenis.start(); } })
-                .to('.modal-anim-el', { opacity: 0, y: -20, stagger: 0.05, duration: 0.3, ease: 'power2.in' })
-                .to(this.imgWrap, { opacity: 0, scale: 0.9, duration: 0.4, ease: 'power2.in' }, "<")
-                .to(this.cont, { clipPath: 'polygon(0 0, 100% 0, 100% 0, 0 0)', y: -50, duration: 0.6, ease: 'power4.inOut' }, "-=0.1")
-                .to([this.ovl, '#modal-canvas'], { opacity: 0, duration: 0.4 }, "-=0.2");
+                
+                gsap.timeline({ 
+                    onComplete: () => { 
+                        this.wrap.style.visibility = 'hidden'; 
+                        this.wrap.style.pointerEvents = 'none'; 
+                        if (AppState.lenis) {
+                            AppState.lenis.start(); 
+                        }
+                    } 
+                })
+                .to('.modal-anim-el', { 
+                    opacity: 0, 
+                    y: -20, 
+                    stagger: 0.05, 
+                    duration: 0.3, 
+                    ease: 'power2.in' 
+                })
+                .to(this.imgWrap, { 
+                    opacity: 0, 
+                    scale: 0.9, 
+                    duration: 0.4, 
+                    ease: 'power2.in' 
+                }, "<")
+                .to(this.cont, { 
+                    clipPath: 'polygon(0 0, 100% 0, 100% 0, 0 0)', 
+                    y: -50, 
+                    duration: 0.6, 
+                    ease: 'power4.inOut' 
+                }, "-=0.1")
+                .to([this.ovl, '#modal-canvas'], { 
+                    opacity: 0, 
+                    duration: 0.4 
+                }, "-=0.2");
             }
         }
 
@@ -1262,7 +1435,7 @@
 
         /**
          * ==========================================================================
-         * 10. SHOP / FILTER CONTROLLER
+         * 10. SHOP GENERATOR
          * ==========================================================================
          */
         class ShopController {
@@ -1271,23 +1444,19 @@
                 this.currentFilter = 'all';
                 this.currentSearch = '';
                 this.currentSort = 'default';
-                this.viewMode = 'grid'; // 'grid' or 'list'
+                this.viewMode = 'grid'; 
             }
-
             render() {
-                this.updateView(false); // Initial render without heavy animation
+                this.updateView(false); 
                 this.bindEvents();
             }
-
             getFilteredProducts() {
                 let filtered = [...productsDB];
                 
-                // 1. Category Filter
                 if (this.currentFilter !== 'all') {
                     filtered = filtered.filter(p => p.category === this.currentFilter);
                 }
                 
-                // 2. Search Filter
                 if (this.currentSearch.trim() !== '') {
                     const query = this.currentSearch.toLowerCase();
                     filtered = filtered.filter(p => {
@@ -1296,7 +1465,6 @@
                     });
                 }
 
-                // 3. Sort
                 if (this.currentSort === 'price-asc') {
                     filtered.sort((a, b) => a.price - b.price);
                 } else if (this.currentSort === 'price-desc') {
@@ -1305,7 +1473,6 @@
                 
                 return filtered;
             }
-
             updateView(animate = true) {
                 const products = this.getFilteredProducts();
                 
@@ -1353,8 +1520,17 @@
                         const title = card.querySelector('.product-title');
                         const addBtn = card.querySelector('.quick-add-btn');
 
-                        const handleOpen = (e) => { e.preventDefault(); e.stopPropagation(); window.ModalSys.open(p.id); };
-                        const handleAdd = (e) => { e.preventDefault(); e.stopPropagation(); window.CartSys.add(p.id); };
+                        const handleOpen = (e) => { 
+                            e.preventDefault(); 
+                            e.stopPropagation(); 
+                            window.ModalSys.open(p.id); 
+                        };
+                        
+                        const handleAdd = (e) => { 
+                            e.preventDefault(); 
+                            e.stopPropagation(); 
+                            window.CartSys.add(p.id); 
+                        };
 
                         wrapper.addEventListener('click', handleOpen);
                         title.addEventListener('click', handleOpen);
@@ -1373,16 +1549,16 @@
 
                 if (animate && this.grid.children.length > 0) {
                     gsap.to('.product-card', {
-                        scale: 0.9, opacity: 0, duration: 0.3,
+                        scale: 0.9, 
+                        opacity: 0, 
+                        duration: 0.3,
                         onComplete: processRender
                     });
                 } else {
                     processRender();
                 }
             }
-
             bindEvents() {
-                // Category Filters
                 document.querySelectorAll('.shop-filters button').forEach(btn => {
                     btn.addEventListener('click', e => {
                         document.querySelectorAll('.shop-filters button').forEach(b => b.classList.remove('active'));
@@ -1392,7 +1568,6 @@
                     });
                 });
 
-                // Search Filter
                 const searchInput = document.getElementById('shop-search');
                 if (searchInput) {
                     let timeout = null;
@@ -1401,11 +1576,10 @@
                         timeout = setTimeout(() => {
                             this.currentSearch = e.target.value;
                             this.updateView();
-                        }, 300); // Debounce
+                        }, 300);
                     });
                 }
 
-                // Sort
                 const sortSelect = document.getElementById('shop-sort');
                 if (sortSelect) {
                     sortSelect.addEventListener('change', (e) => {
@@ -1414,9 +1588,9 @@
                     });
                 }
 
-                // View Toggles
                 const viewGrid = document.getElementById('view-grid');
                 const viewList = document.getElementById('view-list');
+                
                 if (viewGrid && viewList) {
                     viewGrid.addEventListener('click', () => {
                         if (this.viewMode === 'grid') return;
@@ -1425,6 +1599,7 @@
                         viewList.classList.remove('active');
                         this.updateView();
                     });
+                    
                     viewList.addEventListener('click', () => {
                         if (this.viewMode === 'list') return;
                         this.viewMode = 'list';
@@ -1448,25 +1623,76 @@
             AppState.lenis.on('scroll', ({ scroll }) => {
                 if (scroll > 100) { 
                     hdr.classList.add('scrolled'); 
-                    if (scroll > lastY && scroll > 300) { hdr.classList.add('hidden'); } 
-                    else { hdr.classList.remove('hidden'); }
+                    if (scroll > lastY && scroll > 300) { 
+                        hdr.classList.add('hidden'); 
+                    } else { 
+                        hdr.classList.remove('hidden'); 
+                    }
                 } else { 
                     hdr.classList.remove('scrolled', 'hidden'); 
                 }
                 lastY = scroll;
-                if (window.WebGLSys) window.WebGLSys.setScroll(scroll);
+                
+                if (window.WebGLSys) {
+                    window.WebGLSys.setScroll(scroll);
+                }
                 ScrollTrigger.update();
             });
 
-            gsap.fromTo('.product-card', { y: 80, opacity: 0 }, { scrollTrigger: { trigger: '.shop', start: 'top 85%' }, y: 0, opacity: 1, duration: 1, stagger: 0.15, ease: 'power3.out' });
-            gsap.to('#parallax-bg', { scrollTrigger: { trigger: '.parallax-section', start: 'top bottom', end: 'bottom top', scrub: true }, y: '30%', ease: 'none' });
-            gsap.fromTo('.parallax-content h2', { y: 80, opacity: 0 }, { scrollTrigger: { trigger: '.parallax-section', start: 'top 70%' }, y: 0, opacity: 1, duration: 1.2, ease: 'power3.out' });
+            gsap.fromTo('.product-card', { 
+                y: 80, 
+                opacity: 0 
+            }, { 
+                scrollTrigger: { 
+                    trigger: '.shop', 
+                    start: 'top 85%' 
+                }, 
+                y: 0, 
+                opacity: 1, 
+                duration: 1, 
+                stagger: 0.15, 
+                ease: 'power3.out' 
+            });
+            
+            gsap.to('#parallax-bg', { 
+                scrollTrigger: { 
+                    trigger: '.parallax-section', 
+                    start: 'top bottom', 
+                    end: 'bottom top', 
+                    scrub: true 
+                }, 
+                y: '30%', 
+                ease: 'none' 
+            });
+            
+            gsap.fromTo('.parallax-content h2', { 
+                y: 80, 
+                opacity: 0 
+            }, { 
+                scrollTrigger: { 
+                    trigger: '.parallax-section', 
+                    start: 'top 70%' 
+                }, 
+                y: 0, 
+                opacity: 1, 
+                duration: 1.2, 
+                ease: 'power3.out' 
+            });
         };
 
         const bootstrap = () => {
-            const lenis = new Lenis({ duration: 1.2, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smoothTouch: false });
+            const lenis = new Lenis({ 
+                duration: 1.2, 
+                easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
+                smoothTouch: false 
+            });
+            
             AppState.lenis = lenis;
-            function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+            
+            function raf(time) { 
+                lenis.raf(time); 
+                requestAnimationFrame(raf); 
+            }
             requestAnimationFrame(raf);
 
             gsap.registerPlugin(ScrollTrigger);
@@ -1482,7 +1708,6 @@
             window.ShopRenderer.render();
             initAnimations();
 
-            // PRELOADER & LOGO ANIMATION
             const pEl = document.getElementById('preloader-percent');
             let pObj = { v: 0 };
             
@@ -1490,8 +1715,18 @@
                 onComplete: () => {
                     document.getElementById('preloader').style.display = 'none';
                     gsap.timeline()
-                        .to('.hero-subtitle', { opacity: 1, y: 0, duration: 1, ease: 'power2.out' })
-                        .to('.text-reveal-inner', { y: 0, duration: 1.2, stagger: 0.15, ease: 'power4.out' }, "-=0.8");
+                        .to('.hero-subtitle', { 
+                            opacity: 1, 
+                            y: 0, 
+                            duration: 1, 
+                            ease: 'power2.out' 
+                        })
+                        .to('.text-reveal-inner', { 
+                            y: 0, 
+                            duration: 1.2, 
+                            stagger: 0.15, 
+                            ease: 'power4.out' 
+                        }, "-=0.8");
                 }
             });
 
@@ -1500,15 +1735,38 @@
                 { opacity: 0, scale: 0.4, rotationX: 80, filter: 'blur(20px)' },
                 { opacity: 1, scale: 1, rotationX: 0, filter: 'blur(0px)', duration: 1.8, ease: "expo.out" }
             )
-            .to(pObj, { v: 100, duration: 1.5, ease: 'power2.inOut', onUpdate: () => { pEl.innerText = Math.round(pObj.v) + '%'; } }, "-=1.5")
-            .to('#preloader-bar', { width: '100%', duration: 1.5, ease: 'power2.inOut' }, "-=1.5")
-            .to(pEl, { opacity: 1, duration: 0.5 }, "-=1.5")
-            .to('.preloader-logo-img', { opacity: 0, scale: 1.1, y: -50, duration: 0.8, ease: 'power3.in' }, "+=0.2")
-            .to('#preloader', { yPercent: -100, duration: 1.2, ease: 'power4.inOut' }, "-=0.4");
+            .to(pObj, { 
+                v: 100, 
+                duration: 1.5, 
+                ease: 'power2.inOut', 
+                onUpdate: () => { 
+                    pEl.innerText = Math.round(pObj.v) + '%'; 
+                } 
+            }, "-=1.5")
+            .to('#preloader-bar', { 
+                width: '100%', 
+                duration: 1.5, 
+                ease: 'power2.inOut' 
+            }, "-=1.5")
+            .to(pEl, { 
+                opacity: 1, 
+                duration: 0.5 
+            }, "-=1.5")
+            .to('.preloader-logo-img', { 
+                opacity: 0, 
+                scale: 1.1, 
+                y: -50, 
+                duration: 0.8, 
+                ease: 'power3.in' 
+            }, "+=0.2")
+            .to('#preloader', { 
+                yPercent: -100, 
+                duration: 1.2, 
+                ease: 'power4.inOut' 
+            }, "-=0.4");
         };
 
         document.addEventListener('DOMContentLoaded', bootstrap);
-
     </script>
 </body>
 </html>
