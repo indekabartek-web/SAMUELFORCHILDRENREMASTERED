@@ -41,9 +41,9 @@
             --ambient-opacity: 0.95;
             
             /* Cursor Light Mode Colors */
-            --cursor-color: #2C2825;
-            --cursor-outline-color: rgba(44, 40, 37, 0.5);
-            --cursor-hover-color: rgba(44, 40, 37, 0.08);
+            --cursor-color: #007bff;
+            --cursor-outline-color: rgba(51, 204, 255, 0.5);
+            --cursor-hover-color: rgba(51, 204, 255, 0.08);
 
             /* * DARK THEME */
             --theme-dark-bg: #0A0908;
@@ -213,7 +213,7 @@
         h1, h2, h3, h4, h5, h6 { font-family: var(--font-serif); font-weight: 400; line-height: 1.1; color: var(--color-text); transition: color 0.8s ease; }
 
         /* ==========================================================================
-           3. CUSTOM CURSOR (NAPRAWIONY DLA JASNEJ STRONY)
+           3. CUSTOM CURSOR
            ========================================================================== */
         .cursor-wrapper {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
@@ -304,14 +304,48 @@
         .cart-count.active { opacity: 1; transform: scale(1); }
 
         /* ==========================================================================
-           8. HERO SECTION
+           8. HERO SECTION (Z POPRAWIONYM LINE-HEIGHT / SPACINGIEM)
            ========================================================================== */
-        .hero { height: 100vh; min-height: 600px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 0 var(--container-padding); position: relative; z-index: 1; }
-        .hero-subtitle { font-family: var(--font-sans); font-size: clamp(0.75rem, 2vw, 0.9rem); font-weight: 700; text-transform: uppercase; letter-spacing: 6px; color: var(--color-accent); margin-bottom: 2.5rem; opacity: 0; }
-        .hero-title { font-size: clamp(2.5rem, 8vw, 9.5rem); line-height: 1.05; max-width: 1200px; margin-bottom: 3rem; letter-spacing: -0.02em; }
-        .hero-title em { font-style: italic; color: var(--color-accent); font-weight: 500; }
-        .text-reveal { overflow: hidden; display: inline-block; vertical-align: top; }
-        .text-reveal-inner { display: inline-block; transform: translateY(110%); transform-origin: top left; }
+        .hero { 
+            height: 100vh; min-height: 600px; display: flex; flex-direction: column; 
+            justify-content: center; align-items: center; text-align: center; 
+            padding: 0 var(--container-padding); position: relative; z-index: 1; 
+        }
+        
+        .hero-subtitle { 
+            font-family: var(--font-sans); font-size: clamp(0.75rem, 2vw, 0.9rem); 
+            font-weight: 700; text-transform: uppercase; letter-spacing: 6px; 
+            color: var(--color-accent); margin-bottom: 2.5rem; opacity: 0; 
+        }
+        
+        .hero-title { 
+            font-size: clamp(2.5rem, 8vw, 9.5rem); 
+            line-height: 1.25; /* Zwiększono z 1.05, aby usunąć nachodzenie wertykalne */
+            max-width: 1200px; 
+            margin-bottom: 3rem; 
+            letter-spacing: normal; /* Zmieniono z -0.02em, aby usunąć nachodzenie horyzontalne */
+        }
+        
+        .hero-title em { 
+            font-style: italic; 
+            color: var(--color-accent); 
+            font-weight: 500; 
+            padding-right: 0.05em; /* Zapobiega ucinaniu italiców */
+        }
+        
+        .text-reveal { 
+            overflow: hidden; 
+            display: inline-block; 
+            vertical-align: top; 
+            padding: 0.1em 0 0.25em 0; /* Dodaje bufor dla dolnych ogonków (descenders) */
+            margin-bottom: -0.25em; /* Niweluje nadmiar przestrzeni, by layout pozostał spójny */
+        }
+        
+        .text-reveal-inner { 
+            display: inline-block; 
+            transform: translateY(110%); 
+            transform-origin: top left; 
+        }
 
         /* ==========================================================================
            9. ABOUT SECTION
@@ -404,6 +438,7 @@
         .quick-add-btn::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--color-accent); transform: scale(0); border-radius: 50%; transition: transform 0.4s var(--ease-out-expo); z-index: -1; }
         .quick-add-btn svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
+        /* List View Modifier */
         .products-grid.list-view { display: flex; flex-direction: column; gap: 3rem; }
         .products-grid.list-view .product-card { flex-direction: row; align-items: center; gap: 3rem; }
         .products-grid.list-view .product-card-inner { width: 250px; flex-shrink: 0; }
@@ -472,7 +507,7 @@
         .checkout-btn span { position: relative; z-index: 2; }
 
         /* ==========================================================================
-           14. CREATIVE PRODUCT MODAL (MOBILE SCROLL FIX)
+           14. CREATIVE PRODUCT MODAL
            ========================================================================== */
         .modal-wrapper { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; height: 100dvh; z-index: 100000; display: flex; justify-content: center; align-items: center; pointer-events: none; visibility: hidden; padding: var(--container-padding); }
         .modal-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--color-bg); opacity: 0; will-change: opacity; }
@@ -497,7 +532,7 @@
         .modal-anim-el { opacity: 0; transform: translateY(30px); }
 
         /* ==========================================================================
-           15. FULL MOBILE RESPONSIVENESS & MOBILE MODAL SCROLL FIX
+           15. RESPONSIVE & FIXES
            ========================================================================== */
         @media (max-width: 1024px) {
             .footer-top { grid-template-columns: 1fr 1fr; gap: 3rem; }
@@ -517,23 +552,27 @@
             .logo-img { max-height: 60px; }
             header.scrolled .logo-img { max-height: 50px; }
             .nav-actions { gap: 1rem; }
-            .theme-toggle-btn .text, .lang-toggle-btn .text { display: inline-block; font-size: 0.65rem; } 
-            .theme-toggle-btn, .lang-toggle-btn { gap: 4px; }
-            .theme-toggle-btn .icon { width: 16px; height: 16px; }
+            
+            /* Responsive Hide Texts */
+            .theme-toggle-btn .text, .lang-toggle-btn .text { display: none; } 
+            
+            .theme-toggle-btn .icon { width: 22px; height: 22px; }
+            .lang-toggle-btn { font-size: 1rem; font-weight: 700; }
             .cart-btn { font-size: 0; padding: 0;} 
-            .cart-btn::before { content: ''; display: block; width: 20px; height: 20px; background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" fill="none" stroke="%232C2825" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>'); background-size: contain; background-repeat: no-repeat; }
+            .cart-btn::before { content: ''; display: block; width: 24px; height: 24px; background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" fill="none" stroke="%232C2825" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>'); background-size: contain; background-repeat: no-repeat; }
             html[data-theme="dark"] .cart-btn::before { background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" fill="none" stroke="%23F2EFEA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>'); }
             .cart-btn::after { display: none; }
-            .cart-count { top: -8px; right: -8px; width: 16px; height: 16px; font-size: 0.55rem; }
-            .hero-title { font-size: clamp(2.5rem, 12vw, 4rem); }
-            .footer-top { grid-template-columns: 1fr; gap: 2.5rem; }
+            .cart-count { top: -8px; right: -8px; width: 18px; height: 18px; font-size: 0.55rem; }
             
+            /* Responsive Hero title adjusted line-height to fit text */
+            .hero-title { font-size: clamp(2.5rem, 12vw, 4rem); line-height: 1.25; }
+            
+            .footer-top { grid-template-columns: 1fr; gap: 2.5rem; }
             .shop-toolbar { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
             .shop-controls { width: 100%; justify-content: space-between; }
             .shop-search { width: 100%; flex: 1; min-width: 150px; }
             .shop-sort { max-width: 160px; }
             .view-toggles { display: none; }
-
             .products-grid { grid-template-columns: 1fr; gap: 3rem; }
             .cart-sidebar { max-width: 100%; }
             
@@ -760,11 +799,6 @@
     </main>
 
     <script>
-        /**
-         * ==========================================================================
-         * 1. TRANSLATION DICTIONARY (I18N)
-         * ==========================================================================
-         */
         const I18N = {
             pl: {
                 theme_dark: "Ciemny",
@@ -859,22 +893,12 @@
             }
         };
 
-        /**
-         * ==========================================================================
-         * 2. DATABASE
-         * ==========================================================================
-         */
         const productsDB = [
             { id: 'p1', title: "Św. Franciszek z Asyżu", price: 45.00, img: "img/franciszek.jpg", category: "ksiazki" },
             { id: 'p2', title: "Pamiętnik bł. Michała Czartoryskiego", price: 50.00, img: "img/opowiem-ci-o-sobie.jpg", category: "ksiazki" },
             { id: 'p3', title: "Panna Hanna", price: 50.00, img: "img/o-pannie-hannie.jpg", category: "ksiazki" }
         ];
 
-        /**
-         * ==========================================================================
-         * 3. UTILS & STATE
-         * ==========================================================================
-         */
         const AppState = {
             cart: JSON.parse(localStorage.getItem('sfc_cart')) || [],
             lang: localStorage.getItem('sfc_lang') || 'pl',
@@ -901,11 +925,6 @@
             }, 3000);
         };
 
-        /**
-         * ==========================================================================
-         * 4. LANGUAGE CONTROLLER
-         * ==========================================================================
-         */
         class LangController {
             constructor() {
                 this.btn = document.getElementById('lang-toggle');
@@ -954,11 +973,6 @@
             }
         }
 
-        /**
-         * ==========================================================================
-         * 5. THEME CONTROLLER
-         * ==========================================================================
-         */
         class ThemeController {
             constructor() {
                 this.btn = document.getElementById('theme-toggle');
@@ -981,11 +995,6 @@
             }
         }
 
-        /**
-         * ==========================================================================
-         * 6. CURSOR CONTROLLER
-         * ==========================================================================
-         */
         class CursorController {
             constructor() {
                 if (AppState.isTouch) return;
@@ -1035,11 +1044,6 @@
             refresh() {}
         }
 
-        /**
-         * ==========================================================================
-         * 7. WEBGL BACKGROUND
-         * ==========================================================================
-         */
         class WebGLBackground {
             constructor() {
                 this.container = document.getElementById('canvas-container');
@@ -1125,11 +1129,6 @@
             }
         }
 
-        /**
-         * ==========================================================================
-         * 8. CREATIVE MODAL CONTROLLER
-         * ==========================================================================
-         */
         class ModalController {
             constructor() {
                 this.wrap = document.getElementById('product-modal');
@@ -1338,11 +1337,6 @@
             }
         }
 
-        /**
-         * ==========================================================================
-         * 9. CART CONTROLLER
-         * ==========================================================================
-         */
         class CartController {
             constructor() {
                 this.sb = document.getElementById('cart-sidebar');
@@ -1354,35 +1348,76 @@
                 document.getElementById('open-cart').addEventListener('click', () => this.open());
                 document.getElementById('close-cart').addEventListener('click', () => this.close());
                 this.ovl.addEventListener('click', () => this.close());
+                
                 this.cont.addEventListener('click', e => {
                     const id = e.target.dataset.id;
                     if (!id) return;
-                    if (e.target.classList.contains('inc-btn')) this.update(id, 1);
-                    if (e.target.classList.contains('dec-btn')) this.update(id, -1);
-                    if (e.target.classList.contains('remove-item')) this.remove(id);
+                    if (e.target.classList.contains('inc-btn')) {
+                        this.update(id, 1);
+                    }
+                    if (e.target.classList.contains('dec-btn')) {
+                        this.update(id, -1);
+                    }
+                    if (e.target.classList.contains('remove-item')) {
+                        this.remove(id);
+                    }
                 });
             }
-            save() { localStorage.setItem('sfc_cart', JSON.stringify(AppState.cart)); this.render(); }
+            save() { 
+                localStorage.setItem('sfc_cart', JSON.stringify(AppState.cart)); 
+                this.render(); 
+            }
             add(id) {
                 const baseP = productsDB.find(x => x.id === id);
                 if (!baseP) return;
+                
                 const ex = AppState.cart.find(x => x.id === id);
-                if (ex) { ex.quantity += 1; } else { AppState.cart.push({...baseP, quantity: 1}); }
+                if (ex) { 
+                    ex.quantity += 1; 
+                } else { 
+                    AppState.cart.push({...baseP, quantity: 1}); 
+                }
                 
                 this.save();
                 showToast(getI18n('added'));
+                
                 if (!this.sb.classList.contains('active')) {
-                    gsap.fromTo('#cart-count-badge', { scale: 1.5 }, { scale: 1, duration: 0.5, ease: 'elastic.out(1,0.3)' });
+                    gsap.fromTo('#cart-count-badge', { 
+                        scale: 1.5 
+                    }, { 
+                        scale: 1, 
+                        duration: 0.5, 
+                        ease: 'elastic.out(1,0.3)' 
+                    });
                 }
             }
             update(id, diff) {
                 const item = AppState.cart.find(x => x.id === id);
-                if (item) { item.quantity += diff; if (item.quantity <= 0) this.remove(id); else this.save(); }
+                if (item) { 
+                    item.quantity += diff; 
+                    if (item.quantity <= 0) {
+                        this.remove(id); 
+                    } else {
+                        this.save(); 
+                    }
+                }
             }
             remove(id) {
                 const el = document.querySelector(`.cart-item[data-id="${id}"]`);
-                if (el) { gsap.to(el, { x: 100, opacity: 0, duration: 0.4, onComplete: () => { AppState.cart = AppState.cart.filter(x => x.id !== id); this.save(); } }); } 
-                else { AppState.cart = AppState.cart.filter(x => x.id !== id); this.save(); }
+                if (el) { 
+                    gsap.to(el, { 
+                        x: 100, 
+                        opacity: 0, 
+                        duration: 0.4, 
+                        onComplete: () => { 
+                            AppState.cart = AppState.cart.filter(x => x.id !== id); 
+                            this.save(); 
+                        } 
+                    }); 
+                } else { 
+                    AppState.cart = AppState.cart.filter(x => x.id !== id); 
+                    this.save(); 
+                }
             }
             render() {
                 this.cont.innerHTML = '';
@@ -1394,16 +1429,21 @@
                     badge.classList.remove('active');
                 } else {
                     AppState.cart.forEach((item, i) => {
-                        tot += item.price * item.quantity; cnt += item.quantity;
+                        tot += item.price * item.quantity; 
+                        cnt += item.quantity;
                         const pInfo = ProductsTranslations[item.id][AppState.lang];
                         
                         const div = document.createElement('div');
-                        div.className = 'cart-item'; div.dataset.id = item.id;
+                        div.className = 'cart-item'; 
+                        div.dataset.id = item.id;
                         div.innerHTML = `
                             <img src="${item.img}" alt="${pInfo.title}" class="cart-item-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                             <div class="cart-fallback-img" style="display:none;">${pInfo.title}</div>
                             <div class="cart-item-details">
-                                <div><h4 class="cart-item-title">${pInfo.title}</h4><span class="cart-item-price">${formatPrice(item.price)}</span></div>
+                                <div>
+                                    <h4 class="cart-item-title">${pInfo.title}</h4>
+                                    <span class="cart-item-price">${formatPrice(item.price)}</span>
+                                </div>
                                 <div class="cart-item-actions">
                                     <div class="qty-control">
                                         <button class="qty-btn dec-btn" data-id="${item.id}">-</button>
@@ -1415,29 +1455,47 @@
                             </div>
                         `;
                         this.cont.appendChild(div);
-                        if (this.sb.classList.contains('active')) gsap.to(div, { opacity: 1, x: 0, duration: 0.5, delay: i * 0.1 });
-                        else div.style.opacity = 1;
+                        
+                        if (this.sb.classList.contains('active')) {
+                            gsap.to(div, { 
+                                opacity: 1, 
+                                x: 0, 
+                                duration: 0.5, 
+                                delay: i * 0.1 
+                            });
+                        } else {
+                            div.style.opacity = 1;
+                        }
                     });
-                    badge.textContent = cnt; badge.classList.add('active');
+                    
+                    badge.textContent = cnt; 
+                    badge.classList.add('active');
                 }
                 document.getElementById('cart-total-price').textContent = formatPrice(tot);
             }
             open() {
-                this.sb.classList.add('active'); this.ovl.classList.add('active');
+                this.sb.classList.add('active'); 
+                this.ovl.classList.add('active');
                 if (AppState.lenis) AppState.lenis.stop();
-                gsap.fromTo('.cart-item', { opacity: 0, x: 50 }, { opacity: 1, x: 0, stagger: 0.1, duration: 0.5, ease: "power2.out", delay: 0.2 });
+                gsap.fromTo('.cart-item', { 
+                    opacity: 0, 
+                    x: 50 
+                }, { 
+                    opacity: 1, 
+                    x: 0, 
+                    stagger: 0.1, 
+                    duration: 0.5, 
+                    ease: "power2.out", 
+                    delay: 0.2 
+                });
             }
             close() {
-                this.sb.classList.remove('active'); this.ovl.classList.remove('active');
+                this.sb.classList.remove('active'); 
+                this.ovl.classList.remove('active');
                 if (!window.ModalSys.isOpen && AppState.lenis) AppState.lenis.start();
             }
         }
 
-        /**
-         * ==========================================================================
-         * 10. SHOP GENERATOR
-         * ==========================================================================
-         */
         class ShopController {
             constructor() {
                 this.grid = document.getElementById('products-grid');
@@ -1611,11 +1669,6 @@
             }
         }
 
-        /**
-         * ==========================================================================
-         * 11. MAIN INIT & SCROLLTRIGGER
-         * ==========================================================================
-         */
         const initAnimations = () => {
             let lastY = window.scrollY;
             const hdr = document.getElementById('header');
