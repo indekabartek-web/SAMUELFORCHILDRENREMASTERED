@@ -2,9 +2,11 @@
 <html lang="pl" class="no-js">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    
     <title>Samuel for Children | Wyjątkowe Książki Religijne</title>
     <meta name="description" content="Ekskluzywne wydania książek religijnych dla dzieci. Zobacz naszą unikalną kolekcję.">
+    <meta name="theme-color" content="#FCFBF9">
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
@@ -13,50 +15,48 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
     
     <style>
         /* ==========================================================================
-           1. THEME ENGINE & VARIABLES
+           1. THEME ENGINE & DESIGN TOKENS
            ========================================================================== */
         :root {
-            /* LIGHT THEME (COLORFUL & VIBRANT UPGRADE) */
+            /* LIGHT THEME */
             --theme-light-bg: #FCFBF9;
-            --theme-light-bg-alt: rgba(255, 255, 255, 0.6);
+            --theme-light-bg-alt: rgba(255, 255, 255, 0.75);
             --theme-light-text: #2C2825;
             --theme-light-text-light: #7A7268;
-            --theme-light-border: rgba(44, 40, 37, 0.1);
-            --theme-light-overlay: rgba(252, 251, 249, 0.85);
-            --theme-light-modal: rgba(255, 255, 255, 0.9);
+            --theme-light-border: rgba(44, 40, 37, 0.15);
+            --theme-light-overlay: rgba(252, 251, 249, 0.95);
+            --theme-light-modal: rgba(255, 255, 255, 0.98);
             --theme-light-shadow: rgba(44, 40, 37, 0.08);
-            --theme-light-grain: 0.03;
+            --theme-light-grain: 0.04;
             
-            /* Ambient Colors for Light Mode */
             --ambient-color-1: #FFDAB9;
             --ambient-color-2: #E0FFFF;
             --ambient-color-3: #FFF0F5;
             --ambient-color-4: #FFFACD;
-            --ambient-opacity: 0.8;
+            --ambient-opacity: 0.9;
 
-            /* DARK THEME (DEEP CHARCOAL) */
+            /* DARK THEME */
             --theme-dark-bg: #0A0908;
-            --theme-dark-bg-alt: rgba(20, 19, 18, 0.8);
+            --theme-dark-bg-alt: rgba(20, 19, 18, 0.85);
             --theme-dark-text: #F2EFEA;
-            --theme-dark-text-light: #9E9B96;
-            --theme-dark-border: rgba(242, 239, 234, 0.1);
-            --theme-dark-overlay: rgba(10, 9, 8, 0.85);
-            --theme-dark-modal: rgba(15, 14, 12, 0.95);
-            --theme-dark-shadow: rgba(0, 0, 0, 0.9);
-            --theme-dark-grain: 0.02;
+            --theme-dark-text-light: #A09D98;
+            --theme-dark-border: rgba(242, 239, 234, 0.12);
+            --theme-dark-overlay: rgba(10, 9, 8, 0.95);
+            --theme-dark-modal: rgba(15, 14, 12, 0.98);
+            --theme-dark-shadow: rgba(0, 0, 0, 0.95);
+            --theme-dark-grain: 0.03;
 
-            /* Ambient Colors for Dark Mode */
             --ambient-dark-1: #1A1311;
             --ambient-dark-2: #0B131A;
             --ambient-dark-3: #1A0F14;
             --ambient-dark-4: #181810;
-            --ambient-dark-opacity: 0.4;
+            --ambient-dark-opacity: 0.6;
 
-            /* ACTIVE THEME (DEFAULT: LIGHT) */
+            /* ACTIVE THEME */
             --color-bg: var(--theme-light-bg);
             --color-bg-alt: var(--theme-light-bg-alt);
             --color-text: var(--theme-light-text);
@@ -73,7 +73,7 @@
             --active-ambient-4: var(--ambient-color-4);
             --active-ambient-opacity: var(--ambient-opacity);
             
-            /* SHARED / BRAND ACCENTS */
+            /* BRAND ACCENTS */
             --color-accent: #C29B45;
             --color-accent-hover: #A38032;
             --color-white: #FFFFFF;
@@ -92,23 +92,22 @@
             --spacing-lg: 4rem;
             --spacing-xl: 8rem;
             --spacing-xxl: 12rem;
+            
             --container-padding: 6vw;
-            --header-height: 110px;
-            --radius-sm: 6px;
-            --radius-md: 12px;
+            --header-height: 120px;
+            
+            --radius-sm: 8px;
+            --radius-md: 16px;
             --radius-lg: 24px;
             
             /* ANIMATION EASES */
             --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
-            --ease-in-out-expo: cubic-bezier(1, 0, 0, 1);
-            --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
-            --transition-theme: background-color 0.8s var(--ease-out-quart), 
-                                color 0.8s var(--ease-out-quart), 
-                                border-color 0.8s var(--ease-out-quart), 
-                                box-shadow 0.8s var(--ease-out-quart);
+            --transition-theme: background-color 0.8s var(--ease-out-expo), 
+                                color 0.8s var(--ease-out-expo), 
+                                border-color 0.8s var(--ease-out-expo), 
+                                box-shadow 0.8s var(--ease-out-expo);
         }
 
-        /* DYNAMIC THEME SWITCHING */
         html[data-theme="dark"] {
             --color-bg: var(--theme-dark-bg);
             --color-bg-alt: var(--theme-dark-bg-alt);
@@ -128,362 +127,159 @@
         }
 
         /* ==========================================================================
-           2. RESET & BASE
+           2. GLOBAL RESET
            ========================================================================== */
-        *, *::before, *::after { 
-            box-sizing: border-box; 
-            margin: 0; 
-            padding: 0; 
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         
         html { 
             font-size: 16px; 
             background-color: var(--color-bg); 
             transition: var(--transition-theme);
+            -webkit-tap-highlight-color: transparent;
+            scroll-behavior: auto;
         }
 
         html.lenis { height: auto; }
         .lenis.lenis-smooth { scroll-behavior: auto; }
         .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
         .lenis.lenis-stopped { overflow: hidden; }
+        .lenis.lenis-scrolling iframe { pointer-events: none; }
 
         body {
-            font-family: var(--font-sans);
-            background-color: transparent;
-            color: var(--color-text);
-            line-height: 1.6;
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            cursor: none; 
-            width: 100vw;
-            min-height: 100vh;
-            transition: var(--transition-theme);
-            position: relative;
+            font-family: var(--font-sans); background-color: transparent; color: var(--color-text);
+            line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased;
+            width: 100%; min-height: 100vh; transition: var(--transition-theme); position: relative;
         }
 
-        /* DYNAMICZNE, KOLOROWE TŁO AMBIENTOWE (MESH GRADIENT) */
+        @media (pointer: fine) {
+            body { cursor: none; }
+            a, button, input, select, textarea, .hover-target { cursor: none !important; }
+        }
+
         .ambient-background {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100vw; height: 100vh;
-            z-index: -2;
-            background-color: var(--color-bg);
-            overflow: hidden;
-            transition: background-color 0.8s var(--ease-out-quart);
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -2;
+            background-color: var(--color-bg); overflow: hidden; transition: background-color 0.8s ease;
             pointer-events: none;
         }
 
         .color-blob {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(100px);
-            opacity: var(--active-ambient-opacity);
-            transition: opacity 0.8s ease, background-color 1.5s ease;
-            mix-blend-mode: normal;
-            will-change: transform;
+            position: absolute; border-radius: 50%; filter: blur(120px);
+            opacity: var(--active-ambient-opacity); transition: opacity 0.8s ease, background-color 1.5s ease;
+            mix-blend-mode: normal; will-change: transform;
         }
 
-        .blob-1 {
-            width: 60vw; height: 60vw;
-            background-color: var(--active-ambient-1);
-            top: -10%; left: -10%;
-            animation: floatBlob1 25s infinite alternate ease-in-out;
-        }
-        .blob-2 {
-            width: 50vw; height: 50vw;
-            background-color: var(--active-ambient-2);
-            bottom: -20%; right: -10%;
-            animation: floatBlob2 20s infinite alternate ease-in-out;
-        }
-        .blob-3 {
-            width: 55vw; height: 55vw;
-            background-color: var(--active-ambient-3);
-            top: 30%; left: 30%;
-            animation: floatBlob3 28s infinite alternate ease-in-out;
-        }
-        .blob-4 {
-            width: 40vw; height: 40vw;
-            background-color: var(--active-ambient-4);
-            top: -10%; right: 10%;
-            animation: floatBlob4 22s infinite alternate ease-in-out;
-        }
+        .blob-1 { width: 70vw; height: 70vw; background-color: var(--active-ambient-1); top: -15%; left: -15%; animation: floatBlob1 28s infinite alternate ease-in-out; }
+        .blob-2 { width: 60vw; height: 60vw; background-color: var(--active-ambient-2); bottom: -25%; right: -15%; animation: floatBlob2 22s infinite alternate ease-in-out; }
+        .blob-3 { width: 65vw; height: 65vw; background-color: var(--active-ambient-3); top: 35%; left: 35%; animation: floatBlob3 32s infinite alternate ease-in-out; }
+        .blob-4 { width: 50vw; height: 50vw; background-color: var(--active-ambient-4); top: -15%; right: 15%; animation: floatBlob4 26s infinite alternate ease-in-out; }
 
-        @keyframes floatBlob1 {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(10%, 15%) scale(1.1); }
-        }
-        @keyframes floatBlob2 {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(-15%, -10%) scale(1.2); }
-        }
-        @keyframes floatBlob3 {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(15%, -15%) scale(0.9); }
-        }
-        @keyframes floatBlob4 {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(-20%, 10%) scale(1.15); }
-        }
+        @keyframes floatBlob1 { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(15%, 20%) scale(1.15); } }
+        @keyframes floatBlob2 { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(-20%, -15%) scale(1.25); } }
+        @keyframes floatBlob3 { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(20%, -20%) scale(0.85); } }
+        @keyframes floatBlob4 { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(-25%, 15%) scale(1.2); } }
 
-        /* FINE GRAIN OVERLAY */
         body::before {
-            content: '';
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            pointer-events: none;
-            z-index: 999998;
-            opacity: var(--intensity-grain);
+            content: ''; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none; z-index: 999998; opacity: var(--intensity-grain);
             background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noiseFilter)"/></svg>');
-            transition: opacity 0.8s var(--ease-out-quart);
+            transition: opacity 0.8s ease;
         }
 
         ::selection { background-color: var(--color-accent); color: var(--color-white); }
-        a { text-decoration: none; color: inherit; cursor: none; }
-        button { cursor: none; font-family: inherit; outline: none; background: none; border: none; }
+        a { text-decoration: none; color: inherit; }
+        button { font-family: inherit; outline: none; background: none; border: none; }
         ul, ol { list-style: none; }
         img { max-width: 100%; display: block; }
-
-        h1, h2, h3, h4, h5, h6 {
-            font-family: var(--font-serif);
-            font-weight: 400;
-            line-height: 1.1;
-            color: var(--color-text);
-            transition: color 0.8s var(--ease-out-quart);
-        }
+        h1, h2, h3, h4, h5, h6 { font-family: var(--font-serif); font-weight: 400; line-height: 1.1; color: var(--color-text); transition: color 0.8s ease; }
 
         /* ==========================================================================
            3. CUSTOM CURSOR
            ========================================================================== */
         .cursor-wrapper {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            pointer-events: none; z-index: 999999; mix-blend-mode: difference;
+            pointer-events: none; z-index: 999999; mix-blend-mode: difference; display: none;
         }
-
+        @media (pointer: fine) { .cursor-wrapper { display: block; } }
         .cursor-dot {
-            position: fixed; top: 0; left: 0;
-            width: 8px; height: 8px; background-color: #FFFFFF; border-radius: 50%;
-            pointer-events: none; will-change: transform;
+            position: fixed; top: 0; left: 0; width: 8px; height: 8px; background-color: #FFFFFF;
+            border-radius: 50%; pointer-events: none; will-change: transform;
         }
-
         .cursor-outline {
-            position: fixed; top: 0; left: 0;
-            width: 40px; height: 40px; border: 1px solid rgba(255, 255, 255, 0.5); border-radius: 50%;
-            pointer-events: none; will-change: transform, width, height, background-color, border-color;
-            transition: width 0.3s var(--ease-out-expo), height 0.3s var(--ease-out-expo), 
-                        background-color 0.3s var(--ease-out-expo), border-color 0.3s var(--ease-out-expo);
+            position: fixed; top: 0; left: 0; width: 40px; height: 40px; border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 50%; pointer-events: none; will-change: transform, width, height, background-color, border-color;
+            transition: width 0.3s var(--ease-out-expo), height 0.3s var(--ease-out-expo), background-color 0.3s var(--ease-out-expo), border-color 0.3s var(--ease-out-expo);
         }
-
         body.cursor-hover .cursor-outline {
             width: 80px; height: 80px; background-color: rgba(255, 255, 255, 0.08); border-color: transparent;
         }
 
         /* ==========================================================================
-           4. PRELOADER (WITH LOGO ANIMATION)
+           4. PRELOADER
            ========================================================================== */
         #preloader {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background-color: var(--color-bg); z-index: 100000;
+            background-color: var(--color-bg); z-index: 1000000;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
         }
-
-        .preloader-brand {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 4rem;
-            perspective: 1000px;
-        }
-
-        /* ELITE JPG BLEND MODE TRICK - Ensures white bg JPG acts like PNG */
+        .preloader-brand { display: flex; flex-direction: column; align-items: center; justify-content: center; margin-bottom: 4rem; perspective: 1000px; }
         .preloader-logo-img {
-            max-width: 300px; /* Zwiększone logo */
-            width: 80vw;
-            height: auto;
-            opacity: 0;
-            transform-style: preserve-3d;
-            will-change: transform, opacity, filter;
-            filter: drop-shadow(0 15px 25px rgba(0,0,0,0.1));
-            mix-blend-mode: multiply; 
+            max-width: 400px; width: 80vw; height: auto; opacity: 0; transform-style: preserve-3d;
+            will-change: transform, opacity, filter; filter: drop-shadow(0 15px 25px rgba(0,0,0,0.1)); mix-blend-mode: multiply; 
         }
-
-        html[data-theme="dark"] .preloader-logo-img {
-            filter: invert(1) hue-rotate(180deg) brightness(1.2) drop-shadow(0 15px 25px rgba(0,0,0,0.5));
-            mix-blend-mode: screen; 
-        }
-
-        .preloader-text-fallback {
-            font-family: var(--font-serif); 
-            font-size: clamp(2.5rem, 5vw, 4.5rem);
-            font-style: italic; color: var(--color-text);
-            letter-spacing: -0.02em; display: none;
-        }
-
-        .preloader-bar-wrapper {
-            width: 300px; height: 1px; background-color: var(--color-border);
-            position: relative; overflow: hidden; margin-top: 2rem;
-        }
-
-        .preloader-bar {
-            position: absolute; top: 0; left: 0; height: 100%; width: 0%;
-            background-color: var(--color-accent);
-        }
-
-        .preloader-percentage {
-            margin-top: 1.5rem; font-family: var(--font-sans); font-size: 0.85rem;
-            letter-spacing: 3px; color: var(--color-text-light); opacity: 0;
-        }
+        html[data-theme="dark"] .preloader-logo-img { filter: invert(1) hue-rotate(180deg) brightness(1.2) drop-shadow(0 15px 25px rgba(0,0,0,0.5)); mix-blend-mode: screen; }
+        .preloader-text-fallback { font-family: var(--font-serif); font-size: clamp(2rem, 5vw, 4.5rem); font-style: italic; color: var(--color-text); letter-spacing: -0.02em; display: none; }
+        .preloader-bar-wrapper { width: 80vw; max-width: 300px; height: 1px; background-color: var(--color-border); position: relative; overflow: hidden; margin-top: 2rem; }
+        .preloader-bar { position: absolute; top: 0; left: 0; height: 100%; width: 0%; background-color: var(--color-accent); }
+        .preloader-percentage { margin-top: 1.5rem; font-family: var(--font-sans); font-size: 0.85rem; letter-spacing: 3px; color: var(--color-text-light); opacity: 0; }
 
         /* ==========================================================================
            5. WEBGL BACKGROUND
            ========================================================================== */
-        #canvas-container {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            z-index: -1; pointer-events: none; opacity: 0.8;
-            transition: opacity 1.5s ease;
-        }
+        #canvas-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none; opacity: 0.8; transition: opacity 1.5s ease; }
 
         /* ==========================================================================
            6. NOTIFICATIONS (TOASTS)
            ========================================================================== */
-        #toast-container {
-            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
-            z-index: 100005; display: flex; flex-direction: column; gap: 10px;
-            pointer-events: none;
-        }
-
-        .toast {
-            background-color: var(--color-text); color: var(--color-bg);
-            padding: 12px 24px; border-radius: 30px; font-family: var(--font-sans);
-            font-size: 0.85rem; font-weight: 600; text-transform: uppercase;
-            letter-spacing: 1px; box-shadow: 0 10px 30px var(--color-shadow);
-            opacity: 0; transform: translateY(20px);
-        }
+        #toast-container { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 100005; display: flex; flex-direction: column; gap: 10px; pointer-events: none; width: 90vw; max-width: 400px; align-items: center; }
+        .toast { background-color: var(--color-text); color: var(--color-bg); padding: 14px 28px; border-radius: 30px; font-family: var(--font-sans); font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 10px 30px var(--color-shadow); opacity: 0; transform: translateY(20px); text-align: center; width: auto; }
 
         /* ==========================================================================
            7. HEADER & NAVIGATION
            ========================================================================== */
         header {
             position: fixed; top: 0; left: 0; width: 100%; height: var(--header-height);
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 0 var(--container-padding); z-index: 1000;
-            transition: transform 0.6s var(--ease-out-expo), background-color 0.5s ease, 
-                        backdrop-filter 0.5s ease, border-bottom 0.5s ease, height 0.5s ease;
+            display: flex; justify-content: space-between; align-items: center; padding: 0 var(--container-padding); z-index: 1000;
+            transition: transform 0.6s var(--ease-out-expo), background-color 0.5s ease, backdrop-filter 0.5s ease, border-bottom 0.5s ease, height 0.5s ease;
             will-change: transform; border-bottom: 1px solid transparent;
         }
-
-        header.scrolled {
-            background-color: var(--color-overlay);
-            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
-            border-bottom: 1px solid var(--color-border); 
-            height: 90px;
-        }
-
+        header.scrolled { background-color: var(--color-overlay); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border-bottom: 1px solid var(--color-border); height: 90px; }
         header.hidden { transform: translateY(-100%); }
 
-        .logo {
-            position: relative; display: flex; align-items: center;
-            height: 100%;
-        }
+        .logo { position: relative; display: flex; align-items: center; height: 100%; }
+        .logo-img { max-height: 130px; width: auto; display: block; transition: max-height 0.5s var(--ease-out-expo), filter 0.8s ease; transform-origin: left center; mix-blend-mode: multiply; }
+        header.scrolled .logo-img { max-height: 65px; }
+        .footer-logo-img { max-height: 140px; width: auto; margin-bottom: 1.5rem; display: block; transition: var(--transition-theme); transform-origin: left center; mix-blend-mode: multiply; }
+        html[data-theme="dark"] .logo-img, html[data-theme="dark"] .footer-logo-img { filter: invert(1) hue-rotate(180deg) brightness(1.2); mix-blend-mode: screen; }
+        .logo-text-fallback { font-family: var(--font-serif); font-size: clamp(1.5rem, 4vw, 2.2rem); font-style: italic; font-weight: 500; color: var(--color-text); letter-spacing: 1px; white-space: nowrap; }
 
-        /* ELITE JPG BLEND MODE TRICK */
-        .logo-img {
-            max-height: 110px; /* Zwiększono rozmiar logo */
-            width: auto;
-            display: block;
-            transition: max-height 0.5s ease, filter 0.8s ease;
-            transform-origin: left center;
-            mix-blend-mode: multiply;
-        }
+        .nav-actions { display: flex; align-items: center; gap: 1.8rem; }
+        .theme-toggle-btn, .lang-toggle-btn { color: var(--color-text); font-family: var(--font-sans); font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; display: flex; align-items: center; gap: 8px; transition: color 0.3s ease; background: transparent; border: none;}
+        @media (pointer: fine) { .theme-toggle-btn:hover, .lang-toggle-btn:hover { color: var(--color-accent); } }
+        .theme-toggle-btn .icon { width: 18px; height: 18px; border-radius: 50%; border: 2px solid currentColor; position: relative; transition: all 0.5s var(--ease-out-expo); }
+        html[data-theme="dark"] .theme-toggle-btn .icon { background-color: currentColor; box-shadow: inset -5px -3px 0 var(--color-bg); border-color: transparent; }
 
-        header.scrolled .logo-img {
-            max-height: 70px;
-        }
-
-        .footer-logo-img {
-            max-height: 120px; /* Zwiększone w stopce */
-            width: auto; margin-bottom: 1.5rem; display: block;
-            transition: var(--transition-theme); transform-origin: left center;
-            mix-blend-mode: multiply;
-        }
-
-        html[data-theme="dark"] .logo-img,
-        html[data-theme="dark"] .footer-logo-img {
-            filter: invert(1) hue-rotate(180deg) brightness(1.2);
-            mix-blend-mode: screen;
-        }
-
-        .logo-text-fallback {
-            font-family: var(--font-serif); font-size: 2.2rem; font-style: italic;
-            font-weight: 500; color: var(--color-text); letter-spacing: 1px;
-        }
-
-        .nav-actions { display: flex; align-items: center; gap: 2.5rem; }
-
-        .theme-toggle-btn {
-            color: var(--color-text); font-family: var(--font-sans); font-size: 0.8rem;
-            font-weight: 600; text-transform: uppercase; letter-spacing: 2px;
-            display: flex; align-items: center; gap: 10px; transition: color 0.3s ease;
-        }
-
-        .theme-toggle-btn:hover { color: var(--color-accent); }
-
-        .theme-toggle-btn .icon {
-            width: 18px; height: 18px; border-radius: 50%; border: 2px solid currentColor;
-            position: relative; transition: all 0.5s var(--ease-out-expo);
-        }
-
-        html[data-theme="dark"] .theme-toggle-btn .icon {
-            background-color: currentColor; box-shadow: inset -5px -3px 0 var(--color-bg);
-            border-color: transparent;
-        }
-
-        .cart-btn {
-            color: var(--color-text); font-family: var(--font-sans); font-size: 0.8rem;
-            font-weight: 600; text-transform: uppercase; letter-spacing: 2px;
-            position: relative; padding: 0.5rem 0; transition: color 0.3s ease;
-        }
-
-        .cart-btn::after {
-            content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px;
-            background-color: var(--color-accent); transform: scaleX(0);
-            transform-origin: right; transition: transform 0.5s var(--ease-out-expo);
-        }
-
-        .cart-btn:hover::after { transform: scaleX(1); transform-origin: left; }
-
-        .cart-count {
-            position: absolute; top: -10px; right: -20px;
-            background-color: var(--color-accent); color: var(--color-white);
-            font-size: 0.65rem; font-weight: 700; width: 22px; height: 22px;
-            border-radius: 50%; display: flex; justify-content: center; align-items: center;
-            opacity: 0; transform: scale(0); transition: var(--transition-theme), transform 0.4s var(--ease-out-expo), opacity 0.4s ease;
-            box-shadow: 0 4px 10px rgba(194, 155, 69, 0.4);
-        }
-
+        .cart-btn { color: var(--color-text); font-family: var(--font-sans); font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; position: relative; padding: 0.5rem 0; transition: color 0.3s ease; }
+        .cart-btn::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background-color: var(--color-accent); transform: scaleX(0); transform-origin: right; transition: transform 0.5s var(--ease-out-expo); }
+        @media (pointer: fine) { .cart-btn:hover::after { transform: scaleX(1); transform-origin: left; } }
+        .cart-count { position: absolute; top: -10px; right: -20px; background-color: var(--color-accent); color: var(--color-white); font-size: 0.65rem; font-weight: 700; width: 22px; height: 22px; border-radius: 50%; display: flex; justify-content: center; align-items: center; opacity: 0; transform: scale(0); transition: var(--transition-theme), transform 0.4s var(--ease-out-expo), opacity 0.4s ease; box-shadow: 0 4px 10px rgba(194, 155, 69, 0.4); }
         .cart-count.active { opacity: 1; transform: scale(1); }
 
         /* ==========================================================================
            8. HERO SECTION
            ========================================================================== */
-        .hero {
-            height: 100vh; min-height: 700px; display: flex; flex-direction: column;
-            justify-content: center; align-items: center; text-align: center;
-            padding: 0 var(--container-padding); position: relative; z-index: 1;
-        }
-
-        .hero-subtitle {
-            font-family: var(--font-sans); font-size: 0.85rem; font-weight: 700;
-            text-transform: uppercase; letter-spacing: 6px; color: var(--color-accent);
-            margin-bottom: 2.5rem; opacity: 0;
-        }
-
-        .hero-title {
-            font-size: clamp(3.5rem, 8vw, 9.5rem); line-height: 1.05;
-            max-width: 1200px; margin-bottom: 3rem; letter-spacing: -0.02em;
-        }
-
+        .hero { height: 100vh; min-height: 600px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 0 var(--container-padding); position: relative; z-index: 1; }
+        .hero-subtitle { font-family: var(--font-sans); font-size: clamp(0.75rem, 2vw, 0.9rem); font-weight: 700; text-transform: uppercase; letter-spacing: 6px; color: var(--color-accent); margin-bottom: 2.5rem; opacity: 0; }
+        .hero-title { font-size: clamp(2.5rem, 8vw, 9.5rem); line-height: 1.05; max-width: 1200px; margin-bottom: 3rem; letter-spacing: -0.02em; }
         .hero-title em { font-style: italic; color: var(--color-accent); font-weight: 500; }
         .text-reveal { overflow: hidden; display: inline-block; vertical-align: top; }
         .text-reveal-inner { display: inline-block; transform: translateY(110%); transform-origin: top left; }
@@ -491,385 +287,245 @@
         /* ==========================================================================
            9. ABOUT SECTION
            ========================================================================== */
-        .about {
-            padding: var(--spacing-xxl) var(--container-padding);
-            background-color: var(--color-bg-alt); display: flex; justify-content: center;
-            align-items: center; min-height: 80vh; position: relative; z-index: 2;
-            backdrop-filter: blur(10px);
-        }
-
+        .about { padding: var(--spacing-xxl) var(--container-padding); background-color: var(--color-bg-alt); display: flex; justify-content: center; align-items: center; min-height: 70vh; position: relative; z-index: 2; backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); }
         .about-content { max-width: 900px; text-align: center; position: relative; }
-
-        .about-content::before {
-            content: '“'; position: absolute; top: -60px; left: 50%; transform: translateX(-50%);
-            font-family: var(--font-serif); font-size: 12rem; color: var(--color-accent);
-            opacity: 0.15; line-height: 1; z-index: -1; pointer-events: none;
-        }
-
-        .about-text {
-            font-family: var(--font-serif); font-size: clamp(1.8rem, 3.5vw, 3rem);
-            line-height: 1.5; color: var(--color-text); font-weight: 400;
-        }
+        .about-content::before { content: '“'; position: absolute; top: -40px; left: 50%; transform: translateX(-50%); font-family: var(--font-serif); font-size: clamp(6rem, 15vw, 12rem); color: var(--color-accent); opacity: 0.15; line-height: 1; z-index: -1; pointer-events: none; }
+        .about-text { font-family: var(--font-serif); font-size: clamp(1.5rem, 3.5vw, 3rem); line-height: 1.5; color: var(--color-text); font-weight: 400; }
 
         /* ==========================================================================
-           10. SHOP SECTION
+           10. SHOP SECTION & ADVANCED FILTERS
            ========================================================================== */
-        .shop {
-            padding: var(--spacing-xxl) var(--container-padding); position: relative;
-            z-index: 2; background-color: transparent; min-height: 100vh;
-        }
-
-        .shop-header {
-            display: flex; justify-content: space-between; align-items: flex-end;
-            margin-bottom: var(--spacing-lg); border-bottom: 1px solid var(--color-border);
-            padding-bottom: var(--spacing-md);
-        }
-
-        .shop-title { font-size: clamp(3rem, 6vw, 6rem); margin: 0; font-weight: 500; letter-spacing: -0.02em; }
-        .shop-filters { display: flex; gap: 2.5rem; }
-
-        .shop-filters button {
-            font-family: var(--font-sans); font-size: 0.9rem; font-weight: 600;
-            text-transform: uppercase; letter-spacing: 2px; color: var(--color-text-light);
-            position: relative; padding-bottom: 0.5rem; transition: color 0.4s ease;
-        }
-
-        .shop-filters button:hover, .shop-filters button.active { color: var(--color-text); }
-
-        .shop-filters button::after {
-            content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px;
-            background-color: var(--color-accent); transform: scaleX(0);
-            transition: transform 0.5s var(--ease-out-expo); transform-origin: right;
-        }
-
+        .shop { padding: var(--spacing-xxl) var(--container-padding); position: relative; z-index: 2; background-color: transparent; min-height: 100vh; }
+        
+        .shop-header { display: flex; flex-direction: column; margin-bottom: var(--spacing-lg); border-bottom: 1px solid var(--color-border); padding-bottom: var(--spacing-md); }
+        .shop-title { font-size: clamp(2.5rem, 6vw, 6rem); margin: 0 0 2rem 0; font-weight: 500; letter-spacing: -0.02em; }
+        
+        .shop-toolbar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 2rem; width: 100%; }
+        
+        .shop-filters { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+        .shop-filters button { font-family: var(--font-sans); font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; color: var(--color-text-light); position: relative; padding-bottom: 0.5rem; transition: color 0.4s ease; }
+        @media (pointer: fine) { .shop-filters button:hover, .shop-filters button.active { color: var(--color-text); } }
+        .shop-filters button.active { color: var(--color-text); }
+        .shop-filters button::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background-color: var(--color-accent); transform: scaleX(0); transition: transform 0.5s var(--ease-out-expo); transform-origin: right; }
         .shop-filters button.active::after { transform: scaleX(1); transform-origin: left; }
 
-        .products-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 5rem 3rem;
+        .shop-controls { display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; }
+        
+        /* Premium Input */
+        .shop-search {
+            background: transparent; border: none; border-bottom: 1px solid var(--color-border);
+            color: var(--color-text); font-family: var(--font-sans); font-size: 0.9rem; padding: 0.5rem 0;
+            width: 200px; transition: border-color 0.3s ease; outline: none;
+        }
+        .shop-search::placeholder { color: var(--color-text-light); }
+        .shop-search:focus { border-color: var(--color-accent); }
+        
+        /* Premium Select */
+        .shop-sort {
+            background: transparent; border: 1px solid var(--color-border); color: var(--color-text);
+            font-family: var(--font-sans); font-size: 0.8rem; font-weight: 600; text-transform: uppercase;
+            letter-spacing: 1px; padding: 0.6rem 1.2rem; border-radius: 30px; outline: none; cursor: pointer;
+            appearance: none; -webkit-appearance: none;
+            background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" fill="none" stroke="%237A7268" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><polyline points="6 9 12 15 18 9"></polyline></svg>');
+            background-repeat: no-repeat; background-position: right 1rem center; background-size: 1em;
+            padding-right: 2.5rem; transition: border-color 0.3s ease;
+        }
+        .shop-sort:focus { border-color: var(--color-accent); }
+        .shop-sort option { background: var(--color-bg); color: var(--color-text); }
+        html[data-theme="dark"] .shop-sort {
+            background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" fill="none" stroke="%239E9B96" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><polyline points="6 9 12 15 18 9"></polyline></svg>');
         }
 
-        .product-card {
-            position: relative; display: flex; flex-direction: column; width: 100%; opacity: 1; 
+        /* View Toggles */
+        .view-toggles { display: flex; gap: 0.5rem; }
+        .view-toggles button {
+            width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;
+            border: 1px solid transparent; border-radius: 50%; color: var(--color-text-light); transition: all 0.3s ease;
         }
+        .view-toggles button.active { color: var(--color-text); border-color: var(--color-border); }
+        .view-toggles button svg { width: 16px; height: 16px; fill: currentColor; }
 
+        /* Grid Layout */
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 4rem 2rem; transition: opacity 0.4s ease; }
+        .product-card { position: relative; display: flex; flex-direction: column; width: 100%; cursor: pointer; }
         .product-card-inner { perspective: 1500px; width: 100%; }
-
         .product-image-wrapper {
-            position: relative; width: 100%; padding-top: 135%; overflow: hidden;
-            background-color: var(--color-bg-alt); border-radius: var(--radius-sm);
-            margin-bottom: 2rem; transform-style: preserve-3d;
-            box-shadow: 0 20px 40px var(--color-shadow);
-            transition: box-shadow 0.6s ease, background-color 0.6s ease, transform 0.6s ease;
-            backdrop-filter: blur(5px);
-        }
-
-        .product-card:hover .product-image-wrapper { box-shadow: 0 35px 70px rgba(44, 40, 37, 0.15); }
-        
-        .product-image {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            object-fit: cover; transition: transform 1.2s var(--ease-out-expo), filter 1.2s ease;
-            transform: scale(1.02); will-change: transform;
-        }
-
-        .product-fallback {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            display: none; align-items: center; justify-content: center; text-align: center;
-            padding: 2rem; font-family: var(--font-serif); font-style: italic;
-            font-size: 1.2rem; color: var(--color-text-light); background: var(--color-bg-alt);
+            position: relative; width: 100%; padding-top: 135%; overflow: hidden; background-color: var(--color-bg-alt);
+            border-radius: var(--radius-sm); margin-bottom: 1.5rem; transform-style: preserve-3d;
+            box-shadow: 0 15px 35px var(--color-shadow); transition: box-shadow 0.6s ease, transform 0.6s ease; backdrop-filter: blur(5px);
         }
         
-        .product-overlay {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0) 60%);
-            display: flex; justify-content: center; align-items: flex-end;
-            padding-bottom: 2rem; opacity: 0; transition: opacity 0.6s var(--ease-out-expo);
-            pointer-events: none;
+        @media (pointer: fine) {
+            .product-card:hover .product-image-wrapper { box-shadow: 0 25px 50px rgba(44, 40, 37, 0.15); }
+            .product-card:hover .product-overlay { opacity: 1; }
+            .product-card:hover .product-image { transform: scale(1.08); filter: brightness(0.85); }
+            .product-card:hover .view-details-hint { transform: translateY(0); }
+            .product-card:hover .product-title { color: var(--color-accent); }
+            .quick-add-btn:hover { border-color: var(--color-accent); color: var(--color-white); }
+            .quick-add-btn:hover::before { transform: scale(1); }
         }
 
-        .product-card:hover .product-overlay { opacity: 1; }
-        .product-card:hover .product-image { transform: scale(1.08); filter: brightness(0.85); }
-
-        .view-details-hint {
-            color: #FFF; font-family: var(--font-sans); font-size: 0.8rem; font-weight: 700;
-            text-transform: uppercase; letter-spacing: 3px; transform: translateY(20px);
-            transition: transform 0.6s var(--ease-out-expo);
-        }
-
-        .product-card:hover .view-details-hint { transform: translateY(0); }
-        
-        .product-info { display: flex; flex-direction: column; gap: 0.8rem; }
+        .product-image { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s var(--ease-out-expo), filter 1.2s ease; transform: scale(1.02); will-change: transform; }
+        .product-fallback { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: none; align-items: center; justify-content: center; text-align: center; padding: 2rem; font-family: var(--font-serif); font-style: italic; font-size: 1.2rem; color: var(--color-text-light); background: var(--color-bg-alt); }
+        .product-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0) 60%); display: flex; justify-content: center; align-items: flex-end; padding-bottom: 2rem; opacity: 0; transition: opacity 0.6s var(--ease-out-expo); pointer-events: none; }
+        .view-details-hint { color: #FFF; font-family: var(--font-sans); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 3px; transform: translateY(20px); transition: transform 0.6s var(--ease-out-expo); }
+        .product-info { display: flex; flex-direction: column; gap: 0.6rem; }
         .product-meta { display: flex; justify-content: space-between; align-items: center; }
-
-        .product-category {
-            font-size: 0.75rem; font-weight: 600; text-transform: uppercase;
-            letter-spacing: 2px; color: var(--color-text-light);
-        }
-
-        .product-title {
-            font-size: 1.5rem; font-family: var(--font-serif); font-weight: 500;
-            margin: 0; line-height: 1.3; transition: color 0.3s ease;
-        }
-
-        .product-card:hover .product-title { color: var(--color-accent); }
+        .product-category { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; color: var(--color-text-light); }
+        .product-title { font-size: clamp(1.2rem, 3vw, 1.5rem); font-family: var(--font-serif); font-weight: 500; margin: 0; line-height: 1.3; transition: color 0.3s ease; }
         .product-bottom { display: flex; justify-content: space-between; align-items: center; margin-top: 0.5rem; }
         .product-price { font-size: 1.1rem; font-weight: 600; font-family: var(--font-sans); }
+        .quick-add-btn { border: 1px solid var(--color-border); width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: var(--color-text); transition: all 0.4s var(--ease-out-expo); position: relative; overflow: hidden; z-index: 2; background-color: var(--color-bg); }
+        .quick-add-btn::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--color-accent); transform: scale(0); border-radius: 50%; transition: transform 0.4s var(--ease-out-expo); z-index: -1; }
+        .quick-add-btn svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
-        .quick-add-btn {
-            border: 1px solid var(--color-border); width: 45px; height: 45px;
-            border-radius: 50%; display: flex; justify-content: center; align-items: center;
-            color: var(--color-text); transition: all 0.4s var(--ease-out-expo);
-            position: relative; overflow: hidden; z-index: 2;
-            background-color: var(--color-bg);
-        }
+        /* List View Modifier */
+        .products-grid.list-view { display: flex; flex-direction: column; gap: 3rem; }
+        .products-grid.list-view .product-card { flex-direction: row; align-items: center; gap: 3rem; }
+        .products-grid.list-view .product-card-inner { width: 250px; flex-shrink: 0; }
+        .products-grid.list-view .product-info { flex: 1; gap: 1rem; }
+        .products-grid.list-view .product-title { font-size: 2rem; }
 
-        .quick-add-btn::before {
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: var(--color-accent); transform: scale(0); border-radius: 50%;
-            transition: transform 0.4s var(--ease-out-expo); z-index: -1;
-        }
-
-        .quick-add-btn:hover { border-color: var(--color-accent); color: var(--color-white); }
-        .quick-add-btn:hover::before { transform: scale(1); }
-        .quick-add-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+        .no-results { grid-column: 1 / -1; text-align: center; padding: 4rem 0; font-family: var(--font-serif); font-size: 1.5rem; color: var(--color-text-light); font-style: italic; }
 
         /* ==========================================================================
            11. PARALLAX SECTION
            ========================================================================== */
-        .parallax-section {
-            height: 120vh; position: relative; overflow: hidden; display: flex;
-            justify-content: center; align-items: center; background-color: #0A0908; z-index: 1;
-        }
-
-        .parallax-bg {
-            position: absolute; top: -30%; left: 0; width: 100%; height: 160%;
-            background-color: #0A0908;
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.08" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23n)" opacity="0.06"/></svg>');
-            z-index: 1;
-        }
-
-        .parallax-content {
-            position: relative; z-index: 2; text-align: center; max-width: 900px;
-            padding: 0 var(--container-padding); color: #FFFFFF;
-        }
-
-        .parallax-content h2 { font-size: clamp(3rem, 7vw, 7.5rem); margin-bottom: 2rem; color: #FFFFFF; letter-spacing: -0.02em; }
-        .parallax-content p { font-size: clamp(1.2rem, 2vw, 1.8rem); color: rgba(255,255,255,0.7); font-family: var(--font-serif); font-style: italic; }
+        .parallax-section { height: 80vh; position: relative; overflow: hidden; display: flex; justify-content: center; align-items: center; background-color: #0A0908; z-index: 1; }
+        .parallax-bg { position: absolute; top: -30%; left: 0; width: 100%; height: 160%; background-color: #0A0908; background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.08" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23n)" opacity="0.06"/></svg>'); z-index: 1; }
+        .parallax-content { position: relative; z-index: 2; text-align: center; max-width: 900px; padding: 0 var(--container-padding); color: #FFFFFF; }
+        .parallax-content h2 { font-size: clamp(2.5rem, 7vw, 6rem); margin-bottom: 1.5rem; color: #FFFFFF; letter-spacing: -0.02em; }
+        .parallax-content p { font-size: clamp(1rem, 2vw, 1.5rem); color: rgba(255,255,255,0.7); font-family: var(--font-serif); font-style: italic; }
 
         /* ==========================================================================
            12. FOOTER
            ========================================================================== */
-        footer {
-            background-color: var(--color-bg-alt); padding: var(--spacing-xxl) var(--container-padding) var(--spacing-md);
-            position: relative; z-index: 2; border-top: 1px solid var(--color-border);
-            backdrop-filter: blur(10px);
-        }
-
-        .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 6rem; margin-bottom: var(--spacing-xl); }
-        .footer-brand h2 { font-size: 3rem; font-style: italic; margin-bottom: 1.5rem; letter-spacing: -0.02em; }
-        .footer-brand p { color: var(--color-text-light); max-width: 400px; font-size: 1.1rem; }
-        
-        .footer-links h4 {
-            font-family: var(--font-sans); font-size: 0.85rem; font-weight: 700;
-            text-transform: uppercase; letter-spacing: 3px; margin-bottom: 2rem;
-        }
-
+        footer { background-color: var(--color-bg-alt); padding: var(--spacing-xxl) var(--container-padding) var(--spacing-md); position: relative; z-index: 2; border-top: 1px solid var(--color-border); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+        .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 4rem; margin-bottom: var(--spacing-xl); }
+        .footer-brand h2 { font-size: clamp(2rem, 4vw, 3rem); font-style: italic; margin-bottom: 1.5rem; letter-spacing: -0.02em; }
+        .footer-brand p { color: var(--color-text-light); max-width: 400px; font-size: clamp(0.9rem, 2vw, 1.1rem); }
+        .footer-links h4 { font-family: var(--font-sans); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 2rem; }
         .footer-links ul { display: flex; flex-direction: column; gap: 1.2rem; }
         .footer-links a { color: var(--color-text-light); position: relative; display: inline-block; transition: color 0.3s ease; font-size: 1.05rem; }
-        .footer-links a:hover { color: var(--color-accent); }
-        
-        .footer-bottom {
-            display: flex; justify-content: space-between; align-items: center;
-            padding-top: var(--spacing-md); border-top: 1px solid var(--color-border);
-            font-size: 0.85rem; color: var(--color-text-light); font-weight: 500;
-        }
+        @media (pointer: fine) { .footer-links a:hover { color: var(--color-accent); } }
+        .footer-bottom { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; padding-top: var(--spacing-md); border-top: 1px solid var(--color-border); font-size: 0.85rem; color: var(--color-text-light); font-weight: 500; text-align: center; }
 
         /* ==========================================================================
            13. CART SIDEBAR
            ========================================================================== */
-        .cart-overlay {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background-color: rgba(0, 0, 0, 0.6); backdrop-filter: blur(8px);
-            z-index: 100001; opacity: 0; pointer-events: none; transition: opacity 0.5s ease;
-        }
-
+        .cart-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(0, 0, 0, 0.6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 100001; opacity: 0; pointer-events: none; transition: opacity 0.5s ease; }
         .cart-overlay.active { opacity: 1; pointer-events: auto; }
-        
-        .cart-sidebar {
-            position: fixed; top: 0; right: 0; width: 100%; max-width: 550px; height: 100vh;
-            background-color: var(--color-bg); z-index: 100002; transform: translateX(100%);
-            display: flex; flex-direction: column; box-shadow: -20px 0 50px var(--color-shadow);
-            transition: transform 0.6s var(--ease-out-expo), var(--transition-theme); will-change: transform;
-        }
-
+        .cart-sidebar { position: fixed; top: 0; right: 0; width: 100%; max-width: 500px; height: 100vh; height: 100dvh; background-color: var(--color-bg); z-index: 100002; transform: translateX(100%); display: flex; flex-direction: column; box-shadow: -20px 0 50px var(--color-shadow); transition: transform 0.6s var(--ease-out-expo), var(--transition-theme); will-change: transform; }
         .cart-sidebar.active { transform: translateX(0); }
-        
-        .cart-header {
-            padding: var(--spacing-md) var(--spacing-lg); border-bottom: 1px solid var(--color-border);
-            display: flex; justify-content: space-between; align-items: center; background-color: var(--color-bg-alt);
-        }
-
-        .cart-header h3 { margin: 0; font-size: 1.8rem; font-weight: 500; }
-        
-        .close-btn {
-            border: 1px solid var(--color-border); width: 45px; height: 45px; border-radius: 50%;
-            display: flex; justify-content: center; align-items: center; color: var(--color-text);
-            transition: all 0.4s var(--ease-out-expo); background: var(--color-bg);
-        }
-
-        .close-btn:hover { transform: rotate(90deg); background-color: var(--color-text); color: var(--color-bg); }
+        .cart-header { padding: var(--spacing-md) var(--spacing-lg); border-bottom: 1px solid var(--color-border); display: flex; justify-content: space-between; align-items: center; background-color: var(--color-bg-alt); }
+        .cart-header h3 { margin: 0; font-size: 1.5rem; font-weight: 500; }
+        .close-btn { border: 1px solid var(--color-border); width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: var(--color-text); transition: all 0.4s var(--ease-out-expo); background: var(--color-bg); cursor: pointer; }
+        @media (pointer: fine) { .close-btn:hover { transform: rotate(90deg); background-color: var(--color-text); color: var(--color-bg); } }
         .cart-items { flex-grow: 1; overflow-y: auto; padding: var(--spacing-lg); }
-        .cart-items::-webkit-scrollbar { width: 6px; }
+        .cart-items::-webkit-scrollbar { width: 4px; }
         .cart-items::-webkit-scrollbar-track { background: var(--color-bg); }
         .cart-items::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 10px; }
-        
-        .cart-empty { text-align: center; color: var(--color-text-light); margin-top: 4rem; font-style: italic; font-family: var(--font-serif); font-size: 1.2rem; }
-        
-        .cart-item { display: flex; gap: 1.5rem; margin-bottom: 2rem; padding-bottom: 2rem; border-bottom: 1px solid var(--color-border); }
-        .cart-item-img { width: 100px; height: 135px; object-fit: cover; border-radius: var(--radius-sm); box-shadow: 0 10px 20px rgba(0,0,0,0.08); background-color: var(--color-bg-alt); }
-        .cart-fallback-img { width: 100px; height: 135px; border-radius: var(--radius-sm); background: var(--color-bg-alt); display: flex; align-items: center; justify-content: center; text-align: center; font-size: 0.7rem; font-family: var(--font-serif); padding: 5px; color: var(--color-text-light); }
-        
+        .cart-empty { text-align: center; color: var(--color-text-light); margin-top: 4rem; font-style: italic; font-family: var(--font-serif); font-size: 1.1rem; }
+        .cart-item { display: flex; gap: 1.2rem; margin-bottom: 2rem; padding-bottom: 2rem; border-bottom: 1px solid var(--color-border); }
+        .cart-item-img { width: 80px; height: 110px; object-fit: cover; border-radius: var(--radius-sm); box-shadow: 0 10px 20px rgba(0,0,0,0.08); background-color: var(--color-bg-alt); }
+        .cart-fallback-img { width: 80px; height: 110px; border-radius: var(--radius-sm); background: var(--color-bg-alt); display: flex; align-items: center; justify-content: center; text-align: center; font-size: 0.6rem; font-family: var(--font-serif); padding: 5px; color: var(--color-text-light); }
         .cart-item-details { flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
-        .cart-item-title { font-family: var(--font-serif); font-size: 1.3rem; margin-bottom: 0.5rem; line-height: 1.2; }
-        .cart-item-price { color: var(--color-accent); font-weight: 600; font-size: 1.1rem; }
-        
-        .cart-item-actions { display: flex; justify-content: space-between; align-items: center; }
-        .qty-control { display: flex; align-items: center; gap: 15px; border: 1px solid var(--color-border); border-radius: 30px; padding: 5px 15px; font-weight: 600; }
-        .qty-btn { color: var(--color-text); font-size: 1.2rem; transition: color 0.3s ease; width: 20px; text-align: center; }
-        .qty-btn:hover { color: var(--color-accent); }
-        
-        .remove-item { color: var(--color-text-light); font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; transition: color 0.3s ease; }
-        .remove-item:hover { color: var(--color-error); }
-        
+        .cart-item-title { font-family: var(--font-serif); font-size: 1.1rem; margin-bottom: 0.5rem; line-height: 1.2; }
+        .cart-item-price { color: var(--color-accent); font-weight: 600; font-size: 1rem; }
+        .cart-item-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; }
+        .qty-control { display: flex; align-items: center; gap: 10px; border: 1px solid var(--color-border); border-radius: 30px; padding: 4px 12px; font-weight: 600; font-size: 0.9rem; }
+        .qty-btn { color: var(--color-text); font-size: 1.1rem; transition: color 0.3s ease; width: 20px; text-align: center; cursor: pointer;}
+        @media (pointer: fine) { .qty-btn:hover { color: var(--color-accent); } }
+        .remove-item { color: var(--color-text-light); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; transition: color 0.3s ease; cursor: pointer; }
+        @media (pointer: fine) { .remove-item:hover { color: var(--color-error); } }
         .cart-footer { padding: var(--spacing-lg); border-top: 1px solid var(--color-border); background-color: var(--color-bg-alt); }
-        .cart-total { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2rem; }
-        .cart-total span { font-size: 1rem; text-transform: uppercase; letter-spacing: 2px; color: var(--color-text-light); font-weight: 600; }
-        .cart-total strong { font-size: 2.5rem; font-family: var(--font-serif); font-weight: 500; line-height: 1; color: var(--color-text); }
-        
-        .checkout-btn {
-            width: 100%; padding: 1.5rem; background-color: var(--color-text); color: var(--color-bg);
-            border-radius: 50px; font-family: var(--font-sans); font-size: 1rem; font-weight: 700;
-            text-transform: uppercase; letter-spacing: 2px; transition: background-color 0.4s ease, transform 0.4s var(--ease-out-expo);
-            position: relative; overflow: hidden;
-        }
-
-        .checkout-btn::before {
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: var(--color-accent); transform: scaleX(0); transform-origin: right;
-            transition: transform 0.5s var(--ease-out-expo); z-index: 1;
-        }
-
-        .checkout-btn:hover::before { transform: scaleX(1); transform-origin: left; }
+        .cart-total { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 1.5rem; }
+        .cart-total span { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; color: var(--color-text-light); font-weight: 600; }
+        .cart-total strong { font-size: 2rem; font-family: var(--font-serif); font-weight: 500; line-height: 1; color: var(--color-text); }
+        .checkout-btn { width: 100%; padding: 1.2rem; background-color: var(--color-text); color: var(--color-bg); border-radius: 50px; font-family: var(--font-sans); font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; transition: background-color 0.4s ease, transform 0.4s var(--ease-out-expo); position: relative; overflow: hidden; cursor: pointer; }
+        .checkout-btn::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--color-accent); transform: scaleX(0); transform-origin: right; transition: transform 0.5s var(--ease-out-expo); z-index: 1; }
+        @media (pointer: fine) { .checkout-btn:hover::before { transform: scaleX(1); transform-origin: left; } }
         .checkout-btn span { position: relative; z-index: 2; }
 
         /* ==========================================================================
-           14. CREATIVE PRODUCT MODAL
+           14. CREATIVE PRODUCT MODAL (MOBILE SCROLL FIX)
            ========================================================================== */
-        .modal-wrapper {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            z-index: 100000; display: flex; justify-content: center; align-items: center;
-            pointer-events: none; visibility: hidden;
-        }
-
-        .modal-overlay {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: var(--color-bg); opacity: 0; will-change: opacity;
-        }
-
+        .modal-wrapper { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; height: 100dvh; z-index: 100000; display: flex; justify-content: center; align-items: center; pointer-events: none; visibility: hidden; padding: var(--container-padding); }
+        .modal-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--color-bg); opacity: 0; will-change: opacity; }
         #modal-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; opacity: 0; }
-        
-        .modal-container {
-            position: relative; width: 90vw; height: 85vh; max-width: 1600px;
-            background-color: var(--color-modal); border-radius: var(--radius-lg); z-index: 2;
-            overflow: hidden; display: flex; box-shadow: 0 40px 100px var(--color-shadow);
-            clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0 100%);
-            border: 1px solid var(--color-border);
-            backdrop-filter: blur(20px);
-        }
-
-        .modal-close { position: absolute; top: 2rem; right: 2rem; z-index: 10; }
-        .modal-layout { display: flex; width: 100%; height: 100%; }
-        
-        .modal-left {
-            flex: 1; position: relative; display: flex; justify-content: center; align-items: center;
-            background: linear-gradient(135deg, var(--color-bg-alt) 0%, rgba(194,155,69,0.05) 100%); padding: 4rem;
-        }
-
-        .modal-image-wrapper {
-            position: relative; width: 100%; max-width: 500px; aspect-ratio: 1 / 1.35;
-            perspective: 2000px; opacity: 0; transform: translateY(50px);
-        }
-
-        .modal-image {
-            width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius-sm);
-            box-shadow: -20px 30px 60px rgba(0,0,0,0.3); transition: transform 0.1s linear;
-            transform-style: preserve-3d; background-color: var(--color-bg-alt);
-        }
-
-        .modal-fallback {
-            width: 100%; height: 100%; border-radius: var(--radius-sm); background: var(--color-bg-alt); 
-            display: none; align-items: center; justify-content: center; text-align: center; 
-            font-size: 1.5rem; font-family: var(--font-serif); padding: 2rem; color: var(--color-text-light);
-            box-shadow: -20px 30px 60px rgba(0,0,0,0.3); transform-style: preserve-3d;
-        }
-
-        .modal-right {
-            flex: 1; padding: 6rem 5rem; display: flex; flex-direction: column;
-            justify-content: center; background-color: transparent; overflow-y: auto;
-        }
-
+        .modal-container { position: relative; width: 100%; max-width: 1200px; height: 85vh; background-color: var(--color-modal); border-radius: var(--radius-lg); z-index: 2; overflow: hidden; display: flex; box-shadow: 0 40px 100px var(--color-shadow); clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0 100%); border: 1px solid var(--color-border); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+        .modal-close { position: absolute; top: 1.5rem; right: 1.5rem; z-index: 10; }
+        .modal-layout { display: flex; width: 100%; height: 100%; flex-direction: row; }
+        .modal-left { flex: 1; position: relative; display: flex; justify-content: center; align-items: center; background: linear-gradient(135deg, var(--color-bg-alt) 0%, rgba(194,155,69,0.05) 100%); padding: 4rem; }
+        .modal-image-wrapper { position: relative; width: 100%; max-width: 400px; aspect-ratio: 1 / 1.35; perspective: 2000px; opacity: 0; transform: translateY(50px); }
+        .modal-image { width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius-sm); box-shadow: -20px 30px 60px rgba(0,0,0,0.3); transition: transform 0.1s linear; transform-style: preserve-3d; background-color: var(--color-bg-alt); }
+        .modal-fallback { width: 100%; height: 100%; border-radius: var(--radius-sm); background: var(--color-bg-alt); display: none; align-items: center; justify-content: center; text-align: center; font-size: 1.5rem; font-family: var(--font-serif); padding: 2rem; color: var(--color-text-light); box-shadow: -20px 30px 60px rgba(0,0,0,0.3); transform-style: preserve-3d; }
+        .modal-right { flex: 1; padding: 4rem 4rem; display: flex; flex-direction: column; justify-content: center; background-color: transparent; overflow-y: auto; }
         .modal-right::-webkit-scrollbar { width: 0; }
         .modal-content-inner { max-width: 600px; }
-        
-        .modal-meta {
-            font-family: var(--font-sans); font-size: 0.85rem; font-weight: 700;
-            text-transform: uppercase; letter-spacing: 4px; color: var(--color-accent); margin-bottom: 1.5rem;
-        }
-
-        .modal-title { font-size: clamp(2.5rem, 4vw, 4.5rem); line-height: 1.1; margin-bottom: 2.5rem; font-weight: 500; color: var(--color-text); }
-        .modal-desc { font-size: 1.2rem; line-height: 1.8; color: var(--color-text-light); margin-bottom: 3rem; font-weight: 300; }
-        
-        .modal-bottom {
-            display: flex; align-items: center; gap: 3rem; margin-top: auto;
-            padding-top: 3rem; border-top: 1px solid var(--color-border);
-        }
-
-        .modal-price { font-size: 2.5rem; font-family: var(--font-serif); font-weight: 500; color: var(--color-text); }
-        
-        .modal-add-btn {
-            background-color: var(--color-accent); color: var(--color-white); padding: 1.2rem 3rem;
-            border-radius: 50px; font-family: var(--font-sans); font-size: 0.95rem; font-weight: 700;
-            text-transform: uppercase; letter-spacing: 2px; transition: all 0.4s var(--ease-out-expo);
-            flex-grow: 1; text-align: center; box-shadow: 0 10px 30px rgba(194, 155, 69, 0.3);
-        }
-
-        .modal-add-btn:hover {
-            background-color: var(--color-text); color: var(--color-bg);
-            transform: translateY(-5px); box-shadow: 0 15px 40px var(--color-shadow);
-        }
-
+        .modal-meta { font-family: var(--font-sans); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 4px; color: var(--color-accent); margin-bottom: 1rem; }
+        .modal-title { font-size: clamp(2rem, 4vw, 3.5rem); line-height: 1.1; margin-bottom: 1.5rem; font-weight: 500; color: var(--color-text); }
+        .modal-desc { font-size: 1.1rem; line-height: 1.8; color: var(--color-text-light); margin-bottom: 2rem; font-weight: 300; }
+        .modal-bottom { display: flex; align-items: center; gap: 2rem; margin-top: auto; padding-top: 2rem; border-top: 1px solid var(--color-border); flex-wrap: wrap; }
+        .modal-price { font-size: 2rem; font-family: var(--font-serif); font-weight: 500; color: var(--color-text); }
+        .modal-add-btn { background-color: var(--color-accent); color: var(--color-white); padding: 1.2rem 2.5rem; border-radius: 50px; font-family: var(--font-sans); font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; transition: all 0.4s var(--ease-out-expo); flex-grow: 1; text-align: center; box-shadow: 0 10px 30px rgba(194, 155, 69, 0.3); cursor: pointer; }
+        @media (pointer: fine) { .modal-add-btn:hover { background-color: var(--color-text); color: var(--color-bg); transform: translateY(-5px); box-shadow: 0 15px 40px var(--color-shadow); } }
         .modal-anim-el { opacity: 0; transform: translateY(30px); }
 
         /* ==========================================================================
-           15. RESPONSIVE
+           15. FULL MOBILE RESPONSIVENESS & MOBILE MODAL SCROLL FIX
            ========================================================================== */
         @media (max-width: 1024px) {
-            .footer-top { grid-template-columns: 1fr 1fr; gap: 4rem; }
-            .modal-layout { flex-direction: column; }
-            .modal-left { padding: 2rem; flex: none; height: 40vh; }
-            .modal-image-wrapper { height: 100%; width: auto; }
-            .modal-right { padding: 3rem 2rem; flex: 1; }
+            .footer-top { grid-template-columns: 1fr 1fr; gap: 3rem; }
+            .modal-container { display: block; overflow-y: auto; height: 90vh; }
+            .modal-layout { display: flex; flex-direction: column; height: auto; min-height: 100%; }
+            .modal-left { padding: 3rem 2rem; flex: 0 0 auto; height: auto; min-height: 45vh; }
+            .modal-image-wrapper { height: 100%; width: 100%; max-width: 300px; margin: 0 auto; }
+            .modal-right { padding: 3rem 2rem; flex: 1 1 auto; overflow-y: visible; justify-content: flex-start; }
+            .modal-bottom { margin-top: 2rem; }
+            .products-grid.list-view .product-card { flex-direction: column; }
+            .products-grid.list-view .product-card-inner { width: 100%; max-width: 400px; margin: 0 auto; }
         }
 
         @media (max-width: 768px) {
-            :root { --container-padding: 8vw; --header-height: 80px; --spacing-xxl: 6rem; }
-            .footer-top { grid-template-columns: 1fr; gap: 3rem; }
-            .shop-header { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
-            .shop-filters { gap: 1.5rem; flex-wrap: wrap; }
+            :root { --container-padding: 6vw; --header-height: 80px; --spacing-xxl: 6rem; }
+            header.scrolled { height: 70px; }
+            .logo-img { max-height: 60px; }
+            header.scrolled .logo-img { max-height: 50px; }
+            .nav-actions { gap: 1rem; }
+            .theme-toggle-btn .text, .lang-toggle-btn .text { display: none; } 
+            .theme-toggle-btn .icon { width: 22px; height: 22px; }
+            .lang-toggle-btn { font-size: 1rem; font-weight: 700; }
+            .cart-btn { font-size: 0; padding: 0;} 
+            .cart-btn::before { content: ''; display: block; width: 24px; height: 24px; background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" fill="none" stroke="%232C2825" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>'); background-size: contain; background-repeat: no-repeat; }
+            html[data-theme="dark"] .cart-btn::before { background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" fill="none" stroke="%23F2EFEA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>'); }
+            .cart-btn::after { display: none; }
+            .cart-count { top: -8px; right: -8px; width: 18px; height: 18px; font-size: 0.55rem; }
+            .hero-title { font-size: clamp(2.5rem, 12vw, 4rem); }
+            .footer-top { grid-template-columns: 1fr; gap: 2.5rem; }
+            
+            /* Enhanced Mobile Shop Toolbar */
+            .shop-toolbar { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
+            .shop-controls { width: 100%; justify-content: space-between; }
+            .shop-search { width: 100%; flex: 1; min-width: 150px; }
+            .shop-sort { max-width: 160px; }
+            .view-toggles { display: none; } /* Usually grid is enough for mobile */
+
+            .products-grid { grid-template-columns: 1fr; gap: 3rem; }
             .cart-sidebar { max-width: 100%; }
-            .modal-container { width: 100vw; height: 100vh; border-radius: 0; border: none; }
-            .modal-close { top: 1rem; right: 1rem; width: 50px; height: 50px; }
-            .modal-bottom { flex-direction: column; align-items: stretch; gap: 1.5rem; }
+            
+            /* STRICT MOBILE SCROLL FIX FOR MODAL */
+            .modal-wrapper { padding: 0; }
+            .modal-container { 
+                width: 100vw; height: 100vh; height: 100dvh; border-radius: 0; border: none; 
+                display: block; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch;
+            }
+            .modal-close { top: 1rem; right: 1rem; width: 45px; height: 45px; background: var(--color-bg-alt); backdrop-filter: blur(10px); }
+            .modal-layout { display: block; height: auto; min-height: 100%; }
+            .modal-left { padding: 5rem 2rem 2rem; height: auto; min-height: 45vh; display: flex; }
+            .modal-right { padding: 2rem 2rem 4rem; height: auto; overflow-y: visible; }
+            .modal-bottom { flex-direction: column; align-items: stretch; gap: 1rem; }
+            .modal-price { text-align: center; }
         }
     </style>
 </head>
@@ -906,7 +562,7 @@
     <div id="canvas-container"></div>
 
     <header id="header">
-        <a href="#" class="logo hover-target" aria-label="Samuel for Children - Strona Główna">
+        <a href="#" class="logo hover-target" aria-label="Samuel for Children - Home">
             <img src="img/samuel-for-children.jpg" 
                  onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='block';" 
                  alt="Samuel for Children" 
@@ -915,12 +571,17 @@
         </a>
         
         <div class="nav-actions">
+            <button id="lang-toggle" class="lang-toggle-btn hover-target" aria-label="Change language">
+                <span class="text" id="lang-text">EN</span>
+            </button>
+            
             <button id="theme-toggle" class="theme-toggle-btn hover-target" aria-label="Zmień motyw">
                 <span class="icon"></span>
-                <span class="text">Ciemny</span>
+                <span class="text" data-i18n="theme_dark">Ciemny</span>
             </button>
+            
             <button class="cart-btn hover-target" id="open-cart" aria-label="Otwórz koszyk">
-                Koszyk
+                <span class="text" data-i18n="cart_btn">Koszyk</span>
                 <span class="cart-count" id="cart-count-badge">0</span>
             </button>
         </div>
@@ -929,7 +590,7 @@
     <div class="cart-overlay" id="cart-overlay"></div>
     <div class="cart-sidebar" id="cart-sidebar">
         <div class="cart-header">
-            <h3>Twój Koszyk</h3>
+            <h3 data-i18n="cart_title">Twój Koszyk</h3>
             <button class="close-btn hover-target" id="close-cart" aria-label="Zamknij koszyk">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -937,20 +598,20 @@
                 </svg>
             </button>
         </div>
-        <div class="cart-items" id="cart-items-container"></div>
+        <div class="cart-items" id="cart-items-container" data-lenis-prevent></div>
         <div class="cart-footer">
             <div class="cart-total">
-                <span>Razem:</span>
+                <span data-i18n="cart_total">Razem:</span>
                 <strong id="cart-total-price">0.00 zł</strong>
             </div>
-            <button class="checkout-btn hover-target"><span>Przejdź do kasy</span></button>
+            <button class="checkout-btn hover-target"><span data-i18n="cart_checkout">Przejdź do kasy</span></button>
         </div>
     </div>
 
     <div class="modal-wrapper" id="product-modal">
         <div class="modal-overlay" id="modal-overlay"></div>
         <canvas id="modal-canvas"></canvas>
-        <div class="modal-container" id="modal-container">
+        <div class="modal-container" id="modal-container" data-lenis-prevent>
             <button class="close-btn modal-close hover-target" id="close-modal" aria-label="Zamknij">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -971,7 +632,7 @@
                         <p class="modal-desc modal-anim-el" id="modal-desc"></p>
                         <div class="modal-bottom modal-anim-el">
                             <div class="modal-price" id="modal-price"></div>
-                            <button class="modal-add-btn hover-target" id="modal-add-btn">Dodaj do koszyka</button>
+                            <button class="modal-add-btn hover-target" id="modal-add-btn" data-i18n="add_to_cart">Dodaj do koszyka</button>
                         </div>
                     </div>
                 </div>
@@ -983,17 +644,17 @@
         <div id="smooth-content">
             
             <section class="hero">
-                <div class="hero-subtitle">Kolekcja Premium</div>
+                <div class="hero-subtitle" data-i18n="hero_sub">Kolekcja Premium</div>
                 <h1 class="hero-title">
-                    <span class="text-reveal"><span class="text-reveal-inner">Odkrywaj wiarę</span></span><br>
-                    <span class="text-reveal"><span class="text-reveal-inner">poprzez <em>najpiękniejsze</em></span></span><br>
-                    <span class="text-reveal"><span class="text-reveal-inner">opowieści.</span></span>
+                    <span class="text-reveal"><span class="text-reveal-inner" data-i18n="hero_t1">Odkrywaj wiarę</span></span><br>
+                    <span class="text-reveal"><span class="text-reveal-inner" data-i18n="hero_t2">poprzez <em>najpiękniejsze</em></span></span><br>
+                    <span class="text-reveal"><span class="text-reveal-inner" data-i18n="hero_t3">opowieści.</span></span>
                 </h1>
             </section>
 
             <section class="about">
                 <div class="about-content">
-                    <h2 class="about-text" id="about-text">
+                    <h2 class="about-text" id="about-text" data-i18n="about_text">
                         Wierzymy, że słowa mają moc kształtowania dusz. Nasze książki to nie tylko papier i atrament, to starannie zaprojektowane artefakty, które wprowadzają najmłodszych w świat duchowych wartości, ucząc miłości, empatii i prawdy poprzez sztukę najwyższej próby.
                     </h2>
                 </div>
@@ -1001,20 +662,40 @@
 
             <section class="shop" id="kolekcja">
                 <div class="shop-header">
-                    <h2 class="shop-title">Kolekcja.</h2>
-                    <div class="shop-filters">
-                        <button class="active hover-target" data-filter="all">Wszystko</button>
-                        <button class="hover-target" data-filter="ksiazki">Książki</button>
+                    <h2 class="shop-title" data-i18n="shop_title">Kolekcja.</h2>
+                    
+                    <div class="shop-toolbar">
+                        <div class="shop-filters">
+                            <button class="active hover-target" data-filter="all" data-i18n="filter_all">Wszystko</button>
+                            <button class="hover-target" data-filter="ksiazki" data-i18n="filter_books">Książki</button>
+                        </div>
+                        <div class="shop-controls">
+                            <input type="text" id="shop-search" class="shop-search hover-target" data-i18n-ph="search_ph" placeholder="Szukaj...">
+                            <select id="shop-sort" class="shop-sort hover-target">
+                                <option value="default" data-i18n="sort_default">Domyślnie</option>
+                                <option value="price-asc" data-i18n="sort_cheap">Od najtańszych</option>
+                                <option value="price-desc" data-i18n="sort_exp">Od najdroższych</option>
+                            </select>
+                            <div class="view-toggles">
+                                <button id="view-grid" class="active hover-target" aria-label="Widok siatki">
+                                    <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                                </button>
+                                <button id="view-list" class="hover-target" aria-label="Widok listy">
+                                    <svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
+                
                 <div class="products-grid" id="products-grid"></div>
             </section>
 
             <section class="parallax-section">
                 <div class="parallax-bg" id="parallax-bg"></div>
                 <div class="parallax-content">
-                    <h2 class="parallax-title">Sztuka i Duchowość</h2>
-                    <p>Każda ilustracja to modlitwa, każda strona to krok ku światłu.</p>
+                    <h2 class="parallax-title" data-i18n="parallax_title">Sztuka i Duchowość</h2>
+                    <p data-i18n="parallax_desc">Każda ilustracja to modlitwa, każda strona to krok ku światłu.</p>
                 </div>
             </section>
 
@@ -1027,27 +708,27 @@
                              class="footer-logo-img">
                         <h2 class="logo-text-fallback" style="display:none;">samuelforchildren.</h2>
                         
-                        <p>Tworzymy literaturę, która zostaje w sercu na całe życie. Projekt premium dla wymagających czytelników poszukujących piękna i głębi.</p>
+                        <p data-i18n="footer_desc">Tworzymy literaturę, która zostaje w sercu na całe życie. Projekt premium dla wymagających czytelników poszukujących piękna i głębi.</p>
                     </div>
                     <div class="footer-links">
-                        <h4>Eksploruj</h4>
+                        <h4 data-i18n="footer_explore">Eksploruj</h4>
                         <ul>
-                            <li><a href="#" class="hover-target">Kolekcja</a></li>
-                            <li><a href="#" class="hover-target">O wydawnictwie</a></li>
-                            <li><a href="#" class="hover-target">Dla szkół i parafii</a></li>
+                            <li><a href="#" class="hover-target" data-i18n="footer_l1">Kolekcja</a></li>
+                            <li><a href="#" class="hover-target" data-i18n="footer_l2">O wydawnictwie</a></li>
+                            <li><a href="#" class="hover-target" data-i18n="footer_l3">Dla szkół i parafii</a></li>
                         </ul>
                     </div>
                     <div class="footer-links">
-                        <h4>Pomoc & Kontakt</h4>
+                        <h4 data-i18n="footer_help">Pomoc & Kontakt</h4>
                         <ul>
                             <li><a href="#" class="hover-target">hello@samuelforchildren.pl</a></li>
-                            <li><a href="#" class="hover-target">Wysyłka i zwroty</a></li>
-                            <li><a href="#" class="hover-target">Regulamin sklepu</a></li>
+                            <li><a href="#" class="hover-target" data-i18n="footer_l4">Wysyłka i zwroty</a></li>
+                            <li><a href="#" class="hover-target" data-i18n="footer_l5">Regulamin sklepu</a></li>
                         </ul>
                     </div>
                 </div>
                 <div class="footer-bottom">
-                    <span>&copy; 2026 Samuel for Children. Wszystkie prawa zastrzeżone.</span>
+                    <span data-i18n="footer_copy">&copy; 2026 Samuel for Children. Wszystkie prawa zastrzeżone.</span>
                     <span>Zaprojektowane by Elite AI</span>
                 </div>
             </footer>
@@ -1058,82 +739,198 @@
     <script>
         /**
          * ==========================================================================
-         * 1. DATABASE
+         * 1. TRANSLATION DICTIONARY (I18N)
+         * ==========================================================================
+         */
+        const I18N = {
+            pl: {
+                theme_dark: "Ciemny",
+                theme_light: "Jasny",
+                lang_toggle: "EN",
+                cart_btn: "Koszyk",
+                cart_title: "Twój Koszyk",
+                cart_total: "Razem:",
+                cart_checkout: "Przejdź do kasy",
+                cart_empty: "Twój koszyk jest pusty.<br>Odkryj naszą kolekcję.",
+                add_to_cart: "Dodaj do koszyka",
+                added: "Dodano pomyślnie!",
+                remove: "Usuń",
+                view_details: "ZOBACZ SZCZEGÓŁY",
+                hero_sub: "Kolekcja Premium",
+                hero_t1: "Odkrywaj wiarę",
+                hero_t2: "poprzez <em>najpiękniejsze</em>",
+                hero_t3: "opowieści.",
+                about_text: "Wierzymy, że słowa mają moc kształtowania dusz. Nasze książki to nie tylko papier i atrament, to starannie zaprojektowane artefakty, które wprowadzają najmłodszych w świat duchowych wartości, ucząc miłości, empatii i prawdy poprzez sztukę najwyższej próby.",
+                shop_title: "Kolekcja.",
+                filter_all: "Wszystko",
+                filter_books: "Książki",
+                search_ph: "Szukaj...",
+                sort_default: "Domyślnie",
+                sort_cheap: "Od najtańszych",
+                sort_exp: "Od najdroższych",
+                no_results: "Brak produktów spełniających kryteria.",
+                parallax_title: "Sztuka i Duchowość",
+                parallax_desc: "Każda ilustracja to modlitwa, każda strona to krok ku światłu.",
+                footer_desc: "Tworzymy literaturę, która zostaje w sercu na całe życie. Projekt premium dla wymagających czytelników poszukujących piękna i głębi.",
+                footer_explore: "Eksploruj",
+                footer_help: "Pomoc & Kontakt",
+                footer_l1: "Kolekcja",
+                footer_l2: "O wydawnictwie",
+                footer_l3: "Dla szkół i parafii",
+                footer_l4: "Wysyłka i zwroty",
+                footer_l5: "Regulamin sklepu",
+                footer_copy: "&copy; 2026 Samuel for Children. Wszystkie prawa zastrzeżone."
+            },
+            en: {
+                theme_dark: "Dark",
+                theme_light: "Light",
+                lang_toggle: "PL",
+                cart_btn: "Cart",
+                cart_title: "Your Cart",
+                cart_total: "Total:",
+                cart_checkout: "Checkout",
+                cart_empty: "Your cart is empty.<br>Discover our collection.",
+                add_to_cart: "Add to cart",
+                added: "Added successfully!",
+                remove: "Remove",
+                view_details: "VIEW DETAILS",
+                hero_sub: "Premium Collection",
+                hero_t1: "Discover faith",
+                hero_t2: "through the <em>most beautiful</em>",
+                hero_t3: "stories.",
+                about_text: "We believe that words have the power to shape souls. Our books are not just paper and ink; they are carefully designed artifacts that introduce the youngest to the world of spiritual values, teaching love, empathy, and truth through the highest quality of art.",
+                shop_title: "Collection.",
+                filter_all: "All",
+                filter_books: "Books",
+                search_ph: "Search...",
+                sort_default: "Default",
+                sort_cheap: "Price: Low to High",
+                sort_exp: "Price: High to Low",
+                no_results: "No products match your criteria.",
+                parallax_title: "Art & Spirituality",
+                parallax_desc: "Every illustration is a prayer, every page a step towards the light.",
+                footer_desc: "We create literature that stays in the heart for a lifetime. A premium project for demanding readers seeking beauty and depth.",
+                footer_explore: "Explore",
+                footer_help: "Help & Contact",
+                footer_l1: "Collection",
+                footer_l2: "About Publisher",
+                footer_l3: "For Schools & Parishes",
+                footer_l4: "Shipping & Returns",
+                footer_l5: "Terms of Service",
+                footer_copy: "&copy; 2026 Samuel for Children. All rights reserved."
+            }
+        };
+
+        const ProductsTranslations = {
+            'p1': {
+                en: { title: "St. Francis of Assisi", desc: "Immerse yourself in the poetic tale of the Poor Man of Assisi. The book takes young readers on an extraordinary journey through medieval Italy, teaching love for all creation and simplicity of heart. Beautiful, hand-painted illustrations stimulate the imagination, making this position a true work of publishing art.", category: "books" },
+                pl: { title: "Św. Franciszek z Asyżu", desc: "Zanurz się w poetycką opowieść o Biedaczynie z Asyżu. Książka zabiera młodych czytelników w niezwykłą podróż po średniowiecznej Italii, ucząc miłości do wszelkiego stworzenia i prostoty serca. Przepiękne, ręcznie malowane ilustracje pobudzają wyobraźnię i kształtują wrażliwość estetyczną dzieci, czyniąc z tej pozycji prawdziwe dzieło sztuki wydawniczej.", category: "książki" }
+            },
+            'p2': {
+                en: { title: "Diary of Bl. Michał Czartoryski", desc: "An extraordinary, recovered diary showing the fate of an outstanding Dominican and martyr of the Warsaw Uprising. A story of incredible courage, loyalty to one's beliefs, and unwavering hope, presented in a form accessible to young audiences.", category: "books" },
+                pl: { title: "Pamiętnik bł. Michała Czartoryskiego", desc: "Niezwykły, odnaleziony pamiętnik ukazujący losy wybitnego dominikanina i męczennika Powstania Warszawskiego. Historia niesłychanej odwagi, wierności swoim przekonaniom i niezłomnej nadziei, podana w formie przystępnej dla młodego odbiorcy.", category: "książki" }
+            },
+            'p3': {
+                en: { title: "Miss Hanna", desc: "A touching and deeply moving story about the strength of character, determination, and discovering one's own path in the light of Christian values. 'Miss Hanna' is a tender guide through the world of difficult emotions. Premium edition in an exclusive form.", category: "books" },
+                pl: { title: "Panna Hanna", desc: "Wzruszająca i głęboko poruszająca opowieść o sile charakteru, determinacji i odkrywaniu własnej drogi w świetle chrześcijańskich wartości. 'Panna Hanna' to nie tylko książka, to czuły przewodnik po świecie trudnych emocji. Wydanie premium w ekskluzywnej, kolekcjonerskiej formie.", category: "książki" }
+            }
+        };
+
+        /**
+         * ==========================================================================
+         * 2. DATABASE
          * ==========================================================================
          */
         const productsDB = [
-            { 
-                id: 'p1', 
-                title: "Św. Franciszek z Asyżu", 
-                price: 45.00, 
-                img: "img/franciszek.jpg", 
-                category: "ksiazki",
-                desc: "Zanurz się w poetycką opowieść o Biedaczynie z Asyżu. Książka zabiera młodych czytelników w niezwykłą podróż po średniowiecznej Italii, ucząc miłości do wszelkiego stworzenia i prostoty serca. Przepiękne, ręcznie malowane ilustracje pobudzają wyobraźnię i kształtują wrażliwość estetyczną dzieci, czyniąc z tej pozycji prawdziwe dzieło sztuki wydawniczej."
-            },
-            { 
-                id: 'p2', 
-                title: "Pamiętnik bł. Michała Czartoryskiego", 
-                price: 50.00, 
-                img: "img/opowiem-ci-o-sobie.jpg", 
-                category: "ksiazki",
-                desc: "Niezwykły, odnaleziony pamiętnik ukazujący losy wybitnego dominikanina i męczennika Powstania Warszawskiego. Historia niesłychanej odwagi, wierności swoim przekonaniom i niezłomnej nadziei, podana w formie przystępnej dla młodego odbiorcy. Unikalna szata graficzna łączy archiwalne inspiracje z nowoczesnym, minimalistycznym designem."
-            },
-            { 
-                id: 'p3', 
-                title: "Panna Hanna", 
-                price: 50.00, 
-                img: "img/o-pannie-hannie.jpg", 
-                category: "ksiazki",
-                desc: "Wzruszająca i głęboko poruszająca opowieść o sile charakteru, determinacji i odkrywaniu własnej drogi w świetle chrześcijańskich wartości. 'Panna Hanna' to nie tylko książka, to czuły przewodnik po świecie trudnych emocji. Wydanie premium w ekskluzywnej, kolekcjonerskiej formie, uszlachetnione tłoczeniami i złoceniami na płóciennej oprawie."
-            }
+            { id: 'p1', title: "Św. Franciszek z Asyżu", price: 45.00, img: "img/franciszek.jpg", category: "ksiazki" },
+            { id: 'p2', title: "Pamiętnik bł. Michała Czartoryskiego", price: 50.00, img: "img/opowiem-ci-o-sobie.jpg", category: "ksiazki" },
+            { id: 'p3', title: "Panna Hanna", price: 50.00, img: "img/o-pannie-hannie.jpg", category: "ksiazki" }
         ];
 
         /**
          * ==========================================================================
-         * 2. UTILS & STATE
+         * 3. UTILS & STATE
          * ==========================================================================
          */
         const AppState = {
             cart: JSON.parse(localStorage.getItem('sfc_cart')) || [],
-            lenis: null
+            lang: localStorage.getItem('sfc_lang') || 'pl',
+            lenis: null,
+            isTouch: window.matchMedia("(pointer: coarse)").matches
         };
 
         const formatPrice = (price) => {
-            return `${price.toFixed(2)} zł`;
+            return AppState.lang === 'en' ? `PLN ${price.toFixed(2)}` : `${price.toFixed(2)} zł`;
         };
+
+        const getI18n = (key) => I18N[AppState.lang][key] || key;
 
         const showToast = (msg) => {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
-            
-            toast.className = 'toast';
-            toast.innerText = msg;
-            
+            toast.className = 'toast'; toast.innerText = msg;
             container.appendChild(toast);
             
-            gsap.to(toast, { 
-                y: 0, 
-                opacity: 1, 
-                duration: 0.4, 
-                ease: "back.out(1.5)" 
-            });
-            
-            setTimeout(() => {
-                gsap.to(toast, { 
-                    y: -20, 
-                    opacity: 0, 
-                    duration: 0.4, 
-                    ease: "power2.in", 
-                    onComplete: () => {
-                        toast.remove();
-                    } 
-                });
-            }, 3000);
+            gsap.to(toast, { y: 0, opacity: 1, duration: 0.4, ease: "back.out(1.5)" });
+            setTimeout(() => gsap.to(toast, { y: -20, opacity: 0, duration: 0.4, ease: "power2.in", onComplete: () => toast.remove() }), 3000);
         };
 
         /**
          * ==========================================================================
-         * 3. THEME CONTROLLER
+         * 4. LANGUAGE CONTROLLER
+         * ==========================================================================
+         */
+        class LangController {
+            constructor() {
+                this.btn = document.getElementById('lang-toggle');
+                this.text = document.getElementById('lang-text');
+                this.init();
+            }
+            init() {
+                this.applyLang(AppState.lang, false);
+                this.btn.addEventListener('click', () => {
+                    const newLang = AppState.lang === 'pl' ? 'en' : 'pl';
+                    this.applyLang(newLang, true);
+                });
+            }
+            applyLang(lang, animate) {
+                AppState.lang = lang;
+                localStorage.setItem('sfc_lang', lang);
+                this.text.textContent = getI18n('lang_toggle');
+
+                const updateDOM = () => {
+                    document.querySelectorAll('[data-i18n]').forEach(el => {
+                        const key = el.getAttribute('data-i18n');
+                        if (I18N[lang][key]) el.innerHTML = I18N[lang][key];
+                    });
+                    
+                    document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+                        const key = el.getAttribute('data-i18n-ph');
+                        if (I18N[lang][key]) el.placeholder = I18N[lang][key];
+                    });
+                    
+                    if (window.CartSys) window.CartSys.render();
+                    if (window.ShopRenderer) window.ShopRenderer.updateView(false); // Re-render shop silently
+                    
+                    const themeBtnText = document.querySelector('.theme-toggle-btn .text');
+                    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+                    if (themeBtnText) themeBtnText.textContent = isDark ? getI18n('theme_light') : getI18n('theme_dark');
+                };
+
+                if (animate) {
+                    gsap.to('main', { opacity: 0, duration: 0.3, onComplete: () => {
+                        updateDOM();
+                        gsap.to('main', { opacity: 1, duration: 0.4 });
+                    }});
+                } else {
+                    updateDOM();
+                }
+            }
+        }
+
+        /**
+         * ==========================================================================
+         * 5. THEME CONTROLLER
          * ==========================================================================
          */
         class ThemeController {
@@ -1142,95 +939,67 @@
                 this.text = this.btn.querySelector('.text');
                 this.init();
             }
-            
             init() {
                 const savedTheme = localStorage.getItem('sfc_theme') || 'light';
                 this.applyTheme(savedTheme);
-                
                 this.btn.addEventListener('click', () => {
                     const currentTheme = document.documentElement.getAttribute('data-theme');
                     this.applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
                 });
             }
-            
             applyTheme(theme) {
                 document.documentElement.setAttribute('data-theme', theme);
                 localStorage.setItem('sfc_theme', theme);
-                
-                this.text.textContent = theme === 'dark' ? 'Jasny' : 'Ciemny';
-                
-                window.dispatchEvent(new CustomEvent('themeChanged', { 
-                    detail: { theme } 
-                }));
+                this.text.textContent = theme === 'dark' ? getI18n('theme_light') : getI18n('theme_dark');
+                window.dispatchEvent(new CustomEvent('themeChanged', { detail: { theme } }));
             }
         }
 
         /**
          * ==========================================================================
-         * 4. CURSOR CONTROLLER
+         * 6. CURSOR CONTROLLER
          * ==========================================================================
          */
         class CursorController {
             constructor() {
+                if (AppState.isTouch) return;
                 this.dot = document.getElementById('cursor-dot');
                 this.outline = document.getElementById('cursor-outline');
                 this.pos = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
                 this.mouse = { x: this.pos.x, y: this.pos.y };
                 this.init();
             }
-            
             init() {
                 gsap.set(this.dot, { xPercent: -50, yPercent: -50 });
                 gsap.set(this.outline, { xPercent: -50, yPercent: -50 });
 
                 window.addEventListener('mousemove', (e) => {
-                    this.mouse.x = e.clientX;
-                    this.mouse.y = e.clientY;
-                    
-                    gsap.to(this.dot, { 
-                        x: this.mouse.x, 
-                        y: this.mouse.y, 
-                        duration: 0 
-                    });
+                    this.mouse.x = e.clientX; this.mouse.y = e.clientY;
+                    gsap.to(this.dot, { x: this.mouse.x, y: this.mouse.y, duration: 0 });
                 });
                 
                 gsap.ticker.add(() => {
                     const dt = 1.0 - Math.pow(0.8, gsap.ticker.deltaRatio());
-                    
                     this.pos.x += (this.mouse.x - this.pos.x) * 0.2;
                     this.pos.y += (this.mouse.y - this.pos.y) * 0.2;
-                    
-                    gsap.set(this.outline, { 
-                        x: this.pos.x, 
-                        y: this.pos.y 
-                    });
+                    gsap.set(this.outline, { x: this.pos.x, y: this.pos.y });
                 });
                 
-                this.bind();
-            }
-            
-            bind() {
-                const targets = document.querySelectorAll('.hover-target, a, button, .product-card');
-                
-                targets.forEach(t => {
-                    t.addEventListener('mouseenter', () => {
-                        document.body.classList.add('cursor-hover');
-                    });
-                    
-                    t.addEventListener('mouseleave', () => {
-                        document.body.classList.remove('cursor-hover');
-                    });
+                document.addEventListener('mouseover', (e) => {
+                    if (e.target.closest('.hover-target, a, button, .product-card, .cart-item')) document.body.classList.add('cursor-hover');
                 });
+                document.addEventListener('mouseout', (e) => {
+                    if (e.target.closest('.hover-target, a, button, .product-card, .cart-item')) document.body.classList.remove('cursor-hover');
+                });
+                document.addEventListener('mousedown', () => gsap.to(this.outline, { scale: 0.8, duration: 0.2 }));
+                document.addEventListener('mouseup', () => gsap.to(this.outline, { scale: 1, duration: 0.2 }));
             }
-            
-            refresh() { 
-                this.bind(); 
-            }
+            refresh() {}
         }
 
         /**
          * ==========================================================================
-         * 5. WEBGL BACKGROUND
+         * 7. WEBGL BACKGROUND
          * ==========================================================================
          */
         class WebGLBackground {
@@ -1239,52 +1008,37 @@
                 this.scene = new THREE.Scene();
                 this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
                 this.renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-                
-                this.particlesCount = 800;
-                this.mouseX = 0; 
-                this.mouseY = 0; 
-                this.scrollY = 0;
-                
+                this.particlesCount = AppState.isTouch ? 300 : 800;
+                this.mouseX = 0; this.mouseY = 0; this.scrollY = 0;
                 this.clock = new THREE.Clock();
                 this.init();
             }
-            
             init() {
                 this.camera.position.z = 30;
-                
                 this.renderer.setSize(window.innerWidth, window.innerHeight);
                 this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
                 this.container.appendChild(this.renderer.domElement);
 
                 const geo = new THREE.BufferGeometry();
                 const pos = new Float32Array(this.particlesCount * 3);
-                
                 for(let i = 0; i < this.particlesCount * 3; i += 3) {
                     pos[i] = (Math.random() - 0.5) * 120;
                     pos[i+1] = (Math.random() - 0.5) * 120;
                     pos[i+2] = (Math.random() - 0.5) * 60;
                 }
-                
                 geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
 
-                const initialTheme = document.documentElement.getAttribute('data-theme') || 'light';
-                const color = initialTheme === 'dark' ? 0xC29B45 : 0xA38032;
-                
-                this.mat = new THREE.PointsMaterial({ 
-                    size: 0.15, 
-                    color: color, 
-                    transparent: true, 
-                    opacity: 0.4, 
-                    blending: THREE.AdditiveBlending 
-                });
-                
+                const color = document.documentElement.getAttribute('data-theme') === 'dark' ? 0xC29B45 : 0xA38032;
+                this.mat = new THREE.PointsMaterial({ size: 0.15, color: color, transparent: true, opacity: 0.4, blending: THREE.AdditiveBlending });
                 this.mesh = new THREE.Points(geo, this.mat);
                 this.scene.add(this.mesh);
 
-                document.addEventListener('mousemove', e => {
-                    this.mouseX = e.clientX / window.innerWidth - 0.5;
-                    this.mouseY = e.clientY / window.innerHeight - 0.5;
-                });
+                if (!AppState.isTouch) {
+                    document.addEventListener('mousemove', e => {
+                        this.mouseX = e.clientX / window.innerWidth - 0.5;
+                        this.mouseY = e.clientY / window.innerHeight - 0.5;
+                    });
+                }
                 
                 window.addEventListener('resize', () => {
                     this.camera.aspect = window.innerWidth / window.innerHeight;
@@ -1294,38 +1048,26 @@
                 
                 window.addEventListener('themeChanged', e => {
                     const c = e.detail.theme === 'dark' ? 0xC29B45 : 0xA38032;
-                    gsap.to(this.mat.color, { 
-                        r: new THREE.Color(c).r, 
-                        g: new THREE.Color(c).g, 
-                        b: new THREE.Color(c).b, 
-                        duration: 1 
-                    });
+                    gsap.to(this.mat.color, { r: new THREE.Color(c).r, g: new THREE.Color(c).g, b: new THREE.Color(c).b, duration: 1 });
                 });
                 
                 this.animate();
             }
-            
-            setScroll(y) { 
-                this.scrollY = y; 
-            }
-            
+            setScroll(y) { this.scrollY = y; }
             animate() {
                 requestAnimationFrame(() => this.animate());
-                
                 const time = this.clock.getElapsedTime();
-                
                 this.mesh.rotation.y += (this.mouseX * 0.5 - this.mesh.rotation.y) * 0.05;
                 this.mesh.rotation.x += (-this.mouseY * 0.5 - this.mesh.rotation.x) * 0.05;
                 this.mesh.position.y = this.scrollY * 0.015;
                 this.mesh.rotation.z = Math.sin(time * 0.1) * 0.05;
-                
                 this.renderer.render(this.scene, this.camera);
             }
         }
 
         /**
          * ==========================================================================
-         * 6. CREATIVE MODAL CONTROLLER
+         * 8. CREATIVE MODAL CONTROLLER
          * ==========================================================================
          */
         class ModalController {
@@ -1336,220 +1078,96 @@
                 this.imgWrap = document.getElementById('modal-img-wrapper');
                 this.img = document.getElementById('modal-img');
                 this.fallback = document.getElementById('modal-fallback');
-                
-                this.isOpen = false;
-                this.currId = null;
+                this.isOpen = false; this.currId = null;
                 
                 this.initCanvas();
                 this.bind();
             }
-            
             initCanvas() {
                 const cvs = document.getElementById('modal-canvas');
                 const ctx = cvs.getContext('2d');
-                let pts = [];
-                let w, h;
-                
-                const rs = () => { 
-                    w = cvs.width = window.innerWidth; 
-                    h = cvs.height = window.innerHeight; 
-                };
-                
-                window.addEventListener('resize', rs); 
-                rs();
+                let pts = [], w, h;
+                const rs = () => { w = cvs.width = window.innerWidth; h = cvs.height = window.innerHeight; };
+                window.addEventListener('resize', rs); rs();
                 
                 class Pt {
-                    constructor() { 
-                        this.x = Math.random() * w; 
-                        this.y = Math.random() * h; 
-                        this.s = Math.random() * 2 + 0.5; 
-                        this.sy = Math.random() * -1 - 0.5; 
-                        this.a = Math.random() * 0.5 + 0.1; 
-                    }
-                    
-                    update() { 
-                        this.y += this.sy; 
-                        if (this.y < 0) {
-                            this.y = h;
-                            this.x = Math.random() * w;
-                        } 
-                    }
-                    
+                    constructor() { this.x = Math.random() * w; this.y = Math.random() * h; this.s = Math.random() * 2 + 0.5; this.sy = Math.random() * -1 - 0.5; this.a = Math.random() * 0.5 + 0.1; }
+                    update() { this.y += this.sy; if (this.y < 0) { this.y = h; this.x = Math.random() * w; } }
                     draw() { 
                         const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
                         ctx.fillStyle = isDark ? `rgba(194, 155, 69,${this.a})` : `rgba(163, 128, 50,${this.a})`; 
-                        ctx.beginPath(); 
-                        ctx.arc(this.x, this.y, this.s, 0, Math.PI * 2); 
-                        ctx.fill(); 
+                        ctx.beginPath(); ctx.arc(this.x, this.y, this.s, 0, Math.PI * 2); ctx.fill(); 
                     }
                 }
-                
-                for(let i = 0; i < 80; i++) {
-                    pts.push(new Pt());
-                }
+                const cnt = AppState.isTouch ? 30 : 80;
+                for(let i = 0; i < cnt; i++) pts.push(new Pt());
                 
                 const loop = () => {
-                    if (this.isOpen) { 
-                        ctx.clearRect(0, 0, w, h); 
-                        pts.forEach(p => {
-                            p.update();
-                            p.draw();
-                        }); 
-                    }
+                    if (this.isOpen) { ctx.clearRect(0, 0, w, h); pts.forEach(p => { p.update(); p.draw(); }); }
                     requestAnimationFrame(loop);
-                }; 
-                
-                loop();
+                }; loop();
             }
-            
             bind() {
-                document.getElementById('close-modal').addEventListener('click', () => {
-                    this.close();
-                });
-                
-                this.ovl.addEventListener('click', () => {
-                    this.close();
-                });
-                
+                document.getElementById('close-modal').addEventListener('click', () => this.close());
+                this.ovl.addEventListener('click', () => this.close());
                 document.getElementById('modal-add-btn').addEventListener('click', () => {
-                    if (this.currId) {
-                        window.CartSys.add(this.currId);
-                    }
+                    if (this.currId) window.CartSys.add(this.currId);
                 });
                 
-                this.imgWrap.addEventListener('mousemove', e => {
-                    const r = this.imgWrap.getBoundingClientRect();
-                    const rx = ((e.clientY - r.top - r.height / 2) / (r.height / 2)) * -15;
-                    const ry = ((e.clientX - r.left - r.width / 2) / (r.width / 2)) * 15;
-                    
-                    gsap.to([this.img, this.fallback], { 
-                        rotationX: rx, 
-                        rotationY: ry, 
-                        duration: 0.5, 
-                        ease: "power2.out" 
+                if (!AppState.isTouch) {
+                    this.imgWrap.addEventListener('mousemove', e => {
+                        const r = this.imgWrap.getBoundingClientRect();
+                        const rx = ((e.clientY - r.top - r.height / 2) / (r.height / 2)) * -15;
+                        const ry = ((e.clientX - r.left - r.width / 2) / (r.width / 2)) * 15;
+                        gsap.to([this.img, this.fallback], { rotationX: rx, rotationY: ry, duration: 0.5, ease: "power2.out" });
                     });
-                });
-                
-                this.imgWrap.addEventListener('mouseleave', () => {
-                    gsap.to([this.img, this.fallback], { 
-                        rotationX: 0, 
-                        rotationY: 0, 
-                        duration: 1, 
-                        ease: "elastic.out(1,0.3)" 
+                    this.imgWrap.addEventListener('mouseleave', () => {
+                        gsap.to([this.img, this.fallback], { rotationX: 0, rotationY: 0, duration: 1, ease: "elastic.out(1,0.3)" });
                     });
-                });
-            }
-            
-            open(id) {
-                const p = productsDB.find(x => x.id === id);
-                if (!p) return;
-                
-                this.currId = id; 
-                this.isOpen = true;
-                
-                if (AppState.lenis) {
-                    AppState.lenis.stop();
                 }
-
-                document.getElementById('modal-title').textContent = p.title;
-                document.getElementById('modal-desc').textContent = p.desc;
-                document.getElementById('modal-price').textContent = formatPrice(p.price);
-                document.getElementById('modal-category').textContent = p.category;
+            }
+            open(id) {
+                const baseP = productsDB.find(x => x.id === id);
+                if (!baseP) return;
+                const pInfo = ProductsTranslations[id][AppState.lang];
                 
-                this.img.style.display = 'block';
-                this.fallback.style.display = 'none';
-                this.fallback.textContent = p.title;
-                this.img.src = p.img;
+                this.currId = id; this.isOpen = true;
+                if (AppState.lenis) AppState.lenis.stop();
 
-                this.wrap.style.visibility = 'visible';
-                this.wrap.style.pointerEvents = 'auto';
+                document.getElementById('modal-title').textContent = pInfo.title;
+                document.getElementById('modal-desc').textContent = pInfo.desc;
+                document.getElementById('modal-price').textContent = formatPrice(baseP.price);
+                document.getElementById('modal-category').textContent = pInfo.category;
+                
+                this.img.style.display = 'block'; this.fallback.style.display = 'none';
+                this.fallback.textContent = pInfo.title; this.img.src = baseP.img;
+
+                this.wrap.style.visibility = 'visible'; this.wrap.style.pointerEvents = 'auto';
 
                 const tl = gsap.timeline();
-                
-                tl.to(this.ovl, { 
-                    opacity: 1, 
-                    duration: 0.5, 
-                    ease: 'power2.out' 
-                })
-                .to('#modal-canvas', { 
-                    opacity: 1, 
-                    duration: 0.5 
-                }, "<")
-                .fromTo(this.cont, { 
-                    clipPath: 'polygon(0 100%, 100% 100%, 100% 100%, 0 100%)', 
-                    y: 100 
-                }, { 
-                    clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)', 
-                    y: 0, 
-                    duration: 0.8, 
-                    ease: 'power4.out' 
-                }, "-=0.3")
-                .fromTo(this.imgWrap, { 
-                    opacity: 0, 
-                    y: 50, 
-                    scale: 0.9 
-                }, { 
-                    opacity: 1, 
-                    y: 0, 
-                    scale: 1, 
-                    duration: 0.8, 
-                    ease: 'back.out(1.2)' 
-                }, "-=0.4")
-                .fromTo('.modal-anim-el', { 
-                    opacity: 0, 
-                    y: 30 
-                }, { 
-                    opacity: 1, 
-                    y: 0, 
-                    stagger: 0.1, 
-                    duration: 0.6, 
-                    ease: 'power3.out' 
-                }, "-=0.6");
+                tl.to(this.ovl, { opacity: 1, duration: 0.5, ease: 'power2.out' })
+                  .to('#modal-canvas', { opacity: 1, duration: 0.5 }, "<")
+                  .fromTo(this.cont, { clipPath: 'polygon(0 100%, 100% 100%, 100% 100%, 0 100%)', y: 100 }, 
+                                     { clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)', y: 0, duration: 0.8, ease: 'power4.out' }, "-=0.3")
+                  .fromTo(this.imgWrap, { opacity: 0, y: 50, scale: 0.9 }, 
+                                        { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: 'back.out(1.2)' }, "-=0.4")
+                  .fromTo('.modal-anim-el', { opacity: 0, y: 30 }, 
+                                            { opacity: 1, y: 0, stagger: 0.1, duration: 0.6, ease: 'power3.out' }, "-=0.6");
             }
-            
             close() {
                 if (!this.isOpen) return;
-                
                 this.isOpen = false;
-                
-                gsap.timeline({ 
-                    onComplete: () => { 
-                        this.wrap.style.visibility = 'hidden'; 
-                        this.wrap.style.pointerEvents = 'none'; 
-                        if (AppState.lenis) {
-                            AppState.lenis.start(); 
-                        }
-                    } 
-                })
-                .to('.modal-anim-el', { 
-                    opacity: 0, 
-                    y: -20, 
-                    stagger: 0.05, 
-                    duration: 0.3, 
-                    ease: 'power2.in' 
-                })
-                .to(this.imgWrap, { 
-                    opacity: 0, 
-                    scale: 0.9, 
-                    duration: 0.4, 
-                    ease: 'power2.in' 
-                }, "<")
-                .to(this.cont, { 
-                    clipPath: 'polygon(0 0, 100% 0, 100% 0, 0 0)', 
-                    y: -50, 
-                    duration: 0.6, 
-                    ease: 'power4.inOut' 
-                }, "-=0.1")
-                .to([this.ovl, '#modal-canvas'], { 
-                    opacity: 0, 
-                    duration: 0.4 
-                }, "-=0.2");
+                gsap.timeline({ onComplete: () => { this.wrap.style.visibility = 'hidden'; this.wrap.style.pointerEvents = 'none'; if (AppState.lenis) AppState.lenis.start(); } })
+                .to('.modal-anim-el', { opacity: 0, y: -20, stagger: 0.05, duration: 0.3, ease: 'power2.in' })
+                .to(this.imgWrap, { opacity: 0, scale: 0.9, duration: 0.4, ease: 'power2.in' }, "<")
+                .to(this.cont, { clipPath: 'polygon(0 0, 100% 0, 100% 0, 0 0)', y: -50, duration: 0.6, ease: 'power4.inOut' }, "-=0.1")
+                .to([this.ovl, '#modal-canvas'], { opacity: 0, duration: 0.4 }, "-=0.2");
             }
         }
 
         /**
          * ==========================================================================
-         * 7. CART CONTROLLER
+         * 9. CART CONTROLLER
          * ==========================================================================
          */
         class CartController {
@@ -1557,291 +1175,270 @@
                 this.sb = document.getElementById('cart-sidebar');
                 this.ovl = document.getElementById('cart-overlay');
                 this.cont = document.getElementById('cart-items-container');
-                
-                this.bind(); 
-                this.render();
+                this.bind(); this.render();
             }
-            
             bind() {
-                document.getElementById('open-cart').addEventListener('click', () => {
-                    this.open();
-                });
-                
-                document.getElementById('close-cart').addEventListener('click', () => {
-                    this.close();
-                });
-                
-                this.ovl.addEventListener('click', () => {
-                    this.close();
-                });
-                
+                document.getElementById('open-cart').addEventListener('click', () => this.open());
+                document.getElementById('close-cart').addEventListener('click', () => this.close());
+                this.ovl.addEventListener('click', () => this.close());
                 this.cont.addEventListener('click', e => {
                     const id = e.target.dataset.id;
                     if (!id) return;
-                    
-                    if (e.target.classList.contains('inc-btn')) {
-                        this.update(id, 1);
-                    }
-                    if (e.target.classList.contains('dec-btn')) {
-                        this.update(id, -1);
-                    }
-                    if (e.target.classList.contains('remove-item')) {
-                        this.remove(id);
-                    }
+                    if (e.target.classList.contains('inc-btn')) this.update(id, 1);
+                    if (e.target.classList.contains('dec-btn')) this.update(id, -1);
+                    if (e.target.classList.contains('remove-item')) this.remove(id);
                 });
             }
-            
-            save() { 
-                localStorage.setItem('sfc_cart', JSON.stringify(AppState.cart)); 
-                this.render(); 
-            }
-            
+            save() { localStorage.setItem('sfc_cart', JSON.stringify(AppState.cart)); this.render(); }
             add(id) {
-                const p = productsDB.find(x => x.id === id);
-                if (!p) return;
-                
+                const baseP = productsDB.find(x => x.id === id);
+                if (!baseP) return;
                 const ex = AppState.cart.find(x => x.id === id);
-                if (ex) {
-                    ex.quantity += 1; 
-                } else {
-                    AppState.cart.push({...p, quantity: 1});
-                }
+                if (ex) { ex.quantity += 1; } else { AppState.cart.push({...baseP, quantity: 1}); }
                 
                 this.save();
-                showToast(`Dodano do koszyka: ${p.title}`);
-                
+                showToast(getI18n('added'));
                 if (!this.sb.classList.contains('active')) {
-                    gsap.fromTo('#cart-count-badge', {
-                        scale: 1.5
-                    }, {
-                        scale: 1, 
-                        duration: 0.5, 
-                        ease: 'elastic.out(1,0.3)'
-                    });
+                    gsap.fromTo('#cart-count-badge', { scale: 1.5 }, { scale: 1, duration: 0.5, ease: 'elastic.out(1,0.3)' });
                 }
             }
-            
             update(id, diff) {
                 const item = AppState.cart.find(x => x.id === id);
-                if (item) { 
-                    item.quantity += diff; 
-                    if (item.quantity <= 0) {
-                        this.remove(id); 
-                    } else {
-                        this.save(); 
-                    }
-                }
+                if (item) { item.quantity += diff; if (item.quantity <= 0) this.remove(id); else this.save(); }
             }
-            
             remove(id) {
                 const el = document.querySelector(`.cart-item[data-id="${id}"]`);
-                if (el) { 
-                    gsap.to(el, { 
-                        x: 100, 
-                        opacity: 0, 
-                        duration: 0.4, 
-                        onComplete: () => { 
-                            AppState.cart = AppState.cart.filter(x => x.id !== id); 
-                            this.save(); 
-                        } 
-                    }); 
-                } else { 
-                    AppState.cart = AppState.cart.filter(x => x.id !== id); 
-                    this.save(); 
-                }
+                if (el) { gsap.to(el, { x: 100, opacity: 0, duration: 0.4, onComplete: () => { AppState.cart = AppState.cart.filter(x => x.id !== id); this.save(); } }); } 
+                else { AppState.cart = AppState.cart.filter(x => x.id !== id); this.save(); }
             }
-            
             render() {
                 this.cont.innerHTML = '';
-                let tot = 0;
-                let cnt = 0;
+                let tot = 0, cnt = 0;
                 const badge = document.getElementById('cart-count-badge');
                 
                 if (AppState.cart.length === 0) {
-                    this.cont.innerHTML = '<div class="cart-empty">Twój koszyk jest pusty.<br>Odkryj naszą kolekcję.</div>';
+                    this.cont.innerHTML = `<div class="cart-empty">${getI18n('cart_empty')}</div>`;
                     badge.classList.remove('active');
                 } else {
                     AppState.cart.forEach((item, i) => {
-                        tot += item.price * item.quantity; 
-                        cnt += item.quantity;
+                        tot += item.price * item.quantity; cnt += item.quantity;
+                        const pInfo = ProductsTranslations[item.id][AppState.lang];
                         
                         const div = document.createElement('div');
-                        div.className = 'cart-item'; 
-                        div.dataset.id = item.id;
-                        
+                        div.className = 'cart-item'; div.dataset.id = item.id;
                         div.innerHTML = `
-                            <img src="${item.img}" alt="${item.title}" class="cart-item-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                            <div class="cart-fallback-img" style="display:none;">${item.title}</div>
+                            <img src="${item.img}" alt="${pInfo.title}" class="cart-item-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="cart-fallback-img" style="display:none;">${pInfo.title}</div>
                             <div class="cart-item-details">
-                                <div>
-                                    <h4 class="cart-item-title">${item.title}</h4>
-                                    <span class="cart-item-price">${formatPrice(item.price)}</span>
-                                </div>
+                                <div><h4 class="cart-item-title">${pInfo.title}</h4><span class="cart-item-price">${formatPrice(item.price)}</span></div>
                                 <div class="cart-item-actions">
                                     <div class="qty-control">
                                         <button class="qty-btn dec-btn" data-id="${item.id}">-</button>
                                         <span>${item.quantity}</span>
                                         <button class="qty-btn inc-btn" data-id="${item.id}">+</button>
                                     </div>
-                                    <button class="remove-item hover-target" data-id="${item.id}">Usuń</button>
+                                    <button class="remove-item hover-target" data-id="${item.id}">${getI18n('remove')}</button>
                                 </div>
                             </div>
                         `;
-                        
                         this.cont.appendChild(div);
-                        
-                        if (this.sb.classList.contains('active')) {
-                            gsap.to(div, { 
-                                opacity: 1, 
-                                x: 0, 
-                                duration: 0.5, 
-                                delay: i * 0.1 
-                            });
-                        } else {
-                            div.style.opacity = 1;
-                        }
+                        if (this.sb.classList.contains('active')) gsap.to(div, { opacity: 1, x: 0, duration: 0.5, delay: i * 0.1 });
+                        else div.style.opacity = 1;
                     });
-                    
-                    badge.textContent = cnt; 
-                    badge.classList.add('active');
+                    badge.textContent = cnt; badge.classList.add('active');
                 }
-                
                 document.getElementById('cart-total-price').textContent = formatPrice(tot);
-                
-                if (window.CursorSys) {
-                    window.CursorSys.refresh();
-                }
             }
-            
             open() {
-                this.sb.classList.add('active'); 
-                this.ovl.classList.add('active');
+                this.sb.classList.add('active'); this.ovl.classList.add('active');
+                if (AppState.lenis) AppState.lenis.stop();
+                gsap.fromTo('.cart-item', { opacity: 0, x: 50 }, { opacity: 1, x: 0, stagger: 0.1, duration: 0.5, ease: "power2.out", delay: 0.2 });
+            }
+            close() {
+                this.sb.classList.remove('active'); this.ovl.classList.remove('active');
+                if (!window.ModalSys.isOpen && AppState.lenis) AppState.lenis.start();
+            }
+        }
+
+        /**
+         * ==========================================================================
+         * 10. SHOP / FILTER CONTROLLER
+         * ==========================================================================
+         */
+        class ShopController {
+            constructor() {
+                this.grid = document.getElementById('products-grid');
+                this.currentFilter = 'all';
+                this.currentSearch = '';
+                this.currentSort = 'default';
+                this.viewMode = 'grid'; // 'grid' or 'list'
+            }
+
+            render() {
+                this.updateView(false); // Initial render without heavy animation
+                this.bindEvents();
+            }
+
+            getFilteredProducts() {
+                let filtered = [...productsDB];
                 
-                if (AppState.lenis) {
-                    AppState.lenis.stop();
+                // 1. Category Filter
+                if (this.currentFilter !== 'all') {
+                    filtered = filtered.filter(p => p.category === this.currentFilter);
                 }
                 
-                gsap.fromTo('.cart-item', { 
-                    opacity: 0, 
-                    x: 50 
-                }, { 
-                    opacity: 1, 
-                    x: 0, 
-                    stagger: 0.1, 
-                    duration: 0.5, 
-                    ease: "power2.out", 
-                    delay: 0.2 
-                });
-            }
-            
-            close() {
-                this.sb.classList.remove('active'); 
-                this.ovl.classList.remove('active');
+                // 2. Search Filter
+                if (this.currentSearch.trim() !== '') {
+                    const query = this.currentSearch.toLowerCase();
+                    filtered = filtered.filter(p => {
+                        const pInfo = ProductsTranslations[p.id][AppState.lang];
+                        return pInfo.title.toLowerCase().includes(query) || pInfo.desc.toLowerCase().includes(query);
+                    });
+                }
+
+                // 3. Sort
+                if (this.currentSort === 'price-asc') {
+                    filtered.sort((a, b) => a.price - b.price);
+                } else if (this.currentSort === 'price-desc') {
+                    filtered.sort((a, b) => b.price - a.price);
+                }
                 
-                if (!window.ModalSys.isOpen && AppState.lenis) {
-                    AppState.lenis.start();
+                return filtered;
+            }
+
+            updateView(animate = true) {
+                const products = this.getFilteredProducts();
+                
+                const processRender = () => {
+                    this.grid.innerHTML = '';
+                    
+                    if (products.length === 0) {
+                        this.grid.innerHTML = `<div class="no-results">${getI18n('no_results')}</div>`;
+                        return;
+                    }
+
+                    if (this.viewMode === 'list') {
+                        this.grid.classList.add('list-view');
+                    } else {
+                        this.grid.classList.remove('list-view');
+                    }
+
+                    products.forEach((p) => {
+                        const pInfo = ProductsTranslations[p.id][AppState.lang];
+                        const card = document.createElement('div');
+                        card.className = 'product-card hover-target';
+                        card.dataset.category = p.category;
+                        card.dataset.id = p.id;
+                        
+                        card.innerHTML = `
+                            <div class="product-card-inner">
+                                <div class="product-image-wrapper">
+                                    <img src="${p.img}" alt="${pInfo.title}" class="product-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                    <div class="product-fallback" style="display:none;">${pInfo.title}</div>
+                                    <div class="product-overlay"><span class="view-details-hint">${getI18n('view_details')}</span></div>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <div class="product-meta"><span class="product-category">${pInfo.category}</span></div>
+                                <h3 class="product-title">${pInfo.title}</h3>
+                                <div class="product-bottom">
+                                    <span class="product-price">${formatPrice(p.price)}</span>
+                                    <button class="quick-add-btn hover-target" data-id="${p.id}" aria-label="Add"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
+                                </div>
+                            </div>
+                        `;
+                        this.grid.appendChild(card);
+
+                        const wrapper = card.querySelector('.product-image-wrapper');
+                        const title = card.querySelector('.product-title');
+                        const addBtn = card.querySelector('.quick-add-btn');
+
+                        const handleOpen = (e) => { e.preventDefault(); e.stopPropagation(); window.ModalSys.open(p.id); };
+                        const handleAdd = (e) => { e.preventDefault(); e.stopPropagation(); window.CartSys.add(p.id); };
+
+                        wrapper.addEventListener('click', handleOpen);
+                        title.addEventListener('click', handleOpen);
+                        addBtn.addEventListener('click', handleAdd);
+                    });
+
+                    ScrollTrigger.refresh();
+                    
+                    if (animate && products.length > 0) {
+                        gsap.fromTo('.product-card', 
+                            { scale: 0.9, opacity: 0 }, 
+                            { scale: 1, opacity: 1, duration: 0.5, stagger: 0.05, ease: 'back.out(1.2)' }
+                        );
+                    }
+                };
+
+                if (animate && this.grid.children.length > 0) {
+                    gsap.to('.product-card', {
+                        scale: 0.9, opacity: 0, duration: 0.3,
+                        onComplete: processRender
+                    });
+                } else {
+                    processRender();
+                }
+            }
+
+            bindEvents() {
+                // Category Filters
+                document.querySelectorAll('.shop-filters button').forEach(btn => {
+                    btn.addEventListener('click', e => {
+                        document.querySelectorAll('.shop-filters button').forEach(b => b.classList.remove('active'));
+                        e.target.classList.add('active');
+                        this.currentFilter = e.target.dataset.filter;
+                        this.updateView();
+                    });
+                });
+
+                // Search Filter
+                const searchInput = document.getElementById('shop-search');
+                if (searchInput) {
+                    let timeout = null;
+                    searchInput.addEventListener('input', (e) => {
+                        clearTimeout(timeout);
+                        timeout = setTimeout(() => {
+                            this.currentSearch = e.target.value;
+                            this.updateView();
+                        }, 300); // Debounce
+                    });
+                }
+
+                // Sort
+                const sortSelect = document.getElementById('shop-sort');
+                if (sortSelect) {
+                    sortSelect.addEventListener('change', (e) => {
+                        this.currentSort = e.target.value;
+                        this.updateView();
+                    });
+                }
+
+                // View Toggles
+                const viewGrid = document.getElementById('view-grid');
+                const viewList = document.getElementById('view-list');
+                if (viewGrid && viewList) {
+                    viewGrid.addEventListener('click', () => {
+                        if (this.viewMode === 'grid') return;
+                        this.viewMode = 'grid';
+                        viewGrid.classList.add('active');
+                        viewList.classList.remove('active');
+                        this.updateView();
+                    });
+                    viewList.addEventListener('click', () => {
+                        if (this.viewMode === 'list') return;
+                        this.viewMode = 'list';
+                        viewList.classList.add('active');
+                        viewGrid.classList.remove('active');
+                        this.updateView();
+                    });
                 }
             }
         }
 
         /**
          * ==========================================================================
-         * 8. SHOP GENERATOR
-         * ==========================================================================
-         */
-        const renderShop = () => {
-            const grid = document.getElementById('products-grid');
-            grid.innerHTML = '';
-
-            productsDB.forEach((p) => {
-                const card = document.createElement('div');
-                card.className = 'product-card hover-target';
-                card.dataset.category = p.category;
-                card.dataset.id = p.id;
-                
-                card.innerHTML = `
-                    <div class="product-card-inner">
-                        <div class="product-image-wrapper">
-                            <img src="${p.img}" alt="${p.title}" class="product-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                            <div class="product-fallback" style="display:none;">${p.title}</div>
-                            <div class="product-overlay">
-                                <span class="view-details-hint">ZOBACZ SZCZEGÓŁY</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="product-info">
-                        <div class="product-meta">
-                            <span class="product-category">${p.category}</span>
-                        </div>
-                        <h3 class="product-title">${p.title}</h3>
-                        <div class="product-bottom">
-                            <span class="product-price">${formatPrice(p.price)}</span>
-                            <button class="quick-add-btn hover-target" data-id="${p.id}" aria-label="Dodaj do koszyka">
-                                <svg viewBox="0 0 24 24">
-                                    <path d="M12 5v14M5 12h14"/>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                `;
-                
-                grid.appendChild(card);
-
-                const openM = e => { 
-                    e.stopPropagation(); 
-                    window.ModalSys.open(p.id); 
-                };
-                
-                card.querySelector('.product-image-wrapper').addEventListener('click', openM);
-                card.querySelector('.product-title').addEventListener('click', openM);
-                
-                card.querySelector('.quick-add-btn').addEventListener('click', e => { 
-                    e.stopPropagation(); 
-                    window.CartSys.add(p.id); 
-                });
-            });
-
-            // Filtering logic
-            document.querySelectorAll('.shop-filters button').forEach(btn => {
-                btn.addEventListener('click', e => {
-                    document.querySelectorAll('.shop-filters button').forEach(b => {
-                        b.classList.remove('active');
-                    });
-                    
-                    e.target.classList.add('active');
-                    const cat = e.target.dataset.filter;
-                    const cards = document.querySelectorAll('.product-card');
-                    
-                    gsap.to(cards, {
-                        scale: 0.9, 
-                        opacity: 0, 
-                        duration: 0.4,
-                        onComplete: () => {
-                            cards.forEach(c => {
-                                c.style.display = (cat === 'all' || c.dataset.category === cat) ? 'flex' : 'none';
-                            });
-                            
-                            ScrollTrigger.refresh();
-                            
-                            gsap.fromTo(cards, { 
-                                scale: 0.9, 
-                                opacity: 0 
-                            }, { 
-                                scale: 1, 
-                                opacity: 1, 
-                                duration: 0.5, 
-                                stagger: 0.05, 
-                                ease: 'back.out(1.2)' 
-                            });
-                        }
-                    });
-                });
-            });
-        };
-
-        /**
-         * ==========================================================================
-         * 9. MAIN INIT & SCROLLTRIGGER
+         * 11. MAIN INIT & SCROLLTRIGGER
          * ==========================================================================
          */
         const initAnimations = () => {
@@ -1851,113 +1448,50 @@
             AppState.lenis.on('scroll', ({ scroll }) => {
                 if (scroll > 100) { 
                     hdr.classList.add('scrolled'); 
-                    if (scroll > lastY && scroll > 300) {
-                        hdr.classList.add('hidden'); 
-                    } else {
-                        hdr.classList.remove('hidden'); 
-                    }
+                    if (scroll > lastY && scroll > 300) { hdr.classList.add('hidden'); } 
+                    else { hdr.classList.remove('hidden'); }
                 } else { 
                     hdr.classList.remove('scrolled', 'hidden'); 
                 }
-                
                 lastY = scroll;
-                
-                if (window.WebGLSys) {
-                    window.WebGLSys.setScroll(scroll);
-                }
-                
+                if (window.WebGLSys) window.WebGLSys.setScroll(scroll);
                 ScrollTrigger.update();
             });
 
-            gsap.fromTo('.product-card', { 
-                y: 80, 
-                opacity: 0 
-            }, {
-                scrollTrigger: { 
-                    trigger: '.shop', 
-                    start: 'top 85%' 
-                },
-                y: 0, 
-                opacity: 1, 
-                duration: 1, 
-                stagger: 0.15, 
-                ease: 'power3.out'
-            });
-
-            gsap.to('#parallax-bg', {
-                scrollTrigger: { 
-                    trigger: '.parallax-section', 
-                    start: 'top bottom', 
-                    end: 'bottom top', 
-                    scrub: true 
-                },
-                y: '30%', 
-                ease: 'none'
-            });
-            
-            gsap.fromTo('.parallax-content h2', { 
-                y: 80, 
-                opacity: 0 
-            }, { 
-                scrollTrigger: { 
-                    trigger: '.parallax-section', 
-                    start: 'top 70%' 
-                }, 
-                y: 0, 
-                opacity: 1, 
-                duration: 1.2, 
-                ease: 'power3.out'
-            });
+            gsap.fromTo('.product-card', { y: 80, opacity: 0 }, { scrollTrigger: { trigger: '.shop', start: 'top 85%' }, y: 0, opacity: 1, duration: 1, stagger: 0.15, ease: 'power3.out' });
+            gsap.to('#parallax-bg', { scrollTrigger: { trigger: '.parallax-section', start: 'top bottom', end: 'bottom top', scrub: true }, y: '30%', ease: 'none' });
+            gsap.fromTo('.parallax-content h2', { y: 80, opacity: 0 }, { scrollTrigger: { trigger: '.parallax-section', start: 'top 70%' }, y: 0, opacity: 1, duration: 1.2, ease: 'power3.out' });
         };
 
         const bootstrap = () => {
-            const lenis = new Lenis({ 
-                duration: 1.2, 
-                easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) 
-            });
-            
+            const lenis = new Lenis({ duration: 1.2, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smoothTouch: false });
             AppState.lenis = lenis;
-            
-            function raf(time) { 
-                lenis.raf(time); 
-                requestAnimationFrame(raf); 
-            }
-            
+            function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
             requestAnimationFrame(raf);
 
             gsap.registerPlugin(ScrollTrigger);
 
             window.ThemeSys = new ThemeController();
+            window.LangSys = new LangController();
             window.CursorSys = new CursorController();
             window.WebGLSys = new WebGLBackground();
             window.ModalSys = new ModalController();
+            window.ShopRenderer = new ShopController();
             window.CartSys = new CartController();
 
-            renderShop();
-            window.CursorSys.refresh();
+            window.ShopRenderer.render();
             initAnimations();
 
-            let pObj = { v: 0 };
-            const pEl = document.getElementById('preloader-percent');
-            
             // PRELOADER & LOGO ANIMATION
+            const pEl = document.getElementById('preloader-percent');
+            let pObj = { v: 0 };
+            
             const preloaderTL = gsap.timeline({
                 onComplete: () => {
                     document.getElementById('preloader').style.display = 'none';
-                    
                     gsap.timeline()
-                        .to('.hero-subtitle', { 
-                            opacity: 1, 
-                            y: 0, 
-                            duration: 1, 
-                            ease: 'power2.out' 
-                        })
-                        .to('.text-reveal-inner', { 
-                            y: 0, 
-                            duration: 1.2, 
-                            stagger: 0.15, 
-                            ease: 'power4.out' 
-                        }, "-=0.8");
+                        .to('.hero-subtitle', { opacity: 1, y: 0, duration: 1, ease: 'power2.out' })
+                        .to('.text-reveal-inner', { y: 0, duration: 1.2, stagger: 0.15, ease: 'power4.out' }, "-=0.8");
                 }
             });
 
@@ -1966,35 +1500,11 @@
                 { opacity: 0, scale: 0.4, rotationX: 80, filter: 'blur(20px)' },
                 { opacity: 1, scale: 1, rotationX: 0, filter: 'blur(0px)', duration: 1.8, ease: "expo.out" }
             )
-            .to(pObj, { 
-                v: 100, 
-                duration: 1.5, 
-                ease: 'power2.inOut', 
-                onUpdate: () => {
-                    pEl.innerText = Math.round(pObj.v) + '%';
-                }
-            }, "-=1.5")
-            .to('#preloader-bar', { 
-                width: '100%', 
-                duration: 1.5, 
-                ease: 'power2.inOut' 
-            }, "-=1.5")
-            .to(pEl, { 
-                opacity: 1, 
-                duration: 0.5 
-            }, "-=1.5")
-            .to('.preloader-logo-img', {
-                opacity: 0,
-                scale: 1.1,
-                y: -50,
-                duration: 0.8,
-                ease: 'power3.in'
-            }, "+=0.2")
-            .to('#preloader', { 
-                yPercent: -100, 
-                duration: 1.2, 
-                ease: 'power4.inOut' 
-            }, "-=0.4");
+            .to(pObj, { v: 100, duration: 1.5, ease: 'power2.inOut', onUpdate: () => { pEl.innerText = Math.round(pObj.v) + '%'; } }, "-=1.5")
+            .to('#preloader-bar', { width: '100%', duration: 1.5, ease: 'power2.inOut' }, "-=1.5")
+            .to(pEl, { opacity: 1, duration: 0.5 }, "-=1.5")
+            .to('.preloader-logo-img', { opacity: 0, scale: 1.1, y: -50, duration: 0.8, ease: 'power3.in' }, "+=0.2")
+            .to('#preloader', { yPercent: -100, duration: 1.2, ease: 'power4.inOut' }, "-=0.4");
         };
 
         document.addEventListener('DOMContentLoaded', bootstrap);
