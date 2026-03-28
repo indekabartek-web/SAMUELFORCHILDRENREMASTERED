@@ -13,6 +13,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
     
+    <link rel="stylesheet" href="https://geowidget.easypack24.net/css/easypack.css"/>
+    <script src="https://geowidget.easypack24.net/js/sdk-for-javascript.js"></script>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
@@ -22,7 +25,7 @@
            1. THEME ENGINE & DESIGN TOKENS
            ========================================================================== */
         :root {
-            /* * LIGHT THEME (COLORFUL UPGRADE) */
+            /* LIGHT THEME */
             --theme-light-bg: #FCFBF9;
             --theme-light-bg-alt: rgba(255, 255, 255, 0.75);
             --theme-light-text: #2C2825;
@@ -41,11 +44,11 @@
             --ambient-opacity: 0.95;
             
             /* Cursor Light Mode Colors */
-            --cursor-color: #007bff;
-            --cursor-outline-color: rgba(51, 204, 255, 0.5);
-            --cursor-hover-color: rgba(51, 204, 255, 0.1);
+            --cursor-color: #2C2825;
+            --cursor-outline-color: rgba(44, 40, 37, 0.5);
+            --cursor-hover-color: rgba(44, 40, 37, 0.08);
 
-            /* * DARK THEME */
+            /* DARK THEME */
             --theme-dark-bg: #0A0908;
             --theme-dark-bg-alt: rgba(20, 19, 18, 0.85);
             --theme-dark-text: #F2EFEA;
@@ -68,7 +71,7 @@
             --cursor-dark-outline-color: rgba(242, 239, 234, 0.5);
             --cursor-dark-hover-color: rgba(242, 239, 234, 0.1);
 
-            /* * ACTIVE THEME VARIABLES */
+            /* ACTIVE THEME VARIABLES */
             --color-bg: var(--theme-light-bg);
             --color-bg-alt: var(--theme-light-bg-alt);
             --color-text: var(--theme-light-text);
@@ -89,7 +92,7 @@
             --active-cursor-outline: var(--cursor-outline-color);
             --active-cursor-hover: var(--cursor-hover-color);
             
-            /* * BRAND ACCENTS */
+            /* BRAND ACCENTS */
             --color-accent: #C29B45;
             --color-accent-hover: #A38032;
             --color-white: #FFFFFF;
@@ -97,11 +100,11 @@
             --color-error: #E74C3C;
             --color-success: #2ECC71;
             
-            /* * TYPOGRAPHY */
+            /* TYPOGRAPHY */
             --font-sans: 'Plus Jakarta Sans', sans-serif;
             --font-serif: 'Playfair Display', serif;
             
-            /* * SPACING & LAYOUT */
+            /* SPACING & LAYOUT */
             --spacing-xs: 0.5rem;
             --spacing-sm: 1rem;
             --spacing-md: 2rem;
@@ -116,7 +119,7 @@
             --radius-md: 16px;
             --radius-lg: 24px;
             
-            /* * ANIMATION EASES */
+            /* ANIMATION EASES */
             --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
             --transition-theme: background-color 0.8s var(--ease-out-expo), 
                                 color 0.8s var(--ease-out-expo), 
@@ -217,7 +220,8 @@
            ========================================================================== */
         .cursor-wrapper {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            pointer-events: none; z-index: 999999; display: none;
+            pointer-events: none; z-index: 9999999; /* Z-INDEX NA MAXA */
+            display: none;
         }
         @media (pointer: fine) { .cursor-wrapper { display: block; } }
         
@@ -237,10 +241,16 @@
         }
         
         body.cursor-hover .cursor-outline {
-            width: 60px; height: 60px; 
+            width: 80px; height: 80px; 
             background-color: var(--active-cursor-hover); 
             border-color: transparent;
         }
+        
+        /* INPOST & LIGHTBOX FIX */
+        body.map-open .cursor-wrapper,
+        body.lightbox-open .cursor-wrapper { display: none !important; opacity: 0 !important; visibility: hidden !important; }
+        body.map-open, body.map-open *,
+        body.lightbox-open, body.lightbox-open * { cursor: auto !important; }
 
         /* ==========================================================================
            4. PRELOADER
@@ -269,7 +279,7 @@
         /* ==========================================================================
            6. NOTIFICATIONS (TOASTS)
            ========================================================================== */
-        #toast-container { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 100005; display: flex; flex-direction: column; gap: 10px; pointer-events: none; width: 90vw; max-width: 400px; align-items: center; }
+        #toast-container { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 1000005; display: flex; flex-direction: column; gap: 10px; pointer-events: none; width: 90vw; max-width: 400px; align-items: center; }
         .toast { background-color: var(--color-text); color: var(--color-bg); padding: 14px 28px; border-radius: 30px; font-family: var(--font-sans); font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 10px 30px var(--color-shadow); opacity: 0; transform: translateY(20px); text-align: center; width: auto; }
 
         /* ==========================================================================
@@ -292,19 +302,19 @@
         .logo-text-fallback { font-family: var(--font-serif); font-size: clamp(1.5rem, 4vw, 2.2rem); font-style: italic; font-weight: 500; color: var(--color-text); letter-spacing: 1px; white-space: nowrap; }
 
         .nav-actions { display: flex; align-items: center; gap: 1.8rem; }
-        .theme-toggle-btn, .lang-toggle-btn { color: var(--color-text); font-family: var(--font-sans); font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; display: flex; align-items: center; gap: 8px; transition: color 0.3s ease; background: transparent; border: none;}
+        .theme-toggle-btn, .lang-toggle-btn { color: var(--color-text); font-family: var(--font-sans); font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; display: flex; align-items: center; gap: 8px; transition: color 0.3s ease; background: transparent; border: none; cursor: pointer;}
         @media (pointer: fine) { .theme-toggle-btn:hover, .lang-toggle-btn:hover { color: var(--color-accent); } }
         .theme-toggle-btn .icon { width: 18px; height: 18px; border-radius: 50%; border: 2px solid currentColor; position: relative; transition: all 0.5s var(--ease-out-expo); }
         html[data-theme="dark"] .theme-toggle-btn .icon { background-color: currentColor; box-shadow: inset -5px -3px 0 var(--color-bg); border-color: transparent; }
 
-        .cart-btn { color: var(--color-text); font-family: var(--font-sans); font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; position: relative; padding: 0.5rem 0; transition: color 0.3s ease; }
+        .cart-btn { color: var(--color-text); font-family: var(--font-sans); font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; position: relative; padding: 0.5rem 0; transition: color 0.3s ease; cursor: pointer; }
         .cart-btn::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background-color: var(--color-accent); transform: scaleX(0); transform-origin: right; transition: transform 0.5s var(--ease-out-expo); }
         @media (pointer: fine) { .cart-btn:hover::after { transform: scaleX(1); transform-origin: left; } }
         .cart-count { position: absolute; top: -10px; right: -20px; background-color: var(--color-accent); color: var(--color-white); font-size: 0.65rem; font-weight: 700; width: 22px; height: 22px; border-radius: 50%; display: flex; justify-content: center; align-items: center; opacity: 0; transform: scale(0); transition: var(--transition-theme), transform 0.4s var(--ease-out-expo), opacity 0.4s ease; box-shadow: 0 4px 10px rgba(194, 155, 69, 0.4); }
         .cart-count.active { opacity: 1; transform: scale(1); }
 
         /* ==========================================================================
-           8. HERO SECTION (Z POPRAWIONYM LINE-HEIGHT / SPACINGIEM)
+           8. HERO SECTION
            ========================================================================== */
         .hero { 
             height: 100vh; min-height: 600px; display: flex; flex-direction: column; 
@@ -320,25 +330,25 @@
         
         .hero-title { 
             font-size: clamp(2.5rem, 8vw, 9.5rem); 
-            line-height: 1.25; /* Zwiększono z 1.05, aby usunąć nachodzenie wertykalne */
+            line-height: 1.25; 
             max-width: 1200px; 
             margin-bottom: 3rem; 
-            letter-spacing: normal; /* Zmieniono z -0.02em, aby usunąć nachodzenie horyzontalne */
+            letter-spacing: normal; 
         }
         
         .hero-title em { 
             font-style: italic; 
             color: var(--color-accent); 
             font-weight: 500; 
-            padding-right: 0.05em; /* Zapobiega ucinaniu italiców */
+            padding-right: 0.05em; 
         }
         
         .text-reveal { 
             overflow: hidden; 
             display: inline-block; 
             vertical-align: top; 
-            padding: 0.1em 0 0.25em 0; /* Dodaje bufor dla dolnych ogonków (descenders) */
-            margin-bottom: -0.25em; /* Niweluje nadmiar przestrzeni, by layout pozostał spójny */
+            padding: 0.1em 0 0.25em 0; 
+            margin-bottom: -0.25em; 
         }
         
         .text-reveal-inner { 
@@ -352,7 +362,7 @@
            ========================================================================== */
         .about { padding: var(--spacing-xxl) var(--container-padding); background-color: var(--color-bg-alt); display: flex; justify-content: center; align-items: center; min-height: 70vh; position: relative; z-index: 2; backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); }
         .about-content { max-width: 900px; text-align: center; position: relative; }
-        .about-content::before { content: '“'; position: absolute; top: -40px; left: 50%; transform: translateX(-50%); font-family: var(--font-serif); font-size: clamp(6rem, 15vw, 12rem); color: var(--color-accent); opacity: 0.15; line-height: 1; z-index: -1; pointer-events: none; }
+        .about-content::before { content: '„'; position: absolute; top: -40px; left: 50%; transform: translateX(-50%); font-family: var(--font-serif); font-size: clamp(6rem, 15vw, 12rem); color: var(--color-accent); opacity: 0.15; line-height: 1; z-index: -1; pointer-events: none; }
         .about-text { font-family: var(--font-serif); font-size: clamp(1.5rem, 3.5vw, 3rem); line-height: 1.5; color: var(--color-text); font-weight: 400; }
 
         /* ==========================================================================
@@ -366,7 +376,7 @@
         .shop-toolbar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 2rem; width: 100%; }
         
         .shop-filters { display: flex; gap: 1.5rem; flex-wrap: wrap; }
-        .shop-filters button { font-family: var(--font-sans); font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; color: var(--color-text-light); position: relative; padding-bottom: 0.5rem; transition: color 0.4s ease; }
+        .shop-filters button { font-family: var(--font-sans); font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; color: var(--color-text-light); position: relative; padding-bottom: 0.5rem; transition: color 0.4s ease; cursor: pointer; }
         @media (pointer: fine) { .shop-filters button:hover, .shop-filters button.active { color: var(--color-text); } }
         .shop-filters button.active { color: var(--color-text); }
         .shop-filters button::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background-color: var(--color-accent); transform: scaleX(0); transition: transform 0.5s var(--ease-out-expo); transform-origin: right; }
@@ -400,7 +410,7 @@
         .view-toggles { display: flex; gap: 0.5rem; }
         .view-toggles button {
             width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;
-            border: 1px solid transparent; border-radius: 50%; color: var(--color-text-light); transition: all 0.3s ease;
+            border: 1px solid transparent; border-radius: 50%; color: var(--color-text-light); transition: all 0.3s ease; cursor: pointer;
         }
         .view-toggles button.active { color: var(--color-text); border-color: var(--color-border); }
         .view-toggles button svg { width: 16px; height: 16px; fill: currentColor; }
@@ -408,33 +418,52 @@
         .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 4rem 2rem; transition: opacity 0.4s ease; }
         .product-card { position: relative; display: flex; flex-direction: column; width: 100%; cursor: pointer; }
         .product-card-inner { perspective: 1500px; width: 100%; }
+        
         .product-image-wrapper {
-            position: relative; width: 100%; padding-top: 135%; overflow: hidden; background-color: var(--color-bg-alt);
-            border-radius: var(--radius-sm); margin-bottom: 1.5rem; transform-style: preserve-3d;
-            box-shadow: 0 15px 35px var(--color-shadow); transition: box-shadow 0.6s ease, transform 0.6s ease; backdrop-filter: blur(5px);
+            position: relative; width: 100%; padding-top: 135%; overflow: visible; background-color: transparent;
+            margin-bottom: 1.5rem; transform-style: preserve-3d; transition: transform 0.6s ease;
         }
         
+        .product-image { 
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+            padding: 0; 
+            object-fit: contain; 
+            transition: transform 1.2s var(--ease-out-expo), filter 1.2s ease; 
+            transform: scale(1); will-change: transform; 
+            filter: drop-shadow(0 15px 25px rgba(0,0,0,0.12)); 
+        }
+        html[data-theme="dark"] .product-image { filter: drop-shadow(0 15px 35px rgba(0,0,0,0.6)); }
+
         @media (pointer: fine) {
-            .product-card:hover .product-image-wrapper { box-shadow: 0 25px 50px rgba(44, 40, 37, 0.15); }
             .product-card:hover .product-overlay { opacity: 1; }
-            .product-card:hover .product-image { transform: scale(1.08); filter: brightness(0.85); }
+            .product-card:hover .product-image { transform: scale(1.08); filter: drop-shadow(0 25px 40px rgba(0,0,0,0.25)) brightness(0.98); }
+            html[data-theme="dark"] .product-card:hover .product-image { filter: drop-shadow(0 25px 40px rgba(0,0,0,0.8)) brightness(0.98); }
             .product-card:hover .view-details-hint { transform: translateY(0); }
             .product-card:hover .product-title { color: var(--color-accent); }
             .quick-add-btn:hover { border-color: var(--color-accent); color: var(--color-white); }
             .quick-add-btn:hover::before { transform: scale(1); }
         }
 
-        .product-image { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s var(--ease-out-expo), filter 1.2s ease; transform: scale(1.02); will-change: transform; }
-        .product-fallback { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: none; align-items: center; justify-content: center; text-align: center; padding: 2rem; font-family: var(--font-serif); font-style: italic; font-size: 1.2rem; color: var(--color-text-light); background: var(--color-bg-alt); }
-        .product-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0) 60%); display: flex; justify-content: center; align-items: flex-end; padding-bottom: 2rem; opacity: 0; transition: opacity 0.6s var(--ease-out-expo); pointer-events: none; }
-        .view-details-hint { color: #FFF; font-family: var(--font-sans); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 3px; transform: translateY(20px); transition: transform 0.6s var(--ease-out-expo); }
+        .product-fallback { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: none; align-items: center; justify-content: center; text-align: center; padding: 2rem; font-family: var(--font-serif); font-style: italic; font-size: 1.2rem; color: var(--color-text-light); background: transparent; }
+        
+        /* Modern Hover Pill */
+        .product-overlay { 
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; 
+            opacity: 0; transition: opacity 0.6s var(--ease-out-expo); pointer-events: none; z-index: 10; 
+        }
+        .view-details-hint { 
+            background: var(--color-bg); color: var(--color-text); padding: 0.8rem 1.5rem; border-radius: 50px; 
+            font-family: var(--font-sans); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; 
+            transform: translateY(20px); transition: transform 0.6s var(--ease-out-expo); box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
+        }
+        
         .product-info { display: flex; flex-direction: column; gap: 0.6rem; }
         .product-meta { display: flex; justify-content: space-between; align-items: center; }
         .product-category { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; color: var(--color-text-light); }
         .product-title { font-size: clamp(1.2rem, 3vw, 1.5rem); font-family: var(--font-serif); font-weight: 500; margin: 0; line-height: 1.3; transition: color 0.3s ease; }
         .product-bottom { display: flex; justify-content: space-between; align-items: center; margin-top: 0.5rem; }
         .product-price { font-size: 1.1rem; font-weight: 600; font-family: var(--font-sans); }
-        .quick-add-btn { border: 1px solid var(--color-border); width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: var(--color-text); transition: all 0.4s var(--ease-out-expo); position: relative; overflow: hidden; z-index: 2; background-color: var(--color-bg); }
+        .quick-add-btn { border: 1px solid var(--color-border); width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: var(--color-text); transition: all 0.4s var(--ease-out-expo); position: relative; overflow: hidden; z-index: 2; background-color: var(--color-bg); cursor: pointer; }
         .quick-add-btn::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--color-accent); transform: scale(0); border-radius: 50%; transition: transform 0.4s var(--ease-out-expo); z-index: -1; }
         .quick-add-btn svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
@@ -448,29 +477,7 @@
         .no-results { grid-column: 1 / -1; text-align: center; padding: 4rem 0; font-family: var(--font-serif); font-size: 1.5rem; color: var(--color-text-light); font-style: italic; }
 
         /* ==========================================================================
-           11. PARALLAX SECTION
-           ========================================================================== */
-        .parallax-section { height: 80vh; position: relative; overflow: hidden; display: flex; justify-content: center; align-items: center; background-color: #0A0908; z-index: 1; }
-        .parallax-bg { position: absolute; top: -30%; left: 0; width: 100%; height: 160%; background-color: #0A0908; background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.08" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23n)" opacity="0.06"/></svg>'); z-index: 1; }
-        .parallax-content { position: relative; z-index: 2; text-align: center; max-width: 900px; padding: 0 var(--container-padding); color: #FFFFFF; }
-        .parallax-content h2 { font-size: clamp(2.5rem, 7vw, 6rem); margin-bottom: 1.5rem; color: #FFFFFF; letter-spacing: -0.02em; }
-        .parallax-content p { font-size: clamp(1rem, 2vw, 1.5rem); color: rgba(255,255,255,0.7); font-family: var(--font-serif); font-style: italic; }
-
-        /* ==========================================================================
-           12. FOOTER
-           ========================================================================== */
-        footer { background-color: var(--color-bg-alt); padding: var(--spacing-xxl) var(--container-padding) var(--spacing-md); position: relative; z-index: 2; border-top: 1px solid var(--color-border); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
-        .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 4rem; margin-bottom: var(--spacing-xl); }
-        .footer-brand h2 { font-size: clamp(2rem, 4vw, 3rem); font-style: italic; margin-bottom: 1.5rem; letter-spacing: -0.02em; }
-        .footer-brand p { color: var(--color-text-light); max-width: 400px; font-size: clamp(0.9rem, 2vw, 1.1rem); }
-        .footer-links h4 { font-family: var(--font-sans); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 2rem; }
-        .footer-links ul { display: flex; flex-direction: column; gap: 1.2rem; }
-        .footer-links a { color: var(--color-text-light); position: relative; display: inline-block; transition: color 0.3s ease; font-size: 1.05rem; }
-        @media (pointer: fine) { .footer-links a:hover { color: var(--color-accent); } }
-        .footer-bottom { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; padding-top: var(--spacing-md); border-top: 1px solid var(--color-border); font-size: 0.85rem; color: var(--color-text-light); font-weight: 500; text-align: center; }
-
-        /* ==========================================================================
-           13. CART SIDEBAR
+           11. CART SIDEBAR & DELIVERY
            ========================================================================== */
         .cart-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(0, 0, 0, 0.6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 100001; opacity: 0; pointer-events: none; transition: opacity 0.5s ease; }
         .cart-overlay.active { opacity: 1; pointer-events: auto; }
@@ -480,14 +487,18 @@
         .cart-header h3 { margin: 0; font-size: 1.5rem; font-weight: 500; }
         .close-btn { border: 1px solid var(--color-border); width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: var(--color-text); transition: all 0.4s var(--ease-out-expo); background: var(--color-bg); cursor: pointer; }
         @media (pointer: fine) { .close-btn:hover { transform: rotate(90deg); background-color: var(--color-text); color: var(--color-bg); } }
+        
         .cart-items { flex-grow: 1; overflow-y: auto; padding: var(--spacing-lg); }
         .cart-items::-webkit-scrollbar { width: 4px; }
         .cart-items::-webkit-scrollbar-track { background: var(--color-bg); }
         .cart-items::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 10px; }
         .cart-empty { text-align: center; color: var(--color-text-light); margin-top: 4rem; font-style: italic; font-family: var(--font-serif); font-size: 1.1rem; }
         .cart-item { display: flex; gap: 1.2rem; margin-bottom: 2rem; padding-bottom: 2rem; border-bottom: 1px solid var(--color-border); }
-        .cart-item-img { width: 80px; height: 110px; object-fit: cover; border-radius: var(--radius-sm); box-shadow: 0 10px 20px rgba(0,0,0,0.08); background-color: var(--color-bg-alt); }
-        .cart-fallback-img { width: 80px; height: 110px; border-radius: var(--radius-sm); background: var(--color-bg-alt); display: flex; align-items: center; justify-content: center; text-align: center; font-size: 0.6rem; font-family: var(--font-serif); padding: 5px; color: var(--color-text-light); }
+        
+        /* CART IMAGES (TRANSPARENT) */
+        .cart-item-img { width: 80px; height: 110px; padding: 0; object-fit: contain; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.15)); background-color: transparent; }
+        .cart-fallback-img { width: 80px; height: 110px; border-radius: var(--radius-sm); background: transparent; display: flex; align-items: center; justify-content: center; text-align: center; font-size: 0.6rem; font-family: var(--font-serif); padding: 5px; color: var(--color-text-light); }
+        
         .cart-item-details { flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
         .cart-item-title { font-family: var(--font-serif); font-size: 1.1rem; margin-bottom: 0.5rem; line-height: 1.2; }
         .cart-item-price { color: var(--color-accent); font-weight: 600; font-size: 1rem; }
@@ -497,6 +508,15 @@
         @media (pointer: fine) { .qty-btn:hover { color: var(--color-accent); } }
         .remove-item { color: var(--color-text-light); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; transition: color 0.3s ease; cursor: pointer; }
         @media (pointer: fine) { .remove-item:hover { color: var(--color-error); } }
+        
+        /* CART DELIVERY */
+        .delivery-details { margin-bottom: 1.5rem; text-align: left; border-bottom: 1px solid var(--color-border); padding-bottom: 1.5rem; }
+        .delivery-details h4 { font-family: var(--font-sans); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 1rem; }
+        .delivery-input { width: 100%; padding: 12px 16px; margin-bottom: 10px; border-radius: 8px; border: 1px solid var(--color-border); background: var(--color-bg); color: var(--color-text); font-family: var(--font-sans); font-size: 0.9rem; outline: none; transition: border-color 0.3s ease; }
+        .delivery-input:focus { border-color: var(--color-accent); }
+        .inpost-btn { width: 100%; padding: 12px; background-color: #FFCC00; color: #000; border: none; border-radius: 50px; font-weight: 700; font-family: var(--font-sans); text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: transform 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 10px;}
+        @media (pointer: fine) { .inpost-btn:hover { transform: translateY(-2px); } }
+
         .cart-footer { padding: var(--spacing-lg); border-top: 1px solid var(--color-border); background-color: var(--color-bg-alt); }
         .cart-total { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 1.5rem; }
         .cart-total span { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; color: var(--color-text-light); font-weight: 600; }
@@ -507,18 +527,65 @@
         .checkout-btn span { position: relative; z-index: 2; }
 
         /* ==========================================================================
-           14. CREATIVE PRODUCT MODAL
+           12. CREATIVE PRODUCT MODAL WITH IMAGE SLIDER & LIGHTBOX ZOOM
            ========================================================================== */
         .modal-wrapper { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; height: 100dvh; z-index: 100000; display: flex; justify-content: center; align-items: center; pointer-events: none; visibility: hidden; padding: var(--container-padding); }
         .modal-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--color-bg); opacity: 0; will-change: opacity; }
         #modal-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; opacity: 0; }
+        
         .modal-container { position: relative; width: 100%; max-width: 1200px; height: 85vh; background-color: var(--color-modal); border-radius: var(--radius-lg); z-index: 2; overflow: hidden; display: flex; box-shadow: 0 40px 100px var(--color-shadow); clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0 100%); border: 1px solid var(--color-border); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
-        .modal-close { position: absolute; top: 1.5rem; right: 1.5rem; z-index: 10; }
+        .modal-close { position: absolute; top: 1.5rem; right: 1.5rem; z-index: 10; cursor: pointer; border: 1px solid var(--color-border); width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: var(--color-text); transition: all 0.4s var(--ease-out-expo); background: var(--color-bg); }
+        @media (pointer: fine) { .modal-close:hover { transform: rotate(90deg); background-color: var(--color-text); color: var(--color-bg); } }
+
         .modal-layout { display: flex; width: 100%; height: 100%; flex-direction: row; }
-        .modal-left { flex: 1; position: relative; display: flex; justify-content: center; align-items: center; background: linear-gradient(135deg, var(--color-bg-alt) 0%, rgba(194,155,69,0.05) 100%); padding: 4rem; }
-        .modal-image-wrapper { position: relative; width: 100%; max-width: 400px; aspect-ratio: 1 / 1.35; perspective: 2000px; opacity: 0; transform: translateY(50px); }
-        .modal-image { width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius-sm); box-shadow: -20px 30px 60px rgba(0,0,0,0.3); transition: transform 0.1s linear; transform-style: preserve-3d; background-color: var(--color-bg-alt); }
-        .modal-fallback { width: 100%; height: 100%; border-radius: var(--radius-sm); background: var(--color-bg-alt); display: none; align-items: center; justify-content: center; text-align: center; font-size: 1.5rem; font-family: var(--font-serif); padding: 2rem; color: var(--color-text-light); box-shadow: -20px 30px 60px rgba(0,0,0,0.3); transform-style: preserve-3d; }
+        .modal-left { flex: 1.2; position: relative; display: flex; justify-content: center; align-items: center; background: linear-gradient(135deg, var(--color-bg-alt) 0%, rgba(194,155,69,0.05) 100%); padding: 0; overflow: hidden; }
+        
+        .modal-image-wrapper { 
+            position: relative; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;
+            opacity: 0; transform: translateY(50px); background: transparent; 
+        }
+        
+        .modal-carousel { 
+            display: flex; width: 100%; height: 100%; overflow-x: auto; scroll-snap-type: x mandatory; 
+            scrollbar-width: none; -ms-overflow-style: none; scroll-behavior: smooth;
+        }
+        .modal-carousel::-webkit-scrollbar { display: none; }
+        
+        .modal-slide { 
+            flex: 0 0 100%; width: 100%; height: 100%; scroll-snap-align: start; 
+            display: flex; justify-content: center; align-items: center; padding: 2rem; 
+        }
+        
+        .modal-image { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(-15px 25px 35px rgba(0,0,0,0.3)); transition: transform 0.1s linear; }
+        html[data-theme="dark"] .modal-image { filter: drop-shadow(-15px 25px 35px rgba(0,0,0,0.7)); }
+
+        .carousel-btn { 
+            position: absolute; top: 50%; transform: translateY(-50%); width: 45px; height: 45px; 
+            background: var(--color-bg-alt); backdrop-filter: blur(5px); border: 1px solid var(--color-border); 
+            border-radius: 50%; color: var(--color-text); display: flex; justify-content: center; align-items: center; 
+            cursor: pointer; z-index: 10; opacity: 0; transition: opacity 0.3s, transform 0.3s; 
+        }
+        .modal-image-wrapper:hover .carousel-btn { opacity: 1; }
+        .carousel-btn.prev { left: 20px; }
+        .carousel-btn.next { right: 20px; }
+        @media (pointer: fine) { .carousel-btn:hover { background: var(--color-text); color: var(--color-bg); } }
+        
+        /* ZOOM / LIGHTBOX BUTTON */
+        .zoom-btn {
+            position: absolute; top: 20px; left: 20px; width: 45px; height: 45px;
+            background: var(--color-bg-alt); backdrop-filter: blur(5px); border: 1px solid var(--color-border);
+            border-radius: 50%; color: var(--color-text); display: flex; justify-content: center; align-items: center;
+            cursor: pointer; z-index: 10; opacity: 0; transition: opacity 0.3s, transform 0.3s;
+        }
+        .modal-image-wrapper:hover .zoom-btn { opacity: 1; }
+        @media (pointer: fine) { .zoom-btn:hover { background: var(--color-text); color: var(--color-bg); transform: scale(1.1); } }
+        
+        .carousel-dots { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); display: flex; gap: 10px; z-index: 10; }
+        .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--color-border); transition: background 0.3s, transform 0.3s; cursor: pointer; }
+        .dot.active { background: var(--color-accent); transform: scale(1.3); }
+
+        .modal-fallback { display: none; align-items: center; justify-content: center; text-align: center; padding: 2rem; font-family: var(--font-serif); font-style: italic; font-size: 1.2rem; color: var(--color-text-light); }
+        
         .modal-right { flex: 1; padding: 4rem 4rem; display: flex; flex-direction: column; justify-content: center; background-color: transparent; overflow-y: auto; }
         .modal-right::-webkit-scrollbar { width: 0; }
         .modal-content-inner { max-width: 600px; }
@@ -531,19 +598,56 @@
         @media (pointer: fine) { .modal-add-btn:hover { background-color: var(--color-text); color: var(--color-bg); transform: translateY(-5px); box-shadow: 0 15px 40px var(--color-shadow); } }
         .modal-anim-el { opacity: 0; transform: translateY(30px); }
 
+        /* LIGHTBOX FULLSCREEN OVERLAY */
+        .lightbox-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(10, 9, 8, 0.98); z-index: 1000005; display: none;
+            justify-content: center; align-items: center; opacity: 0;
+        }
+        .lightbox-img {
+            max-width: 90vw; max-height: 90vh; object-fit: contain; transform: scale(0.8);
+            filter: drop-shadow(0 20px 40px rgba(0,0,0,0.5));
+        }
+        .lightbox-close {
+            position: absolute; top: 20px; right: 20px; width: 50px; height: 50px;
+            background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 50%;
+            color: #fff; font-size: 1.5rem; display: flex; justify-content: center; align-items: center;
+            cursor: pointer; transition: 0.3s; z-index: 10;
+        }
+        .lightbox-close:hover { background: #fff; color: #000; transform: rotate(90deg); }
+
         /* ==========================================================================
-           15. RESPONSIVE & FIXES
+           13. PARALLAX SECTION & FOOTER
+           ========================================================================== */
+        .parallax-section { height: 80vh; position: relative; overflow: hidden; display: flex; justify-content: center; align-items: center; background-color: #0A0908; z-index: 1; }
+        .parallax-bg { position: absolute; top: -30%; left: 0; width: 100%; height: 160%; background-color: #0A0908; background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.08" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23n)" opacity="0.06"/></svg>'); z-index: 1; }
+        .parallax-content { position: relative; z-index: 2; text-align: center; max-width: 900px; padding: 0 var(--container-padding); color: #FFFFFF; }
+        .parallax-content h2 { font-size: clamp(2.5rem, 7vw, 6rem); margin-bottom: 1.5rem; color: #FFFFFF; letter-spacing: -0.02em; }
+        .parallax-content p { font-size: clamp(1rem, 2vw, 1.5rem); color: rgba(255,255,255,0.7); font-family: var(--font-serif); font-style: italic; }
+
+        footer { background-color: var(--color-bg-alt); padding: var(--spacing-xxl) var(--container-padding) var(--spacing-md); position: relative; z-index: 2; border-top: 1px solid var(--color-border); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+        .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 4rem; margin-bottom: var(--spacing-xl); }
+        .footer-brand h2 { font-size: clamp(2rem, 4vw, 3rem); font-style: italic; margin-bottom: 1.5rem; letter-spacing: -0.02em; }
+        .footer-brand p { color: var(--color-text-light); max-width: 400px; font-size: clamp(0.9rem, 2vw, 1.1rem); }
+        .footer-links h4 { font-family: var(--font-sans); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 2rem; }
+        .footer-links ul { display: flex; flex-direction: column; gap: 1.2rem; }
+        .footer-links a { color: var(--color-text-light); position: relative; display: inline-block; transition: color 0.3s ease; font-size: 1.05rem; }
+        @media (pointer: fine) { .footer-links a:hover { color: var(--color-accent); } }
+        .footer-bottom { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; padding-top: var(--spacing-md); border-top: 1px solid var(--color-border); font-size: 0.85rem; color: var(--color-text-light); font-weight: 500; text-align: center; }
+
+        /* ==========================================================================
+           14. RESPONSIVE
            ========================================================================== */
         @media (max-width: 1024px) {
             .footer-top { grid-template-columns: 1fr 1fr; gap: 3rem; }
             .modal-container { display: block; overflow-y: auto; height: 90vh; }
             .modal-layout { display: flex; flex-direction: column; height: auto; min-height: 100%; }
-            .modal-left { padding: 3rem 2rem; flex: 0 0 auto; height: auto; min-height: 45vh; }
-            .modal-image-wrapper { height: 100%; width: 100%; max-width: 300px; margin: 0 auto; }
+            .modal-left { padding: 0; flex: 0 0 auto; height: 45vh; }
             .modal-right { padding: 3rem 2rem; flex: 1 1 auto; overflow-y: visible; justify-content: flex-start; }
             .modal-bottom { margin-top: 2rem; }
             .products-grid.list-view .product-card { flex-direction: column; }
             .products-grid.list-view .product-card-inner { width: 100%; max-width: 400px; margin: 0 auto; }
+            .carousel-btn, .zoom-btn { opacity: 1; pointer-events: auto; }
         }
 
         @media (max-width: 768px) {
@@ -553,9 +657,7 @@
             header.scrolled .logo-img { max-height: 50px; }
             .nav-actions { gap: 1rem; }
             
-            /* Responsive Hide Texts */
             .theme-toggle-btn .text, .lang-toggle-btn .text { display: none; } 
-            
             .theme-toggle-btn .icon { width: 22px; height: 22px; }
             .lang-toggle-btn { font-size: 1rem; font-weight: 700; }
             .cart-btn { font-size: 0; padding: 0;} 
@@ -564,9 +666,7 @@
             .cart-btn::after { display: none; }
             .cart-count { top: -8px; right: -8px; width: 18px; height: 18px; font-size: 0.55rem; }
             
-            /* Responsive Hero title adjusted line-height to fit text */
             .hero-title { font-size: clamp(2.5rem, 12vw, 4rem); line-height: 1.25; }
-            
             .footer-top { grid-template-columns: 1fr; gap: 2.5rem; }
             .shop-toolbar { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
             .shop-controls { width: 100%; justify-content: space-between; }
@@ -576,18 +676,16 @@
             .products-grid { grid-template-columns: 1fr; gap: 3rem; }
             .cart-sidebar { max-width: 100%; }
             
-            /* STRICT MOBILE SCROLL FIX FOR MODAL */
             .modal-wrapper { padding: 0; }
-            .modal-container { 
-                width: 100vw; height: 100vh; height: 100dvh; border-radius: 0; border: none; 
-                display: block; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch;
-            }
+            .modal-container { width: 100vw; height: 100vh; height: 100dvh; border-radius: 0; border: none; display: block; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; }
             .modal-close { top: 1rem; right: 1rem; width: 45px; height: 45px; background: var(--color-bg-alt); backdrop-filter: blur(10px); }
             .modal-layout { display: block; height: auto; min-height: 100%; }
-            .modal-left { padding: 5rem 2rem 2rem; height: auto; min-height: 45vh; display: flex; }
+            .modal-left { padding: 0; height: 45vh; display: flex; }
             .modal-right { padding: 2rem 2rem 4rem; height: auto; overflow-y: visible; }
             .modal-bottom { flex-direction: column; align-items: stretch; gap: 1rem; }
             .modal-price { text-align: center; }
+
+            #easypack-widget-modal { padding: 0 !important; }
         }
     </style>
 </head>
@@ -607,7 +705,7 @@
 
     <div id="preloader">
         <div class="preloader-brand">
-            <img src="img/samuel-for-children.jpg" 
+            <img src="img/samuel-for-children.webp" 
                  onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='block';" 
                  alt="Samuel for Children" 
                  class="preloader-logo-img">
@@ -620,12 +718,16 @@
     </div>
 
     <div id="toast-container"></div>
-
     <div id="canvas-container"></div>
+
+    <div id="image-lightbox" class="lightbox-overlay">
+        <button id="lightbox-close" class="lightbox-close hover-target" aria-label="Zamknij powiększenie">✕</button>
+        <img id="lightbox-img" class="lightbox-img" src="" alt="Powiększenie książki">
+    </div>
 
     <header id="header">
         <a href="#" class="logo hover-target" aria-label="Samuel for Children - Home">
-            <img src="img/samuel-for-children.jpg" 
+            <img src="img/samuel-for-children.webp" 
                  onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='block';" 
                  alt="Samuel for Children" 
                  class="logo-img">
@@ -636,12 +738,10 @@
             <button id="lang-toggle" class="lang-toggle-btn hover-target" aria-label="Change language">
                 <span class="text" id="lang-text">EN</span>
             </button>
-            
             <button id="theme-toggle" class="theme-toggle-btn hover-target" aria-label="Zmień motyw">
                 <span class="icon"></span>
                 <span class="text" data-i18n="theme_dark">Ciemny</span>
             </button>
-            
             <button class="cart-btn hover-target" id="open-cart" aria-label="Otwórz koszyk">
                 <span class="text" data-i18n="cart_btn">Koszyk</span>
                 <span class="cart-count" id="cart-count-badge">0</span>
@@ -660,13 +760,30 @@
                 </svg>
             </button>
         </div>
+        
         <div class="cart-items" id="cart-items-container" data-lenis-prevent></div>
+        
         <div class="cart-footer">
+            <div class="delivery-details">
+                <h4 data-i18n="del_title">Dane dostawy</h4>
+                <input type="tel" id="user-phone" class="delivery-input hover-target" data-i18n-ph="del_phone_ph" placeholder="Numer telefonu (dla kuriera)" required>
+                
+                <button type="button" id="open-inpost-btn" class="inpost-btn hover-target">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                    <span data-i18n="del_inpost_btn">Wybierz Paczkomat</span>
+                </button>
+                
+                <div id="selected-paczkomat-text" style="display: none; font-size: 0.85rem; color: var(--color-accent); margin-top: 15px; font-family: var(--font-sans); font-weight: 600;">
+                    <span data-i18n="del_selected">Wybrano:</span> <strong id="paczkomat-code"></strong>
+                </div>
+                <input type="hidden" id="paczkomat-input" value="">
+            </div>
+
             <div class="cart-total">
                 <span data-i18n="cart_total">Razem:</span>
                 <strong id="cart-total-price">0.00 zł</strong>
             </div>
-            <button class="checkout-btn hover-target"><span data-i18n="cart_checkout">Przejdź do kasy</span></button>
+            <button class="checkout-btn hover-target" id="checkout-button"><span data-i18n="cart_checkout">Przejdź do kasy</span></button>
         </div>
     </div>
 
@@ -683,8 +800,16 @@
             <div class="modal-layout">
                 <div class="modal-left">
                     <div class="modal-image-wrapper" id="modal-img-wrapper">
-                        <img src="" alt="" class="modal-image" id="modal-img" onerror="this.style.display='none'; document.getElementById('modal-fallback').style.display='flex';">
-                        <div class="modal-fallback" id="modal-fallback"></div>
+                        
+                        <button class="zoom-btn hover-target" id="modal-zoom-btn" aria-label="Powiększ zdjęcie">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+                        </button>
+
+                        <div class="modal-carousel" id="modal-carousel"></div>
+                        
+                        <button class="carousel-btn prev hover-target" id="carousel-prev">❮</button>
+                        <button class="carousel-btn next hover-target" id="carousel-next">❯</button>
+                        <div class="carousel-dots" id="carousel-dots"></div>
                     </div>
                 </div>
                 <div class="modal-right">
@@ -729,7 +854,8 @@
                     <div class="shop-toolbar">
                         <div class="shop-filters">
                             <button class="active hover-target" data-filter="all" data-i18n="filter_all">Wszystko</button>
-                            <button class="hover-target" data-filter="ksiazki" data-i18n="filter_books">Książki</button>
+                            <button class="hover-target" data-filter="swietosc" data-i18n="filter_swietosc">Seria „Świętość nie jest nudna”</button>
+                            <button class="hover-target" data-filter="kolorowanki" data-i18n="filter_kolorowanki">Kolorowanki</button>
                         </div>
                         <div class="shop-controls">
                             <input type="text" id="shop-search" class="shop-search hover-target" data-i18n-ph="search_ph" placeholder="Szukaj...">
@@ -764,7 +890,7 @@
             <footer>
                 <div class="footer-top">
                     <div class="footer-brand">
-                        <img src="img/samuel-for-children.jpg" 
+                        <img src="img/samuel-for-children.webp" 
                              onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='block';" 
                              alt="Samuel for Children" 
                              class="footer-logo-img">
@@ -820,7 +946,8 @@
                 about_text: "Wierzymy, że słowa mają moc kształtowania dusz. Nasze książki to nie tylko papier i atrament, to starannie zaprojektowane artefakty, które wprowadzają najmłodszych w świat duchowych wartości, ucząc miłości, empatii i prawdy poprzez sztukę najwyższej próby.",
                 shop_title: "Kolekcja.",
                 filter_all: "Wszystko",
-                filter_books: "Książki",
+                filter_swietosc: "Seria „Świętość nie jest nudna”",
+                filter_kolorowanki: "Kolorowanki",
                 search_ph: "Szukaj...",
                 sort_default: "Domyślnie",
                 sort_cheap: "Od najtańszych",
@@ -836,7 +963,11 @@
                 footer_l3: "Dla szkół i parafii",
                 footer_l4: "Wysyłka i zwroty",
                 footer_l5: "Regulamin sklepu",
-                footer_copy: "&copy; 2026 Samuel for Children. Wszystkie prawa zastrzeżone."
+                footer_copy: "&copy; 2026 Samuel for Children. Wszystkie prawa zastrzeżone.",
+                del_title: "Dane dostawy",
+                del_phone_ph: "Numer telefonu (dla kuriera)",
+                del_inpost_btn: "Wybierz Paczkomat",
+                del_selected: "Wybrano:"
             },
             en: {
                 theme_dark: "Dark",
@@ -858,7 +989,8 @@
                 about_text: "We believe that words have the power to shape souls. Our books are not just paper and ink; they are carefully designed artifacts that introduce the youngest to the world of spiritual values, teaching love, empathy, and truth through the highest quality of art.",
                 shop_title: "Collection.",
                 filter_all: "All",
-                filter_books: "Books",
+                filter_swietosc: "„Holiness is Not Boring” Series",
+                filter_kolorowanki: "Coloring Books",
                 search_ph: "Search...",
                 sort_default: "Default",
                 sort_cheap: "Price: Low to High",
@@ -874,29 +1006,76 @@
                 footer_l3: "For Schools & Parishes",
                 footer_l4: "Shipping & Returns",
                 footer_l5: "Terms of Service",
-                footer_copy: "&copy; 2026 Samuel for Children. All rights reserved."
+                footer_copy: "&copy; 2026 Samuel for Children. All rights reserved.",
+                del_title: "Delivery Details",
+                del_phone_ph: "Phone number (for courier)",
+                del_inpost_btn: "Select Parcel Locker",
+                del_selected: "Selected:"
             }
         };
 
         const ProductsTranslations = {
             'p1': {
-                en: { title: "St. Francis of Assisi", desc: "Immerse yourself in the poetic tale of the Poor Man of Assisi. The book takes young readers on an extraordinary journey through medieval Italy, teaching love for all creation and simplicity of heart. Beautiful, hand-painted illustrations stimulate the imagination, making this position a true work of publishing art.", category: "books" },
-                pl: { title: "Św. Franciszek z Asyżu", desc: "Zanurz się w poetycką opowieść o Biedaczynie z Asyżu. Książka zabiera młodych czytelników w niezwykłą podróż po średniowiecznej Italii, ucząc miłości do wszelkiego stworzenia i prostoty serca. Przepiękne, ręcznie malowane ilustracje pobudzają wyobraźnię i kształtują wrażliwość estetyczną dzieci, czyniąc z tej pozycji prawdziwe dzieło sztuki wydawniczej.", category: "książki" }
+                en: { title: "St. Francis of Assisi", desc: "The figure of Saint Francis of Assisi has remained a wonderful guide for children on the path of faith and love for all creation for centuries. This bilingual publication reveals to the youngest readers the true face of the young man who rebuilt the Church with great power and gave the world its first Christmas nativity scene. Through this beautiful story by Brother Łukasz Woźniak, readers can discover the life of a man in love with the Gospel, whose joyful journey continues to inspire and invites everyone to a shared adventure with God.", category: "„Holiness is Not Boring” Series" },
+                pl: { title: "Św. Franciszek z Asyżu", desc: "Postać świętego Franciszka z Asyżu od stuleci pozostaje dla dzieci wspaniałym przewodnikiem na drodze wiary oraz miłości do całego stworzenia. Ta dwujęzyczna publikacja odkrywa przed najmłodszymi prawdziwe oblicze młodzieńca, który z wielką mocą odbudowywał Kościół i podarował światu pierwszą bożonarodzeniową szopkę. Dzięki pięknej opowieści autorstwa brata Łukasza Woźniaka, czytelnicy mogą poznać historię człowieka zakochanego w Ewangelii, którego radosne życie do dziś inspiruje i zaprasza do wspólnej przygody z Bogiem.", category: "Seria „Świętość nie jest nudna”" }
             },
             'p2': {
-                en: { title: "Diary of Bl. Michał Czartoryski", desc: "An extraordinary, recovered diary showing the fate of an outstanding Dominican and martyr of the Warsaw Uprising. A story of incredible courage, loyalty to one's beliefs, and unwavering hope, presented in a form accessible to young audiences.", category: "books" },
-                pl: { title: "Pamiętnik bł. Michała Czartoryskiego", desc: "Niezwykły, odnaleziony pamiętnik ukazujący losy wybitnego dominikanina i męczennika Powstania Warszawskiego. Historia niesłychanej odwagi, wierności swoim przekonaniom i niezłomnej nadziei, podana w formie przystępnej dla młodego odbiorcy.", category: "książki" }
+                en: { title: "Diary of Bl. Michał Czartoryski", desc: "Discover the extraordinary story of a young prince who chose to become a monk! „Let me tell you about myself...” is a fascinating, richly illustrated tale of the life of Jan Franciszek Czartoryski – later known as Blessed Father Michał.", category: "„Holiness is Not Boring” Series" },
+                pl: { title: "Pamiętnik bł. Michała Czartoryskiego", desc: "Poznaj niezwykłą historię młodego księcia, który postanowił zostać zakonnikiem! „Opowiem Ci o sobie...” to fascynująca, bogato ilustrowana opowieść o życiu Jana Franciszka Czartoryskiego – późniejszego błogosławionego ojca Michała.", category: "Seria „Świętość nie jest nudna”" }
             },
             'p3': {
-                en: { title: "Miss Hanna", desc: "A touching and deeply moving story about the strength of character, determination, and discovering one's own path in the light of Christian values. 'Miss Hanna' is a tender guide through the world of difficult emotions. Premium edition in an exclusive form.", category: "books" },
-                pl: { title: "Panna Hanna", desc: "Wzruszająca i głęboko poruszająca opowieść o sile charakteru, determinacji i odkrywaniu własnej drogi w świetle chrześcijańskich wartości. 'Panna Hanna' to nie tylko książka, to czuły przewodnik po świecie trudnych emocji. Wydanie premium w ekskluzywnej, kolekcjonerskiej formie.", category: "książki" }
+                en: { title: "Miss Hanna", desc: "Discover the remarkable story of Blessed Hanna Chrzanowska, a woman with a huge heart who dedicated her entire life to caring for the sick. „Miss Hanna – A Great Nurse” is an inspiring, richly illustrated journey through the life of this famous Krakow nurse, told in a simple and touching way perfect for young readers.", category: "„Holiness is Not Boring” Series" },
+                pl: { title: "Panna Hanna", desc: "Odkryjcie niezwykłą historię błogosławionej Hanny Chrzanowskiej, kobiety o wielkim sercu, która całe swoje życie poświęciła opiece nad chorymi. „O pannie Hannie...” to inspirująca, bogato ilustrowana podróż przez życie krakowskiej pielęgniarki, opowiedziana w prosty i poruszający sposób, idealny dla młodych czytelników.", category: "Seria „Świętość nie jest nudna”" }
+            },
+            'p4': {
+                en: { title: "The Brother Smelling of Wood", desc: "The figure of the Blessed sculptor Guy of Montpellier becomes a wonderful example for children on how to combine passion with love for God. This bilingual publication shows the life of a French nobleman who abandoned wealth to serve the sick and poor in hospitals with simplicity and joy. Through this story, the youngest readers can discover the journey of a man in love with the Gospel, whose joyful life continues to inspire and invites everyone to a shared adventure with the Lord.", category: "„Holiness is Not Boring” Series" },
+                pl: { title: "Brat pachnący drewnem", desc: "Postać błogosławionego rzeźbiarza Gwidona z Montpellier staje się dla dzieci wspaniałym przykładem na to, jak łączyć pasję z miłością do Boga. Ta dwujęzyczna publikacja ukazuje losy francuskiego szlachcica, który porzucił bogactwo, aby w prostocie i radości służyć chorym oraz ubogim w szpitalach. Dzięki tej opowieści najmłodsi mogą poznać historię człowieka zakochanego w Ewangelii, który swoim radosnym życiem do dziś inspiruje i zaprasza do wspólnej przygody z Panem Bogiem.", category: "Seria „Świętość nie jest nudna”" }
+            },
+            'p5': {
+                en: { title: "About Father Honorat, a Monk Full of Secrets", desc: "Can God transform even the most rebellious heart? The life story of Father Honorat proves that He can! „On father Honorat, a friar full of mysteries” is an extraordinary tale of a man who traveled a long and winding road – from youthful rebellion and atheism to total devotion to God as a holy Capuchin friar.", category: "„Holiness is Not Boring” Series" },
+                pl: { title: "O ojcu Honoracie, zakonniku pełnym tajemnic", desc: "Czy Bóg jest w stanie przemienić nawet najbardziej buntownicze serce? Historia życia ojca Honorata pokazuje, że tak! „O ojcu Honoracie, zakonniku pełnym tajemnic” to niezwykła opowieść o człowieku, który przeszedł długą i krętą drogę – od młodzieńczego buntu i ateizmu, aż po całkowite oddanie się Bogu jako święty kapucyn.", category: "Seria „Świętość nie jest nudna”" }
+            },
+            'p6': {
+                en: { title: "How Mary Loved the Mother of God from Jasna Góra", desc: "A touching story about love for the Mother of God, coming soon. From the series „Holiness is Not Boring”. Authors: Barbara Nowosielska, Anna Pecyna, illustrations: Zofia Kowalska.", category: "„Holiness is Not Boring” Series" },
+                pl: { title: "Jak Marysia pokochała Matkę Bożą z Jasnej Góry", desc: "Książka w przygotowaniu. W ramach serii „Świętość nie jest nudna”. Autorzy: Barbara Nowosielska, Anna Pecyna, ilustracje: Zofia Kowalska.", category: "Seria „Świętość nie jest nudna”" }
+            },
+            'p7': {
+                en: { title: "Michael and God's Great Fishing Rod", desc: "The story of Blessed Michał Czartoryski becomes a joyful adventure with faith and a unique lesson in values for children. This bilingual publication skillfully combines a traditional story with numerous coloring pages, a set of stickers, and creative tasks. Thanks to this format, the youngest readers can actively participate in learning about the young Dominican friar's life while developing their imagination and language skills.", category: "Coloring Books" },
+                pl: { title: "Michał i wielka wędka Pana Boga", desc: "Historia błogosławionego Michała Czartoryskiego staje się dla dzieci radosną przygodą z wiarą i niezwykłą lekcją wartości. Ta dwujęzyczna publikacja umiejętnie łączy tradycyjną opowieść z licznymi kolorowankami, zestawem naklejek oraz kreatywnymi zadaniami. Dzięki takiej formie najmłodsi mogą aktywnie uczestniczyć w poznawaniu losów młodego dominikanina, rozwijając przy tym swoją wyobraźnię oraz umiejętności językowe.", category: "Kolorowanki" }
             }
         };
 
         const productsDB = [
-            { id: 'p1', title: "Św. Franciszek z Asyżu", price: 45.00, img: "img/franciszek.jpg", category: "ksiazki" },
-            { id: 'p2', title: "Pamiętnik bł. Michała Czartoryskiego", price: 50.00, img: "img/opowiem-ci-o-sobie.jpg", category: "ksiazki" },
-            { id: 'p3', title: "Panna Hanna", price: 50.00, img: "img/o-pannie-hannie.jpg", category: "ksiazki" }
+            { 
+                id: 'p1', title: "Św. Franciszek z Asyżu", price: 45.00, category: "swietosc",
+                img: "img/franciszek-z-asyzu.webp", 
+                gallery: ["img/franciszek-z-asyzu.webp", "img/franciszek-z-asyzu-2strona.webp", "img/franciszek-z-asyzu-opis.webp"] 
+            },
+            { 
+                id: 'p2', title: "Pamiętnik bł. Michała Czartoryskiego", price: 50.00, category: "swietosc",
+                img: "img/opowiem-ci-o-sobie.webp", 
+                gallery: ["img/opowiem-ci-o-sobie.webp", "img/opowiem-ci-o-sobie-2strona.webp", "img/opowiem-ci-o-sobie-opis.webp"] 
+            },
+            { 
+                id: 'p3', title: "Panna Hanna", price: 50.00, category: "swietosc",
+                img: "img/o-pannie-hannie.webp", 
+                gallery: ["img/o-pannie-hannie.webp", "img/o-pannie-hannie-2strona.webp", "img/o-pannie-hannie-opis.webp"] 
+            },
+            { 
+                id: 'p4', title: "Brat pachnący drewnem", price: 45.00, category: "swietosc",
+                img: "img/brat-pachnacy-drewnem.webp", 
+                gallery: ["img/brat-pachnacy-drewnem.webp", "img/brat-pachnacy-drewnem-2strona.webp", "img/brat-pachnacy-drewnem-opis.webp"] 
+            },
+            { 
+                id: 'p5', title: "O ojcu Honoracie, zakonniku pełnym tajemnic", price: 45.00, category: "swietosc",
+                img: "img/o-ojcu-honoracie.webp", 
+                gallery: ["img/o-ojcu-honoracie.webp", "img/o-ojcu-honoracie-2strona.webp", "img/o-ojcu-honoracie-opis.webp"] 
+            },
+            { 
+                id: 'p7', title: "Michał i wielka wędka Pana Boga", price: 35.00, category: "kolorowanki",
+                img: "img/michal-i-wedka.webp", 
+                gallery: ["img/michal-i-wedka.webp", "img/michal-i-wedka-2strona.webp", "img/michal-i-wedka-opis.webp"] 
+            }
         ];
 
         const AppState = {
@@ -991,6 +1170,12 @@
                 document.documentElement.setAttribute('data-theme', theme);
                 localStorage.setItem('sfc_theme', theme);
                 this.text.textContent = theme === 'dark' ? getI18n('theme_light') : getI18n('theme_dark');
+                
+                const cursorDot = document.getElementById('cursor-dot');
+                if (cursorDot) {
+                    cursorDot.style.backgroundColor = theme === 'dark' ? 'var(--cursor-dark-color)' : 'var(--cursor-color)';
+                }
+
                 window.dispatchEvent(new CustomEvent('themeChanged', { detail: { theme } }));
             }
         }
@@ -1135,10 +1320,21 @@
                 this.ovl = document.getElementById('modal-overlay');
                 this.cont = document.getElementById('modal-container');
                 this.imgWrap = document.getElementById('modal-img-wrapper');
-                this.img = document.getElementById('modal-img');
-                this.fallback = document.getElementById('modal-fallback');
+                
+                this.carousel = document.getElementById('modal-carousel');
+                this.dotsContainer = document.getElementById('carousel-dots');
+                this.btnPrev = document.getElementById('carousel-prev');
+                this.btnNext = document.getElementById('carousel-next');
+                
+                this.zoomBtn = document.getElementById('modal-zoom-btn');
+                this.lightbox = document.getElementById('image-lightbox');
+                this.lightboxImg = document.getElementById('lightbox-img');
+                this.lightboxClose = document.getElementById('lightbox-close');
+                
                 this.isOpen = false; 
                 this.currId = null;
+                this.currentGallery = [];
+                this.currentIndex = 0;
                 
                 this.initCanvas();
                 this.bind();
@@ -1207,29 +1403,52 @@
                         window.CartSys.add(this.currId);
                     }
                 });
+
+                // Obsługa Slidera
+                this.btnPrev.addEventListener('click', () => {
+                    this.carousel.scrollBy({ left: -this.carousel.clientWidth, behavior: 'smooth' });
+                });
                 
-                if (!AppState.isTouch) {
-                    this.imgWrap.addEventListener('mousemove', e => {
-                        const r = this.imgWrap.getBoundingClientRect();
-                        const rx = ((e.clientY - r.top - r.height / 2) / (r.height / 2)) * -15;
-                        const ry = ((e.clientX - r.left - r.width / 2) / (r.width / 2)) * 15;
-                        gsap.to([this.img, this.fallback], { 
-                            rotationX: rx, 
-                            rotationY: ry, 
-                            duration: 0.5, 
-                            ease: "power2.out" 
-                        });
+                this.btnNext.addEventListener('click', () => {
+                    this.carousel.scrollBy({ left: this.carousel.clientWidth, behavior: 'smooth' });
+                });
+
+                this.carousel.addEventListener('scroll', () => {
+                    if (this.carousel.clientWidth === 0) return;
+                    this.currentIndex = Math.round(this.carousel.scrollLeft / this.carousel.clientWidth);
+                    Array.from(this.dotsContainer.children).forEach((dot, i) => {
+                        dot.classList.toggle('active', i === this.currentIndex);
                     });
-                    
-                    this.imgWrap.addEventListener('mouseleave', () => {
-                        gsap.to([this.img, this.fallback], { 
-                            rotationX: 0, 
-                            rotationY: 0, 
-                            duration: 1, 
-                            ease: "elastic.out(1,0.3)" 
-                        });
-                    });
-                }
+                });
+                
+                // Obsługa Lupy (Lightbox)
+                this.zoomBtn.addEventListener('click', () => this.openLightbox());
+                this.lightboxClose.addEventListener('click', () => this.closeLightbox());
+                this.lightbox.addEventListener('click', (e) => {
+                    if (e.target === this.lightbox) this.closeLightbox();
+                });
+            }
+            openLightbox() {
+                if (!this.currentGallery || this.currentGallery.length === 0) return;
+                
+                this.lightboxImg.src = this.currentGallery[this.currentIndex];
+                this.lightbox.style.display = 'flex';
+                document.body.classList.add('lightbox-open');
+                
+                gsap.to(this.lightbox, { opacity: 1, duration: 0.4, ease: 'power2.out' });
+                gsap.fromTo(this.lightboxImg, { scale: 0.8 }, { scale: 1.5, duration: 0.5, ease: 'back.out(1.5)' });
+            }
+            closeLightbox() {
+                gsap.to(this.lightboxImg, { scale: 0.8, duration: 0.3, ease: 'power2.in' });
+                gsap.to(this.lightbox, { 
+                    opacity: 0, 
+                    duration: 0.3, 
+                    ease: 'power2.in', 
+                    onComplete: () => {
+                        this.lightbox.style.display = 'none';
+                        document.body.classList.remove('lightbox-open');
+                    }
+                });
             }
             open(id) {
                 const baseP = productsDB.find(x => x.id === id);
@@ -1238,6 +1457,8 @@
                 const pInfo = ProductsTranslations[id][AppState.lang];
                 this.currId = id; 
                 this.isOpen = true;
+                this.currentGallery = baseP.gallery;
+                this.currentIndex = 0;
                 
                 if (AppState.lenis) {
                     AppState.lenis.stop();
@@ -1248,10 +1469,28 @@
                 document.getElementById('modal-price').textContent = formatPrice(baseP.price);
                 document.getElementById('modal-category').textContent = pInfo.category;
                 
-                this.img.style.display = 'block'; 
-                this.fallback.style.display = 'none';
-                this.fallback.textContent = pInfo.title; 
-                this.img.src = baseP.img;
+                // Generowanie Karuzeli Zdjęć
+                this.carousel.innerHTML = '';
+                this.dotsContainer.innerHTML = '';
+                
+                this.currentGallery.forEach((src, i) => {
+                    const slide = document.createElement('div');
+                    slide.className = 'modal-slide';
+                    slide.innerHTML = `
+                        <img src="${src}" class="modal-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="modal-fallback">Zdjęcie niedostępne</div>
+                    `;
+                    this.carousel.appendChild(slide);
+
+                    const dot = document.createElement('div');
+                    dot.className = `dot ${i === 0 ? 'active' : ''}`;
+                    dot.onclick = () => {
+                        this.carousel.scrollTo({ left: this.carousel.clientWidth * i, behavior: 'smooth' });
+                    };
+                    this.dotsContainer.appendChild(dot);
+                });
+
+                this.carousel.scrollLeft = 0;
 
                 this.wrap.style.visibility = 'visible'; 
                 this.wrap.style.pointerEvents = 'auto';
@@ -1362,6 +1601,95 @@
                         this.remove(id);
                     }
                 });
+
+                // INPOST MAP V4
+                const openInpostBtn = document.getElementById('open-inpost-btn');
+                if (openInpostBtn) {
+                    if (window.easyPack) {
+                        window.easyPack.init({ 
+                            defaultLocale: AppState.lang === 'en' ? 'en' : 'pl',
+                            mapType: 'osm'
+                        });
+                    }
+
+                    openInpostBtn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        window.easyPack.modalMap(function(point, modal) {
+                            const paczkomatCode = point.name;
+                            document.getElementById('paczkomat-input').value = paczkomatCode;
+                            document.getElementById('paczkomat-code').innerText = paczkomatCode;
+                            document.getElementById('selected-paczkomat-text').style.display = 'block';
+                            modal.closeModal(); 
+                        }, { width: 500, height: 600 });
+                    });
+                }
+                
+                // DEBOUNCED CURSOR FIX FOR INPOST
+                let mapCloseTimeout;
+                setInterval(() => {
+                    const inpostElements = document.querySelectorAll('[id*="easypack"], [class*="easypack"]');
+                    let isVisible = false;
+                    inpostElements.forEach(el => {
+                        if (window.getComputedStyle(el).display !== 'none' && el.offsetHeight > 0) {
+                            isVisible = true;
+                        }
+                    });
+
+                    if (isVisible) {
+                        clearTimeout(mapCloseTimeout);
+                        mapCloseTimeout = null;
+                        document.body.classList.add('map-open');
+                    } else {
+                        if (document.body.classList.contains('map-open') && !mapCloseTimeout) {
+                            mapCloseTimeout = setTimeout(() => {
+                                document.body.classList.remove('map-open');
+                                mapCloseTimeout = null;
+                            }, 800);
+                        }
+                    }
+                }, 150);
+
+                const checkoutBtn = document.getElementById('checkout-button');
+                if (checkoutBtn) {
+                    checkoutBtn.addEventListener('click', async (e) => {
+                        e.preventDefault();
+                        
+                        const currentCart = AppState.cart;
+                        const phone = document.getElementById('user-phone').value.trim();
+                        const paczkomat = document.getElementById('paczkomat-input').value;
+
+                        if (currentCart.length === 0) return showToast(AppState.lang === 'en' ? "Your cart is empty!" : "Twój koszyk jest pusty!");
+                        if (!phone || phone.length < 9) return showToast(AppState.lang === 'en' ? "Please provide a valid phone number!" : "Podaj poprawny numer telefonu!");
+                        if (!paczkomat) return showToast(AppState.lang === 'en' ? "Please select a Parcel Locker from the map!" : "Wybierz Paczkomat z mapy!");
+
+                        const originalText = checkoutBtn.innerHTML;
+                        checkoutBtn.innerHTML = '<span>Processing...</span>';
+                        checkoutBtn.style.pointerEvents = 'none';
+
+                        try {
+                            const response = await fetch('http://localhost:4242/create-checkout-session', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ 
+                                    cart: currentCart,
+                                    phone: phone,
+                                    paczkomat: paczkomat
+                                }),
+                            });
+
+                            if (!response.ok) throw new Error('Server error');
+
+                            const session = await response.json();
+                            window.location.href = session.url; 
+
+                        } catch (error) {
+                            console.error("Checkout Error:", error);
+                            showToast(AppState.lang === 'en' ? "Connection error. Ensure the backend server is running." : "Błąd połączenia. Upewnij się, że serwer backendu działa.");
+                            checkoutBtn.innerHTML = originalText;
+                            checkoutBtn.style.pointerEvents = 'auto';
+                        }
+                    });
+                }
             }
             save() { 
                 localStorage.setItem('sfc_cart', JSON.stringify(AppState.cart)); 
