@@ -284,7 +284,8 @@
         }
         
         body.map-open .cursor-wrapper,
-        body.lightbox-open .cursor-wrapper { 
+        body.lightbox-open .cursor-wrapper,
+        body.policy-open .cursor-wrapper { 
             display: none !important; 
             opacity: 0 !important; 
             visibility: hidden !important; 
@@ -293,7 +294,9 @@
         body.map-open, 
         body.map-open *,
         body.lightbox-open, 
-        body.lightbox-open * { 
+        body.lightbox-open *,
+        body.policy-open,
+        body.policy-open * { 
             cursor: auto !important; 
         }
 
@@ -1163,6 +1166,40 @@
         }
         .lightbox-close:hover { background: #fff; color: #000; transform: rotate(90deg); }
 
+        /* POLICY MODAL */
+        .policy-wrapper {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; height: 100dvh;
+            z-index: 1000000; display: flex; justify-content: center; align-items: center;
+            pointer-events: none; visibility: hidden; opacity: 0;
+            background: rgba(10, 9, 8, 0.8); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            transition: opacity 0.5s ease, visibility 0.5s;
+        }
+        .policy-wrapper.active {
+            opacity: 1; visibility: visible; pointer-events: auto;
+        }
+        .policy-container {
+            width: 100%; max-width: 900px; height: 90vh; background-color: var(--color-bg);
+            border-radius: var(--radius-lg); overflow-y: auto; padding: 4rem; position: relative;
+            transform: translateY(50px); transition: transform 0.6s var(--ease-out-expo);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.2); border: 1px solid var(--color-border);
+        }
+        .policy-wrapper.active .policy-container {
+            transform: translateY(0);
+        }
+        .policy-close {
+            position: absolute; top: 2rem; right: 2rem; width: 45px; height: 45px;
+            border-radius: 50%; border: 1px solid var(--color-border); background: var(--color-bg-alt);
+            color: var(--color-text); display: flex; justify-content: center; align-items: center;
+            cursor: pointer; transition: all 0.3s ease; z-index: 10;
+        }
+        @media (pointer: fine) { .policy-close:hover { background: var(--color-text); color: var(--color-bg); transform: rotate(90deg); } }
+        
+        .policy-content h2 { font-family: var(--font-serif); font-size: 2.5rem; color: var(--color-accent); margin-bottom: 2rem; border-bottom: 1px solid var(--color-border); padding-bottom: 1rem;}
+        .policy-content h3 { font-family: var(--font-sans); font-size: 1.2rem; font-weight: 700; margin-top: 2rem; margin-bottom: 1rem; }
+        .policy-content p, .policy-content li { font-family: var(--font-sans); font-size: 1.05rem; color: var(--color-text-light); line-height: 1.8; margin-bottom: 1rem; }
+        .policy-content ul, .policy-content ol { margin-left: 2rem; margin-bottom: 1rem; }
+        .policy-content strong { color: var(--color-text); }
+
         /* ==========================================================================
            13. PARALLAX SECTION & FOOTER
            ========================================================================== */
@@ -1262,6 +1299,9 @@
             .wholesale-banner h3 { font-size: 1.6rem; }
             .parallax-content-inner { padding: 1.5rem; }
             .parallax-content h2 { font-size: 2rem; }
+
+            .policy-container { padding: 4rem 1.5rem 2rem; height: 100vh; border-radius: 0; }
+            .policy-close { top: 1rem; right: 1rem; }
         }
     </style>
 </head>
@@ -1363,6 +1403,19 @@
         </div>
     </div>
 
+    <div class="policy-wrapper" id="policy-wrapper">
+        <div class="policy-container" id="policy-container" data-lenis-prevent>
+            <button class="close-btn policy-close hover-target" id="policy-close" aria-label="Zamknij">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+            <div class="policy-content" id="policy-content-area">
+                </div>
+        </div>
+    </div>
+
     <div class="modal-wrapper" id="product-modal">
         <div class="modal-overlay" id="modal-overlay"></div>
         <canvas id="modal-canvas"></canvas>
@@ -1461,7 +1514,7 @@
 
                 <div class="wholesale-banner">
                     <h3 data-i18n="wholesale_txt">Zamówienie hurtowe?</h3>
-                    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=samuel.ksiazki@gmail.com&su=Zamówienie%20hurtowe%20-%20Samuel%20for%20Children" target="_blank" rel="noopener noreferrer" class="hover-target" data-i18n="wholesale_link" style="position: relative; z-index: 10;">Skontaktuj się z nami</a>
+                    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=samuel.ksiazki@gmail.com&su=Zamówienie%20hurtowe%20-%20Samuel%20for%20Children" target="_blank" rel="noopener noreferrer" class="hover-target" data-i18n="wholesale_link">Skontaktuj się z nami</a>
                 </div>
             </section>
 
@@ -1499,14 +1552,14 @@
                         <ul>
                             <li><a href="https://mail.google.com/mail/?view=cm&fs=1&to=samuel.ksiazki@gmail.com" target="_blank" rel="noopener noreferrer" class="hover-target">samuel.ksiazki@gmail.com</a></li>
                             <li><a href="tel:+48572001688" class="hover-target">+48 572 001 688</a></li>
-                            <li><a href="https://mail.google.com/mail/?view=cm&fs=1&to=samuel.ksiazki@gmail.com&su=Wysyłka%20i%20zwroty" target="_blank" rel="noopener noreferrer" class="hover-target" data-i18n="footer_l4">Wysyłka i zwroty</a></li>
-                            <li><a href="https://mail.google.com/mail/?view=cm&fs=1&to=samuel.ksiazki@gmail.com&su=Regulamin%20sklepu" target="_blank" rel="noopener noreferrer" class="hover-target" data-i18n="footer_l5">Regulamin sklepu</a></li>
+                            <li><a href="#" class="hover-target" data-policy="shipping" data-i18n="footer_l4">Wysyłka i zwroty</a></li>
+                            <li><a href="#" class="hover-target" data-policy="terms" data-i18n="footer_l5">Regulamin sklepu</a></li>
                         </ul>
                     </div>
                 </div>
                 <div class="footer-bottom">
                     <span data-i18n="footer_copy">&copy; 2026 Samuel for Children. Wszystkie prawa zastrzeżone.</span>
-                    <span>Zaprojektowane przez <a href="https://gswebb2.netlify.app/" target="_blank" rel="noopener noreferrer" class="hover-target" style="color: var(--color-accent); font-weight: 600;">gsweb</a></span>
+                    <span>Zaprojektowane przez <a href="https://gswebb2.netlify.app/" target="_blank" rel="noopener" class="hover-target" style="color: var(--color-accent); font-weight: 600;">gsweb</a></span>
                 </div>
             </footer>
 
@@ -1559,7 +1612,29 @@
                 del_selected: "Wybrano:",
                 bilingual_badge: "Edycja polsko-angielska",
                 wholesale_txt: "Zamówienie hurtowe?",
-                wholesale_link: "Skontaktuj się z nami"
+                wholesale_link: "Skontaktuj się z nami",
+                policy_terms: `
+                    <h2>Regulamin sklepu</h2>
+                    <h3>I. Postanowienia ogólne</h3>
+                    <p>Sklep internetowy zajmuje się sprzedażą książek religijnych dla dzieci, w tym autorskiej serii ”Świętość nie jest nudna„.</p>
+                    <p>Kontakt ze sklepem możliwy jest za pośrednictwem poczty elektronicznej: <a href="mailto:samuel.ksiazki@gmail.com" class="hover-target">samuel.ksiazki@gmail.com</a> lub telefonicznie: +48 572 001 688.</p>
+                    <h3>II. Ceny i Płatności</h3>
+                    <p>Wszystkie podane ceny są cenami brutto. Cena za każdy egzemplarz w kolekcji jest stała i wynosi 25.00 zł.</p>
+                    <p>Płatności obsługiwane są przez bezpieczną bramkę <strong>Stripe</strong> (karty płatnicze, BLIK, przelewy online).</p>
+                    <h3>III. Zamówienia Hurtowe</h3>
+                    <p>Dla szkół, parafii i zamówień w większych ilościach prosimy o kontakt bezpośredni w celu ustalenia indywidualnych warunków współpracy.</p>
+                `,
+                policy_shipping: `
+                    <h2>Wysyłka i Zwroty</h2>
+                    <h3>Czas i koszty dostawy</h3>
+                    <p>Wszystkie zamówienia realizujemy za pośrednictwem systemu <strong>InPost Paczkomaty 24/7</strong>.</p>
+                    <p>Czas przygotowania zamówienia do wysyłki wynosi zazwyczaj 1-3 dni robocze. Koszt wysyłki naliczany jest w podsumowaniu zamówienia.</p>
+                    <h3>Odstąpienie od umowy (Zwroty)</h3>
+                    <p>Masz prawo zwrócić zakupione książki w ciągu <strong>14 dni</strong> od daty ich otrzymania, bez podania przyczyny. Książki muszą być w stanie nienaruszonym.</p>
+                    <p>Aby dokonać zwrotu, napisz do nas na adres: <a href="mailto:samuel.ksiazki@gmail.com" class="hover-target">samuel.ksiazki@gmail.com</a>. Koszty wysyłki zwrotnej pokrywa kupujący.</p>
+                    <h3>Reklamacje</h3>
+                    <p>Jeśli książka dotarła uszkodzona lub posiada wady fabryczne, skontaktuj się z nami mailowo, dołączając zdjęcia. Gwarantujemy wymianę lub zwrot środków.</p>
+                `
             },
             en: {
                 theme_dark: "Dark",
@@ -1605,7 +1680,29 @@
                 del_selected: "Selected:",
                 bilingual_badge: "Polish-English Edition",
                 wholesale_txt: "Wholesale order?",
-                wholesale_link: "Contact us"
+                wholesale_link: "Contact us",
+                policy_terms: `
+                    <h2>Terms of Service</h2>
+                    <h3>I. General Provisions</h3>
+                    <p>The online store sells religious books for children, including the original ”Holiness is Not Boring„ series.</p>
+                    <p>You can contact the store via email at: <a href="mailto:samuel.ksiazki@gmail.com" class="hover-target">samuel.ksiazki@gmail.com</a> or by phone: +48 572 001 688.</p>
+                    <h3>II. Prices and Payments</h3>
+                    <p>All prices are gross prices. The price for each book in the collection is fixed at 25.00 PLN.</p>
+                    <p>Payments are processed securely via <strong>Stripe</strong> (credit cards, BLIK, online transfers).</p>
+                    <h3>III. Wholesale Orders</h3>
+                    <p>For schools, parishes, and bulk orders, please contact us directly to arrange individual terms of cooperation.</p>
+                `,
+                policy_shipping: `
+                    <h2>Shipping & Returns</h2>
+                    <h3>Delivery Time and Costs</h3>
+                    <p>All orders are shipped via the <strong>InPost Paczkomaty 24/7</strong> system.</p>
+                    <p>Order processing time is typically 1-3 business days. Shipping costs are calculated at checkout.</p>
+                    <h3>Right of Withdrawal (Returns)</h3>
+                    <p>You have the right to return purchased books within <strong>14 days</strong> of receiving them, without giving any reason. Books must be in original condition.</p>
+                    <p>To make a return, please email us at: <a href="mailto:samuel.ksiazki@gmail.com" class="hover-target">samuel.ksiazki@gmail.com</a>. Return shipping costs are borne by the buyer.</p>
+                    <h3>Complaints</h3>
+                    <p>If a book arrives damaged or has manufacturing defects, contact us via email with photos. We guarantee a replacement or refund.</p>
+                `
             }
         };
 
@@ -1701,6 +1798,7 @@
                     
                     if (window.CartSys) window.CartSys.render();
                     if (window.ShopRenderer) window.ShopRenderer.updateView(false); 
+                    if (window.PolicySys && window.PolicySys.isOpen) window.PolicySys.render();
                     
                     const themeBtnText = document.querySelector('.theme-toggle-btn .text');
                     const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
@@ -1875,6 +1973,52 @@
                 this.mesh.rotation.z = Math.sin(time * 0.1) * 0.05;
                 
                 this.renderer.render(this.scene, this.camera);
+            }
+        }
+
+        class PolicyController {
+            constructor() {
+                this.wrap = document.getElementById('policy-wrapper');
+                this.cont = document.getElementById('policy-container');
+                this.contentEl = document.getElementById('policy-content-area');
+                this.closeBtn = document.getElementById('policy-close');
+                this.currentPolicy = null;
+                this.isOpen = false;
+                this.bind();
+            }
+            bind() {
+                document.querySelectorAll('[data-policy]').forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        this.open(e.currentTarget.dataset.policy);
+                    });
+                });
+                this.closeBtn.addEventListener('click', () => this.close());
+                this.wrap.addEventListener('click', (e) => {
+                    if (e.target === this.wrap) this.close();
+                });
+            }
+            open(type) {
+                this.currentPolicy = type;
+                this.isOpen = true;
+                this.render();
+                if (AppState.lenis) AppState.lenis.stop();
+                this.wrap.classList.add('active');
+                document.body.classList.add('policy-open');
+                this.cont.scrollTop = 0;
+            }
+            close() {
+                this.isOpen = false;
+                this.wrap.classList.remove('active');
+                document.body.classList.remove('policy-open');
+                if (AppState.lenis && !window.ModalSys.isOpen && !document.getElementById('cart-sidebar').classList.contains('active')) {
+                    AppState.lenis.start();
+                }
+            }
+            render() {
+                if (!this.currentPolicy) return;
+                const content = I18N[AppState.lang][`policy_${this.currentPolicy}`];
+                this.contentEl.innerHTML = content;
             }
         }
 
@@ -2106,7 +2250,7 @@
                     onComplete: () => { 
                         this.wrap.style.visibility = 'hidden'; 
                         this.wrap.style.pointerEvents = 'none'; 
-                        if (AppState.lenis) {
+                        if (AppState.lenis && !window.PolicySys.isOpen) {
                             AppState.lenis.start(); 
                         }
                     } 
@@ -2168,6 +2312,7 @@
                     openInpostBtn.addEventListener('click', (e) => {
                         e.preventDefault();
                         if (typeof easyPack !== 'undefined') {
+                            document.body.classList.add('map-open');
                             try {
                                 window.easyPack.modalMap(function(point, modal) {
                                     const paczkomatCode = point.name;
@@ -2175,8 +2320,10 @@
                                     document.getElementById('paczkomat-code').innerText = paczkomatCode;
                                     document.getElementById('selected-paczkomat-text').style.display = 'block';
                                     modal.closeModal(); 
+                                    document.body.classList.remove('map-open');
                                 }, { width: 500, height: 600 });
                             } catch (err) {
+                                document.body.classList.remove('map-open');
                                 showToast("InPost API Error.");
                             }
                         } else {
@@ -2188,9 +2335,9 @@
                 const mapObserver = new MutationObserver(() => {
                     const mapModal = document.getElementById('easypack-widget-modal') || document.querySelector('.easypack-widget-modal');
                     if (mapModal && window.getComputedStyle(mapModal).display !== 'none') {
-                        document.body.classList.add('map-open');
+                        if (!document.body.classList.contains('map-open')) document.body.classList.add('map-open');
                     } else {
-                        document.body.classList.remove('map-open');
+                        if (document.body.classList.contains('map-open')) document.body.classList.remove('map-open');
                     }
                 });
                 mapObserver.observe(document.body, { childList: true, subtree: true });
@@ -2366,7 +2513,7 @@
             close() {
                 this.sb.classList.remove('active'); 
                 this.ovl.classList.remove('active');
-                if (!window.ModalSys.isOpen && AppState.lenis) AppState.lenis.start();
+                if (!window.ModalSys.isOpen && !window.PolicySys.isOpen && AppState.lenis) AppState.lenis.start();
             }
         }
 
@@ -2632,6 +2779,7 @@
             window.ModalSys = new ModalController();
             window.ShopRenderer = new ShopController();
             window.CartSys = new CartController();
+            window.PolicySys = new PolicyController();
 
             window.ShopRenderer.render();
             initAnimations();
