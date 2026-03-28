@@ -649,6 +649,12 @@
             transform-origin: top left; 
         }
 
+        @keyframes gradientAnimation { 
+            0% { background-position: 0% 50%; } 
+            50% { background-position: 100% 50%; } 
+            100% { background-position: 0% 50%; } 
+        }
+
         .about { 
             position: relative; 
             padding: var(--spacing-xxl) var(--container-padding); 
@@ -954,40 +960,51 @@
             text-align: center; 
             margin-top: 4rem; 
             padding: 4rem 2rem; 
-            background: linear-gradient(135deg, var(--color-bg-alt), var(--color-bg)); 
+            background: linear-gradient(135deg, rgba(255,182,193,0.15), rgba(173,216,230,0.15), rgba(216,191,216,0.15), rgba(240,230,140,0.15)); 
+            background-size: 300% 300%;
+            animation: bgShift 12s ease infinite;
             border-radius: var(--radius-lg); 
-            border: 1px solid var(--color-accent); 
+            border: 1px solid rgba(194, 155, 69, 0.4); 
             backdrop-filter: blur(10px); 
-            box-shadow: 0 20px 40px var(--color-shadow), inset 0 0 20px rgba(194,155,69,0.1); 
+            box-shadow: 0 20px 40px var(--color-shadow), inset 0 0 30px rgba(255,255,255,0.5); 
             position: relative;
             overflow: hidden;
         }
+        html[data-theme="dark"] .wholesale-banner {
+            background: linear-gradient(135deg, rgba(26,19,17,0.4), rgba(11,19,26,0.4), rgba(26,15,20,0.4), rgba(24,24,16,0.4));
+            box-shadow: 0 20px 40px var(--color-shadow), inset 0 0 30px rgba(0,0,0,0.5);
+        }
+        @keyframes bgShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
         .wholesale-banner::before {
             content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 50% 0%, rgba(194,155,69,0.15) 0%, transparent 70%);
+            background: radial-gradient(circle at 50% 0%, rgba(194,155,69,0.2) 0%, transparent 70%);
             pointer-events: none;
         }
-        .wholesale-banner h3 { font-family: var(--font-serif); font-size: clamp(2rem, 4vw, 2.5rem); margin-bottom: 1rem; color: var(--color-text); font-style: italic; }
-        .wholesale-banner p { font-family: var(--font-sans); font-size: 1.1rem; color: var(--color-text-light); margin-top: 1.5rem; }
+        .wholesale-banner h3 { font-family: var(--font-serif); font-size: clamp(2rem, 4vw, 2.8rem); margin-bottom: 1rem; color: var(--color-accent); font-style: italic; text-shadow: 0 2px 10px rgba(0,0,0,0.05); position: relative; z-index: 10;}
+        .wholesale-banner p { font-family: var(--font-sans); font-size: 1.1rem; color: var(--color-text-light); margin-top: 1.5rem; position: relative; z-index: 10;}
         .wholesale-banner a { 
             display: inline-block;
-            background-color: var(--color-accent); 
-            color: var(--color-white); 
-            padding: 1rem 2.5rem; 
+            background: linear-gradient(135deg, var(--color-accent), #e0b965);
+            color: #fff !important; 
+            padding: 1.2rem 3rem; 
             border-radius: 50px; 
             font-family: var(--font-sans); 
             font-weight: 700; 
+            font-size: 1rem;
             text-transform: uppercase; 
             letter-spacing: 2px; 
             text-decoration: none; 
             transition: all 0.4s var(--ease-out-expo);
-            box-shadow: 0 10px 20px rgba(194, 155, 69, 0.3);
+            box-shadow: 0 10px 20px rgba(194, 155, 69, 0.4);
             margin-top: 1rem;
+            border: none;
+            position: relative;
+            z-index: 10;
         }
         @media (pointer: fine) {
             .wholesale-banner a:hover { 
-                background-color: var(--color-text); 
-                color: var(--color-bg); 
+                background: linear-gradient(135deg, var(--color-text), var(--color-text));
+                color: var(--color-bg) !important; 
                 transform: translateY(-5px); 
                 box-shadow: 0 15px 30px var(--color-shadow); 
             }
@@ -1112,7 +1129,7 @@
         @media (pointer: fine) { .modal-add-btn:hover { background-color: var(--color-text); color: var(--color-bg); transform: translateY(-5px); box-shadow: 0 15px 40px var(--color-shadow); } }
         .modal-anim-el { opacity: 0; transform: translateY(30px); }
         
-        .wholesale-note { 
+        .wholesale-note-modal { 
             font-family: var(--font-sans); 
             font-size: 0.75rem; 
             color: var(--color-text-light); 
@@ -1125,8 +1142,8 @@
             opacity: 0; 
             transform: translateY(30px); 
         }
-        .wholesale-note a { color: var(--color-accent); text-decoration: underline; transition: 0.3s; }
-        .wholesale-note a:hover { color: var(--color-text); }
+        .wholesale-note-modal a { color: var(--color-accent); text-decoration: underline; transition: 0.3s; }
+        .wholesale-note-modal a:hover { color: var(--color-text); }
 
         /* LIGHTBOX FULLSCREEN OVERLAY */
         .lightbox-overlay {
@@ -1381,7 +1398,7 @@
                             <div class="modal-price" id="modal-price"></div>
                             <button class="modal-add-btn hover-target" id="modal-add-btn" data-i18n="add_to_cart">Dodaj do koszyka</button>
                         </div>
-                        <span class="wholesale-note modal-anim-el"><span data-i18n="wholesale_txt">Zamówienie hurtowe?</span> <a href="mailto:samuel.ksiazki@gmail.com" class="hover-target" data-i18n="wholesale_link">Skontaktuj się z nami</a></span>
+                        <span class="wholesale-note-modal modal-anim-el"><span data-i18n="wholesale_txt">Zamówienie hurtowe?</span> <a href="https://mail.google.com/mail/?view=cm&fs=1&to=samuel.ksiazki@gmail.com&su=Zamówienie%20hurtowe%20-%20Samuel%20for%20Children" target="_blank" rel="noopener noreferrer" class="hover-target" data-i18n="wholesale_link" style="position: relative; z-index: 10;">Skontaktuj się z nami</a></span>
                     </div>
                 </div>
             </div>
@@ -1444,7 +1461,7 @@
 
                 <div class="wholesale-banner">
                     <h3 data-i18n="wholesale_txt">Zamówienie hurtowe?</h3>
-                    <p><a href="mailto:samuel.ksiazki@gmail.com" class="hover-target" data-i18n="wholesale_link">Skontaktuj się z nami</a></p>
+                    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=samuel.ksiazki@gmail.com&su=Zamówienie%20hurtowe%20-%20Samuel%20for%20Children" target="_blank" rel="noopener noreferrer" class="hover-target" data-i18n="wholesale_link" style="position: relative; z-index: 10;">Skontaktuj się z nami</a>
                 </div>
             </section>
 
@@ -1473,23 +1490,23 @@
                         <h4 data-i18n="footer_explore">Eksploruj</h4>
                         <ul>
                             <li><a href="#kolekcja" class="hover-target" data-i18n="footer_l1">Kolekcja</a></li>
-                            <li><a href="mailto:samuel.ksiazki@gmail.com" class="hover-target" data-i18n="footer_l2">O wydawnictwie</a></li>
-                            <li><a href="mailto:samuel.ksiazki@gmail.com" class="hover-target" data-i18n="footer_l3">Dla szkół i parafii</a></li>
+                            <li><a href="https://mail.google.com/mail/?view=cm&fs=1&to=samuel.ksiazki@gmail.com&su=Pytanie%20o%20wydawnictwo" target="_blank" rel="noopener noreferrer" class="hover-target" data-i18n="footer_l2">O wydawnictwie</a></li>
+                            <li><a href="https://mail.google.com/mail/?view=cm&fs=1&to=samuel.ksiazki@gmail.com&su=Dla%20szkół%20i%20parafii" target="_blank" rel="noopener noreferrer" class="hover-target" data-i18n="footer_l3">Dla szkół i parafii</a></li>
                         </ul>
                     </div>
                     <div class="footer-links">
                         <h4 data-i18n="footer_help">Pomoc & Kontakt</h4>
                         <ul>
-                            <li><a href="mailto:samuel.ksiazki@gmail.com" class="hover-target">samuel.ksiazki@gmail.com</a></li>
+                            <li><a href="https://mail.google.com/mail/?view=cm&fs=1&to=samuel.ksiazki@gmail.com" target="_blank" rel="noopener noreferrer" class="hover-target">samuel.ksiazki@gmail.com</a></li>
                             <li><a href="tel:+48572001688" class="hover-target">+48 572 001 688</a></li>
-                            <li><a href="mailto:samuel.ksiazki@gmail.com" class="hover-target" data-i18n="footer_l4">Wysyłka i zwroty</a></li>
-                            <li><a href="mailto:samuel.ksiazki@gmail.com" class="hover-target" data-i18n="footer_l5">Regulamin sklepu</a></li>
+                            <li><a href="https://mail.google.com/mail/?view=cm&fs=1&to=samuel.ksiazki@gmail.com&su=Wysyłka%20i%20zwroty" target="_blank" rel="noopener noreferrer" class="hover-target" data-i18n="footer_l4">Wysyłka i zwroty</a></li>
+                            <li><a href="https://mail.google.com/mail/?view=cm&fs=1&to=samuel.ksiazki@gmail.com&su=Regulamin%20sklepu" target="_blank" rel="noopener noreferrer" class="hover-target" data-i18n="footer_l5">Regulamin sklepu</a></li>
                         </ul>
                     </div>
                 </div>
                 <div class="footer-bottom">
                     <span data-i18n="footer_copy">&copy; 2026 Samuel for Children. Wszystkie prawa zastrzeżone.</span>
-                    <span>Zaprojektowane przez <a href="https://gswebb2.netlify.app/" target="_blank" rel="noopener" class="hover-target" style="color: var(--color-accent); font-weight: 600;">gsweb</a></span>
+                    <span>Zaprojektowane przez <a href="https://gswebb2.netlify.app/" target="_blank" rel="noopener noreferrer" class="hover-target" style="color: var(--color-accent); font-weight: 600;">gsweb</a></span>
                 </div>
             </footer>
 
@@ -1518,7 +1535,7 @@
                 about_text: "Wierzymy, że słowa mają moc kształtowania serc. Nasze książki to coś więcej niż papier – to starannie tworzone historie, które wprowadzają dzieci w świat wartości, ucząc miłości, empatii i prawdy.",
                 shop_title: "Kolekcja.",
                 filter_all: "Wszystko",
-                filter_swietosc: "Seria „Świętość nie jest nudna”",
+                filter_swietosc: "Seria ”Świętość nie jest nudna„",
                 filter_inne: "Książki poza serią",
                 search_ph: "Szukaj...",
                 sort_default: "Domyślnie",
@@ -1564,7 +1581,7 @@
                 about_text: "We believe that words have the power to shape hearts. Our books are more than just paper – they are carefully crafted stories that introduce children to the world of values, teaching love, empathy, and truth.",
                 shop_title: "Collection.",
                 filter_all: "All",
-                filter_swietosc: "„Holiness is Not Boring” Series",
+                filter_swietosc: "”Holiness is Not Boring„ Series",
                 filter_inne: "Other Books",
                 search_ph: "Search...",
                 sort_default: "Default",
@@ -1594,28 +1611,28 @@
 
         const ProductsTranslations = {
             'p1': {
-                en: { title: "St. Francis of Assisi", desc: "Discover the extraordinary story of St. Francis – a young man who loved God and people with all his heart. This beautiful, bilingual book introduces children to the world of faith, joy, and love for all creation. Thanks to the story by Br. Łukasz Woźniak OFMCap, the youngest readers will discover how Francis rebuilt the Church, preached the Gospel, and gave the world its first Christmas nativity scene. It is an inspiring story that shows that holiness is possible and can be a true adventure with God.", category: "„Holiness is Not Boring” Series" },
-                pl: { title: "Św. Franciszek z Asyżu", desc: "Poznaj niezwykłą historię św. Franciszka – młodzieńca, który całym sercem pokochał Boga i ludzi. Ta piękna, dwujęzyczna książka wprowadza dzieci w świat wiary, radości i miłości do całego stworzenia. Dzięki opowieści br. Łukasza Woźniaka OFMCap najmłodsi odkryją, jak Franciszek odbudowywał Kościół, głosił Ewangelię i podarował światu pierwszą bożonarodzeniową szopkę. To inspirująca historia, która pokazuje, że świętość jest możliwa i może być prawdziwą przygodą z Bogiem.", category: "Seria „Świętość nie jest nudna”" }
+                en: { title: "St. Francis of Assisi", desc: "Discover the extraordinary story of St. Francis – a young man who loved God and people with all his heart. This beautiful, bilingual book introduces children to the world of faith, joy, and love for all creation. Thanks to the story by Br. Łukasz Woźniak OFMCap, the youngest readers will discover how Francis rebuilt the Church, preached the Gospel, and gave the world its first Christmas nativity scene. It is an inspiring story that shows that holiness is possible and can be a true adventure with God.", category: "”Holiness is Not Boring„ Series" },
+                pl: { title: "Św. Franciszek z Asyżu", desc: "Poznaj niezwykłą historię św. Franciszka – młodzieńca, który całym sercem pokochał Boga i ludzi. Ta piękna, dwujęzyczna książka wprowadza dzieci w świat wiary, radości i miłości do całego stworzenia. Dzięki opowieści br. Łukasza Woźniaka OFMCap najmłodsi odkryją, jak Franciszek odbudowywał Kościół, głosił Ewangelię i podarował światu pierwszą bożonarodzeniową szopkę. To inspirująca historia, która pokazuje, że świętość jest możliwa i może być prawdziwą przygodą z Bogiem.", category: "Seria ”Świętość nie jest nudna„" }
             },
             'p2': {
-                en: { title: "Diary of Bl. Michał Czartoryski", desc: "Discover the extraordinary story of a young prince who chose to become a monk! „Let me tell you about myself...” is a fascinating, richly illustrated tale of the life of Jan Franciszek Czartoryski – later known as Blessed Father Michał.", category: "„Holiness is Not Boring” Series" },
-                pl: { title: "Pamiętnik bł. Michała Czartoryskiego", desc: "Poznaj niezwykłą historię młodego księcia, który postanowił zostać zakonnikiem! „Opowiem Ci o sobie...” to fascynująca, bogato ilustrowana opowieść o życiu Jana Franciszka Czartoryskiego – późniejszego błogosławionego ojca Michała.", category: "Seria „Świętość nie jest nudna”" }
+                en: { title: "Diary of Bl. Michał Czartoryski", desc: "Discover the extraordinary story of a young prince who chose to become a monk! ”Let me tell you about myself...„ is a fascinating, richly illustrated tale of the life of Jan Franciszek Czartoryski – later known as Blessed Father Michał.", category: "”Holiness is Not Boring„ Series" },
+                pl: { title: "Pamiętnik bł. Michała Czartoryskiego", desc: "Poznaj niezwykłą historię młodego księcia, który postanowił zostać zakonnikiem! ”Opowiem Ci o sobie...„ to fascynująca, bogato ilustrowana opowieść o życiu Jana Franciszka Czartoryskiego – późniejszego błogosławionego ojca Michała.", category: "Seria ”Świętość nie jest nudna„" }
             },
             'p3': {
-                en: { title: "Miss Hanna", desc: "Discover the story of Blessed Hanna Chrzanowska – a woman who changed the world around her with her daily care and tenderness. Her life shows that great love for God is expressed in small gestures towards another person. „About Miss Hanna...” is a beautifully illustrated tale that introduces young readers to the world of sensitivity, service, and courage. As a nurse and apostle of the sick, Hanna brought help to those who needed it most, teaching that every human being is priceless. It is a story that inspires us to see the good, teaches empathy, and shows that holiness is born in everyday love and care for others.", category: "„Holiness is Not Boring” Series" },
-                pl: { title: "Panna Hanna", desc: "Poznaj historię błogosławionej Hanny Chrzanowskiej – kobiety, która swoją codzienną troską i czułością zmieniała świat wokół siebie. Jej życie pokazuje, że wielka miłość do Boga wyraża się w małych gestach wobec drugiego człowieka. „O pannie Hannie…” to pięknie ilustrowana opowieść, która wprowadza młodych czytelników w świat wrażliwości, służby i odwagi. Jako pielęgniarka i apostołka chorych Hanna niosła pomoc tym, którzy najbardziej jej potrzebowali, ucząc, że każdy człowiek jest bezcenny. To historia, która inspiruje do dostrzegania dobra, uczy empatii i pokazuje, że świętość rodzi się w codziennej miłości i trosce o innych.", category: "Seria „Świętość nie jest nudna”" }
+                en: { title: "Miss Hanna", desc: "Discover the story of Blessed Hanna Chrzanowska – a woman who changed the world around her with her daily care and tenderness. Her life shows that great love for God is expressed in small gestures towards another person. ”About Miss Hanna...„ is a beautifully illustrated tale that introduces young readers to the world of sensitivity, service, and courage. As a nurse and apostle of the sick, Hanna brought help to those who needed it most, teaching that every human being is priceless. It is a story that inspires us to see the good, teaches empathy, and shows that holiness is born in everyday love and care for others.", category: "”Holiness is Not Boring„ Series" },
+                pl: { title: "Panna Hanna", desc: "Poznaj historię błogosławionej Hanny Chrzanowskiej – kobiety, która swoją codzienną troską i czułością zmieniała świat wokół siebie. Jej życie pokazuje, że wielka miłość do Boga wyraża się w małych gestach wobec drugiego człowieka. ”O pannie Hannie…„ to pięknie ilustrowana opowieść, która wprowadza młodych czytelników w świat wrażliwości, służby i odwagi. Jako pielęgniarka i apostołka chorych Hanna niosła pomoc tym, którzy najbardziej jej potrzebowali, ucząc, że każdy człowiek jest bezcenny. To historia, która inspiruje do dostrzegania dobra, uczy empatii i pokazuje, że świętość rodzi się w codziennej miłości i trosce o innych.", category: "Seria ”Świętość nie jest nudna„" }
             },
             'p4': {
-                en: { title: "The Brother Smelling of Wood", desc: "Discover the extraordinary story of the Servant of God Brother Kalikst Kłoczko – a Capuchin, carpenter, and humble friar who testified to simplicity, hard work, and deep faith with his entire life. The book introduces his everyday life to young readers in an accessible and moving way, showing that holiness is born in ordinary duties and quiet devotion to God. Brother Kalikst passed away to the Lord in Lublin in 2013, and his beatification process began in 2023. Those who knew him spoke of him with admiration: „he was the spitting image of Saint Joseph”.", category: "„Holiness is Not Boring” Series" },
-                pl: { title: "Brat pachnący drewnem", desc: "Poznaj niezwykłą historię sługi Bożego brata Kaliksta Kłoczki – kapucyna, stolarza i pokornego brata zakonnego, który całym swoim życiem świadczył o prostocie, pracowitości i głębokiej wierze. Książka w przystępny i poruszający sposób przybliża młodym czytelnikom jego codzienność, ukazując, że świętość rodzi się w zwykłych obowiązkach i cichym oddaniu Bogu. Brat Kalikst odszedł do Pana w Lublinie w 2013 roku, a jego proces beatyfikacyjny rozpoczął się w 2023 roku. Ci, którzy go znali, mówili o nim z podziwem: „to był wypisz wymaluj święty Józef”.", category: "Seria „Świętość nie jest nudna”" }
+                en: { title: "The Brother Smelling of Wood", desc: "Discover the extraordinary story of the Servant of God Brother Kalikst Kłoczko – a Capuchin, carpenter, and humble friar who testified to simplicity, hard work, and deep faith with his entire life. The book introduces his everyday life to young readers in an accessible and moving way, showing that holiness is born in ordinary duties and quiet devotion to God. Brother Kalikst passed away to the Lord in Lublin in 2013, and his beatification process began in 2023. Those who knew him spoke of him with admiration: ”he was the spitting image of Saint Joseph„.", category: "”Holiness is Not Boring„ Series" },
+                pl: { title: "Brat pachnący drewnem", desc: "Poznaj niezwykłą historię sługi Bożego brata Kaliksta Kłoczki – kapucyna, stolarza i pokornego brata zakonnego, który całym swoim życiem świadczył o prostocie, pracowitości i głębokiej wierze. Książka w przystępny i poruszający sposób przybliża młodym czytelnikom jego codzienność, ukazując, że świętość rodzi się w zwykłych obowiązkach i cichym oddaniu Bogu. Brat Kalikst odszedł do Pana w Lublinie w 2013 roku, a jego proces beatyfikacyjny rozpoczął się w 2023 roku. Ci, którzy go znali, mówili o nim z podziwem: ”to był wypisz wymaluj święty Józef„.", category: "Seria ”Świętość nie jest nudna„" }
             },
             'p5': {
-                en: { title: "About Father Honorat", desc: "Discover the extraordinary story of Father Honorat Koźmiński – a man whose life shows that no path is lost. As young Wacław, he underwent a change of heart that led him from doubt to holiness. This moving tale reveals to children the world of faith, courage, and trust in God. Father Honorat – a confessor and founder of non-habited congregations – served people with devotion in difficult times. It is a story that reminds us that God can transform every heart and give life profound meaning.", category: "„Holiness is Not Boring” Series" },
-                pl: { title: "O ojcu Honoracie", desc: "Odkryj niezwykłą historię ojca Honorata Koźmińskiego – człowieka, którego życie pokazuje, że żadna droga nie jest stracona. Jako młody Wacław przeszedł przemianę serca, która zaprowadziła go od zwątpienia do świętości. Ta poruszająca opowieść ukazuje dzieciom świat wiary, odwagi i zaufania Bogu. Ojciec Honorat – spowiednik i założyciel zgromadzeń bezhabitowych – służył ludziom z oddaniem w trudnych czasach. To historia, która przypomina, że Bóg potrafi przemienić każde serce i nadać życiu głęboki sens.", category: "Seria „Świętość nie jest nudna”" }
+                en: { title: "About Father Honorat", desc: "Discover the extraordinary story of Father Honorat Koźmiński – a man whose life shows that no path is lost. As young Wacław, he underwent a change of heart that led him from doubt to holiness. This moving tale reveals to children the world of faith, courage, and trust in God. Father Honorat – a confessor and founder of non-habited congregations – served people with devotion in difficult times. It is a story that reminds us that God can transform every heart and give life profound meaning.", category: "”Holiness is Not Boring„ Series" },
+                pl: { title: "O ojcu Honoracie", desc: "Odkryj niezwykłą historię ojca Honorata Koźmińskiego – człowieka, którego życie pokazuje, że żadna droga nie jest stracona. Jako młody Wacław przeszedł przemianę serca, która zaprowadziła go od zwątpienia do świętości. Ta poruszająca opowieść ukazuje dzieciom świat wiary, odwagi i zaufania Bogu. Ojciec Honorat – spowiednik i założyciel zgromadzeń bezhabitowych – służył ludziom z oddaniem w trudnych czasach. To historia, która przypomina, że Bóg potrafi przemienić każde serce i nadać życiu głęboki sens.", category: "Seria ”Świętość nie jest nudna„" }
             },
             'p7': {
-                en: { title: "Michael and God's Great Fishing Rod", desc: "Discover the story of Blessed Michał Czartoryski OP told in the form of a diary. „Let me tell you about myself...” is a tale about Jasiu, who, instead of a life of honors, chose the path of faith and service, trading his noble coat of arms for a Dominican habit. This moving story shows young readers that true happiness is born from choices made with the heart and fidelity to God. The book was created to mark the 25th anniversary of the beatification and the 80th anniversary of the death of Blessed Michał Czartoryski.", category: "Other Books" },
-                pl: { title: "Michał i wielka wędka Pana Boga", desc: "Poznaj historię błogosławionego Michała Czartoryskiego OP opowiedzianą w formie pamiętnika. „Opowiem Ci o sobie…” to opowieść o Jasiu, który zamiast życia wśród zaszczytów wybrał drogę wiary i służby, zamieniając herb szlachecki na dominikański habit. Ta poruszająca historia pokazuje młodym czytelnikom, że prawdziwe szczęście rodzi się z wyborów podejmowanych sercem i wierności Bogu. Książka powstała z okazji 25. rocznicy beatyfikacji oraz 80. rocznicy śmierci bł. Michała Czartoryskiego.", category: "Książki poza serią" }
+                en: { title: "Michael and God's Great Fishing Rod", desc: "Discover the story of Blessed Michał Czartoryski OP told in the form of a diary. ”Let me tell you about myself...„ is a tale about Jasiu, who, instead of a life of honors, chose the path of faith and service, trading his noble coat of arms for a Dominican habit. This moving story shows young readers that true happiness is born from choices made with the heart and fidelity to God. The book was created to mark the 25th anniversary of the beatification and the 80th anniversary of the death of Blessed Michał Czartoryski.", category: "Other Books" },
+                pl: { title: "Michał i wielka wędka Pana Boga", desc: "Poznaj historię błogosławionego Michała Czartoryskiego OP opowiedzianą w formie pamiętnika. ”Opowiem Ci o sobie…„ to opowieść o Jasiu, który zamiast życia wśród zaszczytów wybrał drogę wiary i służby, zamieniając herb szlachecki na dominikański habit. Ta poruszająca historia pokazuje młodym czytelnikom, że prawdziwe szczęście rodzi się z wyborów podejmowanych sercem i wierności Bogu. Książka powstała z okazji 25. rocznicy beatyfikacji oraz 80. rocznicy śmierci bł. Michała Czartoryskiego.", category: "Książki poza serią" }
             }
         };
 
@@ -2151,7 +2168,6 @@
                     openInpostBtn.addEventListener('click', (e) => {
                         e.preventDefault();
                         if (typeof easyPack !== 'undefined') {
-                            document.body.classList.add('map-open');
                             try {
                                 window.easyPack.modalMap(function(point, modal) {
                                     const paczkomatCode = point.name;
@@ -2159,10 +2175,8 @@
                                     document.getElementById('paczkomat-code').innerText = paczkomatCode;
                                     document.getElementById('selected-paczkomat-text').style.display = 'block';
                                     modal.closeModal(); 
-                                    document.body.classList.remove('map-open');
                                 }, { width: 500, height: 600 });
                             } catch (err) {
-                                document.body.classList.remove('map-open');
                                 showToast("InPost API Error.");
                             }
                         } else {
@@ -2171,14 +2185,15 @@
                     });
                 }
                 
-                setInterval(() => {
-                    const mapModal = document.getElementById('easypack-widget-modal');
+                const mapObserver = new MutationObserver(() => {
+                    const mapModal = document.getElementById('easypack-widget-modal') || document.querySelector('.easypack-widget-modal');
                     if (mapModal && window.getComputedStyle(mapModal).display !== 'none') {
-                        if (!document.body.classList.contains('map-open')) document.body.classList.add('map-open');
+                        document.body.classList.add('map-open');
                     } else {
-                        if (document.body.classList.contains('map-open')) document.body.classList.remove('map-open');
+                        document.body.classList.remove('map-open');
                     }
-                }, 500);
+                });
+                mapObserver.observe(document.body, { childList: true, subtree: true });
 
                 const checkoutBtn = document.getElementById('checkout-button');
                 if (checkoutBtn) {
