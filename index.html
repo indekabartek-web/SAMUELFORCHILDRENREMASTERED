@@ -14,6 +14,18 @@
     <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
     
     <link rel="stylesheet" href="https://geowidget.easypack24.net/css/easypack.css"/>
+    <script>
+        window.easyPackAsyncInit = function () {
+            easyPack.init({
+                defaultLocale: 'pl',
+                mapType: 'osm',
+                searchType: 'osm',
+                points: {
+                    types: ['parcel_locker']
+                }
+            });
+        };
+    </script>
     <script src="https://geowidget.easypack24.net/js/sdk-for-javascript.js"></script>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,13 +33,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
     
     <style>
-        /* ==========================================================================
-           1. THEME ENGINE & DESIGN TOKENS
-           ========================================================================== */
         :root {
-            /* LIGHT THEME */
             --theme-light-bg: #FCFBF9;
-            --theme-light-bg-alt: rgba(255, 255, 255, 0.75);
+            --theme-light-bg-alt: #FFFFFF;
             --theme-light-text: #2C2825;
             --theme-light-text-light: #7A7268;
             --theme-light-border: rgba(44, 40, 37, 0.15);
@@ -46,9 +54,8 @@
             --cursor-outline-color: rgba(44, 40, 37, 0.5);
             --cursor-hover-color: rgba(44, 40, 37, 0.08);
 
-            /* DARK THEME */
             --theme-dark-bg: #0A0908;
-            --theme-dark-bg-alt: rgba(20, 19, 18, 0.85);
+            --theme-dark-bg-alt: #141312;
             --theme-dark-text: #F2EFEA;
             --theme-dark-text-light: #A09D98;
             --theme-dark-border: rgba(242, 239, 234, 0.12);
@@ -67,7 +74,6 @@
             --cursor-dark-outline-color: rgba(242, 239, 234, 0.5);
             --cursor-dark-hover-color: rgba(242, 239, 234, 0.1);
 
-            /* ACTIVE THEME VARIABLES */
             --color-bg: var(--theme-light-bg);
             --color-bg-alt: var(--theme-light-bg-alt);
             --color-text: var(--theme-light-text);
@@ -88,7 +94,6 @@
             --active-cursor-outline: var(--cursor-outline-color);
             --active-cursor-hover: var(--cursor-hover-color);
             
-            /* BRAND ACCENTS */
             --color-accent: #C29B45;
             --color-accent-hover: #A38032;
             --color-white: #FFFFFF;
@@ -96,11 +101,9 @@
             --color-error: #E74C3C;
             --color-success: #2ECC71;
             
-            /* TYPOGRAPHY */
             --font-sans: 'Plus Jakarta Sans', sans-serif;
             --font-serif: 'Playfair Display', serif;
             
-            /* SPACING & LAYOUT */
             --spacing-xs: 0.5rem;
             --spacing-sm: 1rem;
             --spacing-md: 2rem;
@@ -110,11 +113,11 @@
             
             --container-padding: 6vw;
             --header-height: 120px;
+            
             --radius-sm: 8px;
             --radius-md: 16px;
             --radius-lg: 24px;
             
-            /* ANIMATION EASES */
             --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
             --transition-theme: background-color 0.8s var(--ease-out-expo), color 0.8s var(--ease-out-expo), border-color 0.8s var(--ease-out-expo), box-shadow 0.8s var(--ease-out-expo);
         }
@@ -141,33 +144,93 @@
             --active-cursor-hover: var(--cursor-dark-hover-color);
         }
 
-        /* ==========================================================================
-           2. GLOBAL RESET
-           ========================================================================== */
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        html { font-size: 16px; background-color: var(--color-bg); transition: var(--transition-theme); -webkit-tap-highlight-color: transparent; scroll-behavior: auto; }
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+        }
+        
+        html { 
+            font-size: 16px; 
+            background-color: var(--color-bg); 
+            transition: var(--transition-theme);
+            -webkit-tap-highlight-color: transparent;
+            scroll-behavior: auto;
+        }
+
         html.lenis { height: auto; }
         .lenis.lenis-smooth { scroll-behavior: auto; }
         .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
         .lenis.lenis-stopped { overflow: hidden; }
         .lenis.lenis-scrolling iframe { pointer-events: none; }
 
-        body { font-family: var(--font-sans); background-color: transparent; color: var(--color-text); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; width: 100%; min-height: 100vh; transition: var(--transition-theme); position: relative; }
-        @media (pointer: fine) { body { cursor: none; } a, button, input, select, textarea, .hover-target { cursor: none !important; } }
+        body {
+            font-family: var(--font-sans); 
+            background-color: transparent; 
+            color: var(--color-text);
+            line-height: 1.6; 
+            overflow-x: hidden; 
+            -webkit-font-smoothing: antialiased;
+            width: 100%; 
+            min-height: 100vh; 
+            transition: var(--transition-theme); 
+            position: relative;
+            cursor: auto;
+        }
 
-        /* AMBIENT BACKGROUND */
-        .ambient-background { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -2; background-color: var(--color-bg); overflow: hidden; transition: background-color 0.8s ease; pointer-events: none; }
-        .color-blob { position: absolute; border-radius: 50%; filter: blur(120px); opacity: var(--active-ambient-opacity); transition: opacity 0.8s ease, background-color 1.5s ease; mix-blend-mode: normal; will-change: transform; }
+        @media (hover: hover) and (pointer: fine) {
+            body { cursor: none; }
+            a, button, input, select, textarea, .hover-target { cursor: none !important; }
+            .cursor-wrapper { display: block !important; }
+        }
+
+        .ambient-background {
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100vw; 
+            height: 100vh; 
+            z-index: -2;
+            background-color: var(--color-bg); 
+            overflow: hidden; 
+            transition: background-color 0.8s ease;
+            pointer-events: none;
+        }
+
+        .color-blob {
+            position: absolute; 
+            border-radius: 50%; 
+            filter: blur(120px);
+            opacity: var(--active-ambient-opacity); 
+            transition: opacity 0.8s ease, background-color 1.5s ease;
+            mix-blend-mode: normal; 
+            will-change: transform;
+        }
+
         .blob-1 { width: 70vw; height: 70vw; background-color: var(--active-ambient-1); top: -15%; left: -15%; animation: floatBlob1 28s infinite alternate ease-in-out; }
         .blob-2 { width: 60vw; height: 60vw; background-color: var(--active-ambient-2); bottom: -25%; right: -15%; animation: floatBlob2 22s infinite alternate ease-in-out; }
         .blob-3 { width: 65vw; height: 65vw; background-color: var(--active-ambient-3); top: 35%; left: 35%; animation: floatBlob3 32s infinite alternate ease-in-out; }
         .blob-4 { width: 50vw; height: 50vw; background-color: var(--active-ambient-4); top: -15%; right: 15%; animation: floatBlob4 26s infinite alternate ease-in-out; }
+
         @keyframes floatBlob1 { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(15%, 20%) scale(1.15); } }
         @keyframes floatBlob2 { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(-20%, -15%) scale(1.25); } }
         @keyframes floatBlob3 { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(20%, -20%) scale(0.85); } }
         @keyframes floatBlob4 { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(-25%, 15%) scale(1.2); } }
-        body::before { content: ''; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 999998; opacity: var(--intensity-grain); background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noiseFilter)"/></svg>'); transition: opacity 0.8s ease; }
-        
+
+        body::before {
+            content: ''; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100vw; 
+            height: 100vh;
+            pointer-events: none; 
+            z-index: 999998; 
+            opacity: var(--intensity-grain);
+            background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noiseFilter)"/></svg>');
+            transition: opacity 0.8s ease;
+        }
+
         ::selection { background-color: var(--color-accent); color: var(--color-white); }
         a { text-decoration: none; color: inherit; }
         button { font-family: inherit; outline: none; background: none; border: none; }
@@ -175,116 +238,642 @@
         img { max-width: 100%; display: block; }
         h1, h2, h3, h4, h5, h6 { font-family: var(--font-serif); font-weight: 400; line-height: 1.1; color: var(--color-text); transition: color 0.8s ease; }
 
-        /* ==========================================================================
-           3. CUSTOM CURSOR
-           ========================================================================== */
-        .cursor-wrapper { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 9999999; display: none; }
-        @media (pointer: fine) { .cursor-wrapper { display: block; } }
-        .cursor-dot { position: fixed; top: 0; left: 0; width: 8px; height: 8px; background-color: var(--active-cursor-color); border-radius: 50%; pointer-events: none; will-change: transform; transition: background-color 0.8s var(--ease-out-expo); }
-        .cursor-outline { position: fixed; top: 0; left: 0; width: 40px; height: 40px; border: 1px solid var(--active-cursor-outline); border-radius: 50%; pointer-events: none; will-change: transform, width, height, background-color, border-color; transition: width 0.3s var(--ease-out-expo), height 0.3s var(--ease-out-expo), background-color 0.8s var(--ease-out-expo), border-color 0.8s var(--ease-out-expo); }
-        body.cursor-hover .cursor-outline { width: 80px; height: 80px; background-color: var(--active-cursor-hover); border-color: transparent; }
+        .cursor-wrapper {
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100vw; 
+            height: 100vh;
+            pointer-events: none; 
+            z-index: 9999999;
+            display: none;
+        }
         
-        /* OMINIĘCIE KURSORA DLA ELEMENTÓW INTERAKTYWNYCH */
-        body.map-open .cursor-wrapper, body.lightbox-open .cursor-wrapper { display: none !important; opacity: 0 !important; visibility: hidden !important; }
-        body.map-open, body.map-open *, body.lightbox-open, body.lightbox-open * { cursor: auto !important; }
+        .cursor-dot {
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 8px; 
+            height: 8px; 
+            background-color: var(--active-cursor-color);
+            border-radius: 50%; 
+            pointer-events: none; 
+            will-change: transform;
+            transition: background-color 0.8s var(--ease-out-expo);
+        }
+        
+        .cursor-outline {
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 40px; 
+            height: 40px; 
+            border: 1px solid var(--active-cursor-outline);
+            border-radius: 50%; 
+            pointer-events: none; 
+            will-change: transform, width, height, background-color, border-color;
+            transition: width 0.3s var(--ease-out-expo), height 0.3s var(--ease-out-expo), 
+                        background-color 0.8s var(--ease-out-expo), border-color 0.8s var(--ease-out-expo);
+        }
+        
+        body.cursor-hover .cursor-outline {
+            width: 80px; 
+            height: 80px; 
+            background-color: var(--active-cursor-hover); 
+            border-color: transparent;
+        }
+        
+        body.map-open .cursor-wrapper,
+        body.lightbox-open .cursor-wrapper { 
+            display: none !important; 
+            opacity: 0 !important; 
+            visibility: hidden !important; 
+        }
+        
+        body.map-open, 
+        body.map-open *,
+        body.lightbox-open, 
+        body.lightbox-open * { 
+            cursor: auto !important; 
+        }
 
-        /* NAPRAWA: Z-INDEX DLA MAPY INPOSTU V4 */
-        #easypack-widget-modal { z-index: 1000005 !important; }
+        #easypack-widget-modal { 
+            z-index: 1000005 !important; 
+        }
 
-        /* ==========================================================================
-           4. PRELOADER & CANVAS
-           ========================================================================== */
-        #preloader { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: var(--color-bg); z-index: 1000000; display: flex; flex-direction: column; justify-content: center; align-items: center; }
-        .preloader-brand { display: flex; flex-direction: column; align-items: center; justify-content: center; margin-bottom: 4rem; perspective: 1000px; }
-        .preloader-logo-img { max-width: 400px; width: 80vw; height: auto; opacity: 0; transform-style: preserve-3d; will-change: transform, opacity, filter; filter: drop-shadow(0 15px 25px rgba(0,0,0,0.1)); mix-blend-mode: multiply; }
-        html[data-theme="dark"] .preloader-logo-img { filter: invert(1) hue-rotate(180deg) brightness(1.2) drop-shadow(0 15px 25px rgba(0,0,0,0.5)); mix-blend-mode: screen; }
-        .preloader-text-fallback { font-family: var(--font-serif); font-size: clamp(2rem, 5vw, 4.5rem); font-style: italic; color: var(--color-text); letter-spacing: -0.02em; display: none; }
-        .preloader-bar-wrapper { width: 80vw; max-width: 300px; height: 1px; background-color: var(--color-border); position: relative; overflow: hidden; margin-top: 2rem; }
-        .preloader-bar { position: absolute; top: 0; left: 0; height: 100%; width: 0%; background-color: var(--color-accent); }
-        .preloader-percentage { margin-top: 1.5rem; font-family: var(--font-sans); font-size: 0.85rem; letter-spacing: 3px; color: var(--color-text-light); opacity: 0; }
-        #canvas-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none; opacity: 0.8; transition: opacity 1.5s ease; }
+        #preloader {
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100vw; 
+            height: 100vh;
+            background-color: var(--color-bg); 
+            z-index: 1000000;
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center;
+        }
+        .preloader-brand { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            margin-bottom: 4rem; 
+            perspective: 1000px; 
+        }
+        .preloader-logo-img {
+            max-width: 400px; 
+            width: 80vw; 
+            height: auto; 
+            opacity: 0; 
+            transform-style: preserve-3d;
+            will-change: transform, opacity, filter; 
+            filter: drop-shadow(0 15px 25px rgba(0,0,0,0.1)); 
+            mix-blend-mode: multiply; 
+        }
+        html[data-theme="dark"] .preloader-logo-img { 
+            filter: invert(1) hue-rotate(180deg) brightness(1.2) drop-shadow(0 15px 25px rgba(0,0,0,0.5)); 
+            mix-blend-mode: screen; 
+        }
+        .preloader-text-fallback { 
+            font-family: var(--font-serif); 
+            font-size: clamp(2rem, 5vw, 4.5rem); 
+            font-style: italic; 
+            color: var(--color-text); 
+            letter-spacing: -0.02em; 
+            display: none; 
+        }
+        .preloader-bar-wrapper { 
+            width: 80vw; 
+            max-width: 300px; 
+            height: 1px; 
+            background-color: var(--color-border); 
+            position: relative; 
+            overflow: hidden; 
+            margin-top: 2rem; 
+        }
+        .preloader-bar { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            height: 100%; 
+            width: 0%; 
+            background-color: var(--color-accent); 
+        }
+        .preloader-percentage { 
+            margin-top: 1.5rem; 
+            font-family: var(--font-sans); 
+            font-size: 0.85rem; 
+            letter-spacing: 3px; 
+            color: var(--color-text-light); 
+            opacity: 0; 
+        }
 
-        /* ==========================================================================
-           5. HEADER & TOASTS
-           ========================================================================== */
-        #toast-container { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 1000005; display: flex; flex-direction: column; gap: 10px; pointer-events: none; width: 90vw; max-width: 400px; align-items: center; }
-        .toast { background-color: var(--color-text); color: var(--color-bg); padding: 14px 28px; border-radius: 30px; font-family: var(--font-sans); font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 10px 30px var(--color-shadow); opacity: 0; transform: translateY(20px); text-align: center; width: auto; }
+        #canvas-container { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100vw; 
+            height: 100vh; 
+            z-index: -1; 
+            pointer-events: none; 
+            opacity: 0.8; 
+            transition: opacity 1.5s ease; 
+        }
 
-        header { position: fixed; top: 0; left: 0; width: 100%; height: var(--header-height); display: flex; justify-content: space-between; align-items: center; padding: 0 var(--container-padding); z-index: 1000; transition: transform 0.6s var(--ease-out-expo), background-color 0.5s ease, backdrop-filter 0.5s ease, border-bottom 0.5s ease, height 0.5s ease; will-change: transform; border-bottom: 1px solid transparent; }
-        header.scrolled { background-color: var(--color-overlay); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border-bottom: 1px solid var(--color-border); height: 90px; }
-        header.hidden { transform: translateY(-100%); }
-        .logo { position: relative; display: flex; align-items: center; height: 100%; }
-        .logo-img { max-height: 130px; width: auto; display: block; transition: max-height 0.5s var(--ease-out-expo), filter 0.8s ease; transform-origin: left center; mix-blend-mode: multiply; }
-        header.scrolled .logo-img { max-height: 65px; }
-        .footer-logo-img { max-height: 140px; width: auto; margin-bottom: 1.5rem; display: block; transition: var(--transition-theme); transform-origin: left center; mix-blend-mode: multiply; }
-        html[data-theme="dark"] .logo-img, html[data-theme="dark"] .footer-logo-img { filter: invert(1) hue-rotate(180deg) brightness(1.2); mix-blend-mode: screen; }
-        .logo-text-fallback { font-family: var(--font-serif); font-size: clamp(1.5rem, 4vw, 2.2rem); font-style: italic; font-weight: 500; color: var(--color-text); letter-spacing: 1px; white-space: nowrap; }
+        #toast-container { 
+            position: fixed; 
+            bottom: 30px; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            z-index: 1000005; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 10px; 
+            pointer-events: none; 
+            width: 90vw; 
+            max-width: 400px; 
+            align-items: center; 
+        }
+        .toast { 
+            background-color: var(--color-text); 
+            color: var(--color-bg); 
+            padding: 14px 28px; 
+            border-radius: 30px; 
+            font-family: var(--font-sans); 
+            font-size: 0.85rem; 
+            font-weight: 600; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+            box-shadow: 0 10px 30px var(--color-shadow); 
+            opacity: 0; 
+            transform: translateY(20px); 
+            text-align: center; 
+            width: auto; 
+        }
 
-        .nav-actions { display: flex; align-items: center; gap: 1.8rem; }
-        .theme-toggle-btn, .lang-toggle-btn { color: var(--color-text); font-family: var(--font-sans); font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; display: flex; align-items: center; gap: 8px; transition: color 0.3s ease; background: transparent; border: none; cursor: pointer;}
-        @media (pointer: fine) { .theme-toggle-btn:hover, .lang-toggle-btn:hover { color: var(--color-accent); } }
-        .theme-toggle-btn .icon { width: 18px; height: 18px; border-radius: 50%; border: 2px solid currentColor; position: relative; transition: all 0.5s var(--ease-out-expo); }
-        html[data-theme="dark"] .theme-toggle-btn .icon { background-color: currentColor; box-shadow: inset -5px -3px 0 var(--color-bg); border-color: transparent; }
-        .cart-btn { color: var(--color-text); font-family: var(--font-sans); font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; position: relative; padding: 0.5rem 0; transition: color 0.3s ease; cursor: pointer; }
-        .cart-btn::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background-color: var(--color-accent); transform: scaleX(0); transform-origin: right; transition: transform 0.5s var(--ease-out-expo); }
-        @media (pointer: fine) { .cart-btn:hover::after { transform: scaleX(1); transform-origin: left; } }
-        .cart-count { position: absolute; top: -10px; right: -20px; background-color: var(--color-accent); color: var(--color-white); font-size: 0.65rem; font-weight: 700; width: 22px; height: 22px; border-radius: 50%; display: flex; justify-content: center; align-items: center; opacity: 0; transform: scale(0); transition: var(--transition-theme), transform 0.4s var(--ease-out-expo), opacity 0.4s ease; box-shadow: 0 4px 10px rgba(194, 155, 69, 0.4); }
-        .cart-count.active { opacity: 1; transform: scale(1); }
+        header {
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: var(--header-height);
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 0 var(--container-padding); 
+            z-index: 1000;
+            transition: transform 0.6s var(--ease-out-expo), background-color 0.5s ease, backdrop-filter 0.5s ease, border-bottom 0.5s ease, height 0.5s ease;
+            will-change: transform; 
+            border-bottom: 1px solid transparent;
+        }
+        header.scrolled { 
+            background-color: var(--color-overlay); 
+            backdrop-filter: blur(25px); 
+            -webkit-backdrop-filter: blur(25px); 
+            border-bottom: 1px solid var(--color-border); 
+            height: 90px; 
+        }
+        header.hidden { 
+            transform: translateY(-100%); 
+        }
 
-        /* ==========================================================================
-           8. HERO & ABOUT
-           ========================================================================== */
-        .hero { height: 100vh; min-height: 600px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 0 var(--container-padding); position: relative; z-index: 1; }
-        .hero-subtitle { font-family: var(--font-sans); font-size: clamp(0.75rem, 2vw, 0.9rem); font-weight: 700; text-transform: uppercase; letter-spacing: 6px; color: var(--color-accent); margin-bottom: 2.5rem; opacity: 0; }
-        .hero-title { font-size: clamp(2.5rem, 8vw, 9.5rem); line-height: 1.25; max-width: 1200px; margin-bottom: 3rem; letter-spacing: normal; }
-        .hero-title em { font-style: italic; color: var(--color-accent); font-weight: 500; padding-right: 0.05em; }
-        .text-reveal { overflow: hidden; display: inline-block; vertical-align: top; padding: 0.1em 0 0.25em 0; margin-bottom: -0.25em; }
-        .text-reveal-inner { display: inline-block; transform: translateY(110%); transform-origin: top left; }
+        .logo { 
+            position: relative; 
+            display: flex; 
+            align-items: center; 
+            height: 100%; 
+        }
+        .logo-img { 
+            max-height: 130px; 
+            width: auto; 
+            display: block; 
+            transition: max-height 0.5s var(--ease-out-expo), filter 0.8s ease; 
+            transform-origin: left center; 
+            mix-blend-mode: multiply; 
+        }
+        header.scrolled .logo-img { 
+            max-height: 65px; 
+        }
+        .footer-logo-img { 
+            max-height: 140px; 
+            width: auto; 
+            margin-bottom: 1.5rem; 
+            display: block; 
+            transition: var(--transition-theme); 
+            transform-origin: left center; 
+            mix-blend-mode: multiply; 
+        }
+        html[data-theme="dark"] .logo-img, html[data-theme="dark"] .footer-logo-img { 
+            filter: invert(1) hue-rotate(180deg) brightness(1.2); 
+            mix-blend-mode: screen; 
+        }
+        .logo-text-fallback { 
+            font-family: var(--font-serif); 
+            font-size: clamp(1.5rem, 4vw, 2.2rem); 
+            font-style: italic; 
+            font-weight: 500; 
+            color: var(--color-text); 
+            letter-spacing: 1px; 
+            white-space: nowrap; 
+        }
 
-        .about { padding: var(--spacing-xxl) var(--container-padding); background-color: var(--color-bg-alt); display: flex; justify-content: center; align-items: center; min-height: 70vh; position: relative; z-index: 2; backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); }
-        .about-content { max-width: 900px; text-align: center; position: relative; }
-        .about-content::before { content: '„'; position: absolute; top: -40px; left: 50%; transform: translateX(-50%); font-family: var(--font-serif); font-size: clamp(6rem, 15vw, 12rem); color: var(--color-accent); opacity: 0.15; line-height: 1; z-index: -1; pointer-events: none; }
-        .about-text { font-family: var(--font-serif); font-size: clamp(1.5rem, 3.5vw, 3rem); line-height: 1.5; color: var(--color-text); font-weight: 400; }
+        .nav-actions { 
+            display: flex; 
+            align-items: center; 
+            gap: 1.8rem; 
+        }
+        .theme-toggle-btn, .lang-toggle-btn { 
+            color: var(--color-text); 
+            font-family: var(--font-sans); 
+            font-size: 0.8rem; 
+            font-weight: 600; 
+            text-transform: uppercase; 
+            letter-spacing: 2px; 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+            transition: color 0.3s ease; 
+            background: transparent; 
+            border: none; 
+            cursor: pointer;
+        }
+        @media (pointer: fine) { 
+            .theme-toggle-btn:hover, .lang-toggle-btn:hover { color: var(--color-accent); } 
+        }
+        .theme-toggle-btn .icon { 
+            width: 18px; 
+            height: 18px; 
+            border-radius: 50%; 
+            border: 2px solid currentColor; 
+            position: relative; 
+            transition: all 0.5s var(--ease-out-expo); 
+        }
+        html[data-theme="dark"] .theme-toggle-btn .icon { 
+            background-color: currentColor; 
+            box-shadow: inset -5px -3px 0 var(--color-bg); 
+            border-color: transparent; 
+        }
 
-        /* ==========================================================================
-           9. SHOP SECTION (GRID & TRANSPARENT CARDS)
-           ========================================================================== */
-        .shop { padding: var(--spacing-xxl) var(--container-padding); position: relative; z-index: 2; background-color: transparent; min-height: 100vh; }
-        .shop-header { display: flex; flex-direction: column; margin-bottom: var(--spacing-lg); border-bottom: 1px solid var(--color-border); padding-bottom: var(--spacing-md); }
-        .shop-title { font-size: clamp(2.5rem, 6vw, 6rem); margin: 0 0 2rem 0; font-weight: 500; letter-spacing: -0.02em; }
-        .shop-toolbar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 2rem; width: 100%; }
-        .shop-filters { display: flex; gap: 1.5rem; flex-wrap: wrap; }
-        .shop-filters button { font-family: var(--font-sans); font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; color: var(--color-text-light); position: relative; padding-bottom: 0.5rem; transition: color 0.4s ease; cursor: pointer;}
+        .cart-btn { 
+            color: var(--color-text); 
+            font-family: var(--font-sans); 
+            font-size: 0.8rem; 
+            font-weight: 600; 
+            text-transform: uppercase; 
+            letter-spacing: 2px; 
+            position: relative; 
+            padding: 0.5rem 0; 
+            transition: color 0.3s ease; 
+            cursor: pointer; 
+        }
+        .cart-btn::after { 
+            content: ''; 
+            position: absolute; 
+            bottom: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 2px; 
+            background-color: var(--color-accent); 
+            transform: scaleX(0); 
+            transform-origin: right; 
+            transition: transform 0.5s var(--ease-out-expo); 
+        }
+        @media (pointer: fine) { 
+            .cart-btn:hover::after { transform: scaleX(1); transform-origin: left; } 
+        }
+        .cart-count { 
+            position: absolute; 
+            top: -10px; 
+            right: -20px; 
+            background-color: var(--color-accent); 
+            color: var(--color-white); 
+            font-size: 0.65rem; 
+            font-weight: 700; 
+            width: 22px; 
+            height: 22px; 
+            border-radius: 50%; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            opacity: 0; 
+            transform: scale(0); 
+            transition: var(--transition-theme), transform 0.4s var(--ease-out-expo), opacity 0.4s ease; 
+            box-shadow: 0 4px 10px rgba(194, 155, 69, 0.4); 
+        }
+        .cart-count.active { 
+            opacity: 1; 
+            transform: scale(1); 
+        }
+
+        .bilingual-badge { 
+            display: inline-block; 
+            background-color: var(--color-accent); 
+            color: #fff; 
+            padding: 0.3rem 0.8rem; 
+            border-radius: 20px; 
+            font-family: var(--font-sans); 
+            font-size: 0.65rem; 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+            margin-bottom: 0.5rem; 
+            animation: pulse 2s infinite; 
+        }
+        @keyframes pulse { 
+            0% { box-shadow: 0 0 0 0 rgba(194, 155, 69, 0.4); } 
+            70% { box-shadow: 0 0 0 10px rgba(194, 155, 69, 0); } 
+            100% { box-shadow: 0 0 0 0 rgba(194, 155, 69, 0); } 
+        }
+
+        .product-image-wrapper .bilingual-badge { 
+            position: absolute; 
+            bottom: -5px; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            z-index: 15; 
+            margin: 0; 
+            width: max-content; 
+        }
+        
+        .modal-content-inner .bilingual-badge { 
+            margin-bottom: 2rem; 
+        }
+
+        .hero { 
+            height: 100vh; 
+            min-height: 600px; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+            text-align: center; 
+            padding: 0 var(--container-padding); 
+            position: relative; 
+            z-index: 1; 
+        }
+        .hero-subtitle { 
+            font-family: var(--font-sans); 
+            font-size: clamp(0.75rem, 2vw, 0.9rem); 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            letter-spacing: 6px; 
+            color: var(--color-accent); 
+            margin-bottom: 2.5rem; 
+            opacity: 0; 
+        }
+        .hero-title { 
+            font-size: clamp(1.6rem, 3.5vw, 3.5rem); 
+            line-height: 1.3; 
+            max-width: 1400px; 
+            margin-bottom: 3rem; 
+            letter-spacing: normal; 
+        }
+        .hero-title em { 
+            font-style: italic; 
+            color: var(--color-accent); 
+            font-weight: 500; 
+            padding-right: 0.05em; 
+        }
+        .text-reveal { 
+            overflow: hidden; 
+            display: inline-block; 
+            vertical-align: top; 
+            padding: 0.1em 0 0.25em 0; 
+            margin-bottom: -0.25em; 
+        }
+        .text-reveal-inner { 
+            display: inline-block; 
+            transform: translateY(110%); 
+            transform-origin: top left; 
+        }
+
+        .about { 
+            position: relative; 
+            padding: var(--spacing-xxl) var(--container-padding); 
+            min-height: 70vh; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            background: linear-gradient(135deg, rgba(194, 155, 69, 0.05), rgba(194, 155, 69, 0.15));
+            border-top: 1px solid var(--color-border);
+            border-bottom: 1px solid var(--color-border);
+            z-index: 2;
+        }
+        .about-content { 
+            max-width: 900px; 
+            text-align: center; 
+            position: relative; 
+            padding: 3rem;
+            background: var(--color-bg);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 20px 40px var(--color-shadow);
+        }
+        .about-content::before { 
+            content: '„'; 
+            position: absolute; 
+            top: -40px; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            font-family: var(--font-serif); 
+            font-size: clamp(6rem, 15vw, 12rem); 
+            color: var(--color-accent); 
+            opacity: 0.3; 
+            line-height: 1; 
+            z-index: 0; 
+            pointer-events: none; 
+        }
+        .about-text { 
+            font-family: var(--font-serif); 
+            font-size: clamp(1.3rem, 3vw, 2.2rem); 
+            line-height: 1.6; 
+            color: var(--color-text); 
+            font-weight: 400; 
+            position: relative;
+            z-index: 1;
+        }
+
+        .shop { 
+            padding: var(--spacing-xxl) var(--container-padding); 
+            position: relative; 
+            z-index: 2; 
+            background-color: transparent; 
+            min-height: 100vh; 
+        }
+        .shop-header { 
+            display: flex; 
+            flex-direction: column; 
+            margin-bottom: var(--spacing-lg); 
+            border-bottom: 1px solid var(--color-border); 
+            padding-bottom: var(--spacing-md); 
+        }
+        .shop-title { 
+            font-size: clamp(2.5rem, 6vw, 6rem); 
+            margin: 0 0 2rem 0; 
+            font-weight: 500; 
+            letter-spacing: -0.02em; 
+        }
+        .shop-toolbar { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            flex-wrap: wrap; 
+            gap: 2rem; 
+            width: 100%; 
+        }
+        
+        .shop-filters { 
+            display: flex; 
+            gap: 1.5rem; 
+            flex-wrap: wrap; 
+        }
+        .shop-filters button { 
+            font-family: var(--font-sans); 
+            font-size: 0.85rem; 
+            font-weight: 600; 
+            text-transform: uppercase; 
+            letter-spacing: 2px; 
+            color: var(--color-text-light); 
+            position: relative; 
+            padding-bottom: 0.5rem; 
+            transition: color 0.4s ease; 
+            cursor: pointer; 
+        }
+        @media (pointer: fine) { 
+            .shop-filters button:hover, .shop-filters button.active { color: var(--color-text); } 
+        }
         .shop-filters button.active { color: var(--color-text); }
-        .shop-filters button.active::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background-color: var(--color-accent); transform: scaleX(1); transition: transform 0.5s var(--ease-out-expo); transform-origin: left; }
-        .shop-controls { display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; }
-        .shop-search { background: transparent; border: none; border-bottom: 1px solid var(--color-border); color: var(--color-text); font-family: var(--font-sans); font-size: 0.9rem; padding: 0.5rem 0; width: 200px; outline: none; }
-        .shop-sort { background: transparent; border: 1px solid var(--color-border); color: var(--color-text); font-family: var(--font-sans); font-size: 0.8rem; font-weight: 600; text-transform: uppercase; padding: 0.6rem 1.2rem; border-radius: 30px; cursor: pointer; appearance: none; -webkit-appearance: none; background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" fill="none" stroke="%237A7268" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><polyline points="6 9 12 15 18 9"></polyline></svg>'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1em; padding-right: 2.5rem; }
+        .shop-filters button::after { 
+            content: ''; 
+            position: absolute; 
+            bottom: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 2px; 
+            background-color: var(--color-accent); 
+            transform: scaleX(0); 
+            transition: transform 0.5s var(--ease-out-expo); 
+            transform-origin: right; 
+        }
+        .shop-filters button.active::after { 
+            transform: scaleX(1); 
+            transform-origin: left; 
+        }
+
+        .shop-controls { 
+            display: flex; 
+            align-items: center; 
+            gap: 1.5rem; 
+            flex-wrap: wrap; 
+        }
+        .shop-search { 
+            background: transparent; 
+            border: none; 
+            border-bottom: 1px solid var(--color-border); 
+            color: var(--color-text); 
+            font-family: var(--font-sans); 
+            font-size: 0.9rem; 
+            padding: 0.5rem 0; 
+            width: 200px; 
+            transition: border-color 0.3s ease; 
+            outline: none; 
+        }
+        .shop-search::placeholder { color: var(--color-text-light); }
+        .shop-search:focus { border-color: var(--color-accent); }
+        
+        .shop-sort { 
+            background: transparent; 
+            border: 1px solid var(--color-border); 
+            color: var(--color-text); 
+            font-family: var(--font-sans); 
+            font-size: 0.8rem; 
+            font-weight: 600; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+            padding: 0.6rem 1.2rem; 
+            border-radius: 30px; 
+            outline: none; 
+            cursor: pointer; 
+            appearance: none; 
+            -webkit-appearance: none; 
+            background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" fill="none" stroke="%237A7268" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><polyline points="6 9 12 15 18 9"></polyline></svg>'); 
+            background-repeat: no-repeat; 
+            background-position: right 1rem center; 
+            background-size: 1em; 
+            padding-right: 2.5rem; 
+            transition: border-color 0.3s ease; 
+        }
+        .shop-sort:focus { border-color: var(--color-accent); }
+        .shop-sort option { background: var(--color-bg); color: var(--color-text); }
+        html[data-theme="dark"] .shop-sort { 
+            background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" fill="none" stroke="%239E9B96" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><polyline points="6 9 12 15 18 9"></polyline></svg>'); 
+        }
+
         .view-toggles { display: flex; gap: 0.5rem; }
-        .view-toggles button { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border: 1px solid transparent; border-radius: 50%; color: var(--color-text-light); transition: all 0.3s ease; cursor: pointer; }
+        .view-toggles button { 
+            width: 36px; 
+            height: 36px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            border: 1px solid transparent; 
+            border-radius: 50%; 
+            color: var(--color-text-light); 
+            transition: all 0.3s ease; 
+            cursor: pointer; 
+        }
         .view-toggles button.active { color: var(--color-text); border-color: var(--color-border); }
         .view-toggles button svg { width: 16px; height: 16px; fill: currentColor; }
 
-        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 4rem 2rem; transition: opacity 0.4s ease; }
-        .product-card { position: relative; display: flex; flex-direction: column; width: 100%; cursor: pointer; }
-        .product-card-inner { perspective: 1500px; width: 100%; }
+        .products-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+            gap: 4rem 2rem; 
+            transition: opacity 0.4s ease; 
+        }
+        .product-card { 
+            position: relative; 
+            display: flex; 
+            flex-direction: column; 
+            width: 100%; 
+            cursor: pointer; 
+            margin-bottom: 2rem; 
+        }
+        .product-card-inner { 
+            perspective: 1500px; 
+            width: 100%; 
+        }
         
         .product-image-wrapper {
-            position: relative; width: 100%; padding-top: 135%; overflow: visible; background-color: transparent;
-            margin-bottom: 1.5rem; transform-style: preserve-3d; transition: transform 0.6s ease;
+            position: relative; 
+            width: 100%; 
+            padding-top: 135%; 
+            overflow: visible; 
+            background-color: transparent;
+            margin-bottom: 1.5rem; 
+            transform-style: preserve-3d; 
+            transition: transform 0.6s ease;
         }
+        
         .product-image { 
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
-            padding: 0; object-fit: contain; 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            padding: 0; 
+            object-fit: contain; 
             transition: transform 1.2s var(--ease-out-expo), filter 1.2s ease; 
-            transform: scale(1); will-change: transform; 
+            transform: scale(1); 
+            will-change: transform; 
             filter: drop-shadow(0 15px 25px rgba(0,0,0,0.12)); 
         }
-        html[data-theme="dark"] .product-image { filter: drop-shadow(0 15px 35px rgba(0,0,0,0.6)); }
+        html[data-theme="dark"] .product-image { 
+            filter: drop-shadow(0 15px 35px rgba(0,0,0,0.6)); 
+        }
 
-        .product-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; opacity: 0; transition: 0.6s var(--ease-out-expo); pointer-events: none; z-index: 10; }
-        .view-details-hint { background: var(--color-bg); color: var(--color-text); padding: 0.8rem 1.5rem; border-radius: 50px; font-family: var(--font-sans); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; transform: translateY(20px); transition: transform 0.6s var(--ease-out-expo); box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        
         @media (pointer: fine) {
             .product-card:hover .product-overlay { opacity: 1; }
             .product-card:hover .product-image { transform: scale(1.08); filter: drop-shadow(0 25px 40px rgba(0,0,0,0.25)) brightness(0.98); }
@@ -295,12 +884,58 @@
             .quick-add-btn:hover::before { transform: scale(1); }
         }
 
-        .product-fallback { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: none; align-items: center; justify-content: center; text-align: center; padding: 2rem; font-family: var(--font-serif); font-style: italic; font-size: 1.2rem; color: var(--color-text-light); background: transparent; }
-        .product-info { display: flex; flex-direction: column; gap: 0.6rem; }
-        .product-meta { display: flex; justify-content: space-between; align-items: center; }
+        .product-fallback { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            display: none; 
+            align-items: center; 
+            justify-content: center; 
+            text-align: center; 
+            padding: 2rem; 
+            font-family: var(--font-serif); 
+            font-style: italic; 
+            font-size: 1.2rem; 
+            color: var(--color-text-light); 
+            background: transparent; 
+        }
+        
+        .product-overlay { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            opacity: 0; 
+            transition: opacity 0.6s var(--ease-out-expo); 
+            pointer-events: none; 
+            z-index: 10; 
+        }
+        .view-details-hint { 
+            background: var(--color-bg); 
+            color: var(--color-text); 
+            padding: 0.8rem 1.5rem; 
+            border-radius: 50px; 
+            font-family: var(--font-sans); 
+            font-size: 0.75rem; 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            letter-spacing: 2px; 
+            transform: translateY(20px); 
+            transition: transform 0.6s var(--ease-out-expo); 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
+        }
+        
+        .product-info { display: flex; flex-direction: column; gap: 0.6rem; align-items: flex-start; }
+        .product-meta { display: flex; justify-content: space-between; align-items: center; width: 100%; }
         .product-category { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; color: var(--color-text-light); }
         .product-title { font-size: clamp(1.2rem, 3vw, 1.5rem); font-family: var(--font-serif); font-weight: 500; margin: 0; line-height: 1.3; transition: color 0.3s ease; }
-        .product-bottom { display: flex; justify-content: space-between; align-items: center; margin-top: 0.5rem; }
+        .product-bottom { display: flex; justify-content: space-between; align-items: center; margin-top: 0.5rem; width: 100%; }
         .product-price { font-size: 1.1rem; font-weight: 600; font-family: var(--font-sans); }
         .quick-add-btn { border: 1px solid var(--color-border); width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: var(--color-text); transition: all 0.4s var(--ease-out-expo); position: relative; overflow: hidden; z-index: 2; background-color: var(--color-bg); cursor: pointer; }
         .quick-add-btn::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--color-accent); transform: scale(0); border-radius: 50%; transition: transform 0.4s var(--ease-out-expo); z-index: -1; }
@@ -311,10 +946,55 @@
         .products-grid.list-view .product-card-inner { width: 250px; flex-shrink: 0; }
         .products-grid.list-view .product-info { flex: 1; gap: 1rem; }
         .products-grid.list-view .product-title { font-size: 2rem; }
+
         .no-results { grid-column: 1 / -1; text-align: center; padding: 4rem 0; font-family: var(--font-serif); font-size: 1.5rem; color: var(--color-text-light); font-style: italic; }
+        
+        .wholesale-banner { 
+            grid-column: 1 / -1; 
+            text-align: center; 
+            margin-top: 4rem; 
+            padding: 4rem 2rem; 
+            background: linear-gradient(135deg, var(--color-bg-alt), var(--color-bg)); 
+            border-radius: var(--radius-lg); 
+            border: 1px solid var(--color-accent); 
+            backdrop-filter: blur(10px); 
+            box-shadow: 0 20px 40px var(--color-shadow), inset 0 0 20px rgba(194,155,69,0.1); 
+            position: relative;
+            overflow: hidden;
+        }
+        .wholesale-banner::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% 0%, rgba(194,155,69,0.15) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .wholesale-banner h3 { font-family: var(--font-serif); font-size: clamp(2rem, 4vw, 2.5rem); margin-bottom: 1rem; color: var(--color-text); font-style: italic; }
+        .wholesale-banner p { font-family: var(--font-sans); font-size: 1.1rem; color: var(--color-text-light); margin-top: 1.5rem; }
+        .wholesale-banner a { 
+            display: inline-block;
+            background-color: var(--color-accent); 
+            color: var(--color-white); 
+            padding: 1rem 2.5rem; 
+            border-radius: 50px; 
+            font-family: var(--font-sans); 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            letter-spacing: 2px; 
+            text-decoration: none; 
+            transition: all 0.4s var(--ease-out-expo);
+            box-shadow: 0 10px 20px rgba(194, 155, 69, 0.3);
+            margin-top: 1rem;
+        }
+        @media (pointer: fine) {
+            .wholesale-banner a:hover { 
+                background-color: var(--color-text); 
+                color: var(--color-bg); 
+                transform: translateY(-5px); 
+                box-shadow: 0 15px 30px var(--color-shadow); 
+            }
+        }
 
         /* ==========================================================================
-           10. CART SIDEBAR & DELIVERY
+           11. CART SIDEBAR & DELIVERY
            ========================================================================== */
         .cart-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(0, 0, 0, 0.6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 100001; opacity: 0; pointer-events: none; transition: opacity 0.5s ease; }
         .cart-overlay.active { opacity: 1; pointer-events: auto; }
@@ -332,7 +1012,6 @@
         .cart-empty { text-align: center; color: var(--color-text-light); margin-top: 4rem; font-style: italic; font-family: var(--font-serif); font-size: 1.1rem; }
         .cart-item { display: flex; gap: 1.2rem; margin-bottom: 2rem; padding-bottom: 2rem; border-bottom: 1px solid var(--color-border); }
         
-        /* CART IMAGES (TRANSPARENT) */
         .cart-item-img { width: 80px; height: 110px; padding: 0; object-fit: contain; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.15)); background-color: transparent; }
         .cart-fallback-img { width: 80px; height: 110px; border-radius: var(--radius-sm); background: transparent; display: flex; align-items: center; justify-content: center; text-align: center; font-size: 0.6rem; font-family: var(--font-serif); padding: 5px; color: var(--color-text-light); }
         
@@ -346,8 +1025,7 @@
         .remove-item { color: var(--color-text-light); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; transition: color 0.3s ease; cursor: pointer; }
         @media (pointer: fine) { .remove-item:hover { color: var(--color-error); } }
         
-        /* CART DELIVERY */
-        .delivery-details { margin-bottom: 1.5rem; text-align: left; border-bottom: 1px solid var(--color-border); padding-bottom: 1.5rem; }
+        .delivery-details { margin-bottom: 1.5rem; text-align: left; border-bottom: 1px solid var(--color-border); padding-bottom: 1.5rem; padding-left: var(--spacing-sm); padding-right: var(--spacing-sm); }
         .delivery-details h4 { font-family: var(--font-sans); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 1rem; }
         .delivery-input { width: 100%; padding: 12px 16px; margin-bottom: 10px; border-radius: 8px; border: 1px solid var(--color-border); background: var(--color-bg); color: var(--color-text); font-family: var(--font-sans); font-size: 0.9rem; outline: none; transition: border-color 0.3s ease; }
         .delivery-input:focus { border-color: var(--color-accent); }
@@ -364,7 +1042,7 @@
         .checkout-btn span { position: relative; z-index: 2; }
 
         /* ==========================================================================
-           11. CREATIVE PRODUCT MODAL WITH IMAGE SLIDER & LIGHTBOX ZOOM
+           12. CREATIVE PRODUCT MODAL WITH IMAGE SLIDER & LIGHTBOX ZOOM
            ========================================================================== */
         .modal-wrapper { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; height: 100dvh; z-index: 100000; display: flex; justify-content: center; align-items: center; pointer-events: none; visibility: hidden; padding: var(--container-padding); }
         .modal-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--color-bg); opacity: 0; will-change: opacity; }
@@ -393,7 +1071,7 @@
             display: flex; justify-content: center; align-items: center; padding: 2rem; 
         }
         
-        .modal-image { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(-15px 25px 35px rgba(0,0,0,0.3)); transition: transform 0.1s linear; }
+        .modal-image { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(-15px 25px 35px rgba(0,0,0,0.3)); transition: transform 0.1s linear; background-color: transparent; }
         html[data-theme="dark"] .modal-image { filter: drop-shadow(-15px 25px 35px rgba(0,0,0,0.7)); }
 
         .carousel-btn { 
@@ -407,7 +1085,6 @@
         .carousel-btn.next { right: 20px; }
         @media (pointer: fine) { .carousel-btn:hover { background: var(--color-text); color: var(--color-bg); } }
         
-        /* ZOOM / LIGHTBOX BUTTON */
         .zoom-btn {
             position: absolute; top: 20px; left: 20px; width: 45px; height: 45px;
             background: var(--color-bg-alt); backdrop-filter: blur(5px); border: 1px solid var(--color-border);
@@ -434,8 +1111,24 @@
         .modal-add-btn { background-color: var(--color-accent); color: var(--color-white); padding: 1.2rem 2.5rem; border-radius: 50px; font-family: var(--font-sans); font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; transition: all 0.4s var(--ease-out-expo); flex-grow: 1; text-align: center; box-shadow: 0 10px 30px rgba(194, 155, 69, 0.3); cursor: pointer; }
         @media (pointer: fine) { .modal-add-btn:hover { background-color: var(--color-text); color: var(--color-bg); transform: translateY(-5px); box-shadow: 0 15px 40px var(--color-shadow); } }
         .modal-anim-el { opacity: 0; transform: translateY(30px); }
+        
+        .wholesale-note { 
+            font-family: var(--font-sans); 
+            font-size: 0.75rem; 
+            color: var(--color-text-light); 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+            font-weight: 600; 
+            margin-top: 1.5rem; 
+            width: 100%; 
+            display: block; 
+            opacity: 0; 
+            transform: translateY(30px); 
+        }
+        .wholesale-note a { color: var(--color-accent); text-decoration: underline; transition: 0.3s; }
+        .wholesale-note a:hover { color: var(--color-text); }
 
-        /* LIGHTBOX FULLSCREEN OVERLAY (POWIĘKSZENIE 2.2x) */
+        /* LIGHTBOX FULLSCREEN OVERLAY */
         .lightbox-overlay {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             background: rgba(10, 9, 8, 0.98); z-index: 10000005; display: none;
@@ -454,13 +1147,36 @@
         .lightbox-close:hover { background: #fff; color: #000; transform: rotate(90deg); }
 
         /* ==========================================================================
-           12. PARALLAX SECTION & FOOTER
+           13. PARALLAX SECTION & FOOTER
            ========================================================================== */
         .parallax-section { height: 80vh; position: relative; overflow: hidden; display: flex; justify-content: center; align-items: center; background-color: #0A0908; z-index: 1; }
         .parallax-bg { position: absolute; top: -30%; left: 0; width: 100%; height: 160%; background-color: #0A0908; background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.08" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23n)" opacity="0.06"/></svg>'); z-index: 1; }
         .parallax-content { position: relative; z-index: 2; text-align: center; max-width: 900px; padding: 0 var(--container-padding); color: #FFFFFF; }
-        .parallax-content h2 { font-size: clamp(2.5rem, 7vw, 6rem); margin-bottom: 1.5rem; color: #FFFFFF; letter-spacing: -0.02em; }
-        .parallax-content p { font-size: clamp(1rem, 2vw, 1.5rem); color: rgba(255,255,255,0.7); font-family: var(--font-serif); font-style: italic; }
+        
+        .parallax-content-inner { 
+            max-width: 800px; 
+            margin: 0 auto; 
+            padding: 3.5rem; 
+            background: rgba(10, 9, 8, 0.5); 
+            border: 1px solid rgba(194, 155, 69, 0.3); 
+            border-radius: var(--radius-lg); 
+            backdrop-filter: blur(12px); 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5), inset 0 0 20px rgba(194, 155, 69, 0.1); 
+        }
+        .parallax-title { 
+            font-size: clamp(2rem, 5vw, 4.5rem); 
+            margin-bottom: 1.5rem; 
+            color: var(--color-accent) !important; 
+            letter-spacing: 2px; 
+            text-transform: uppercase;
+        }
+        .parallax-content p { 
+            font-size: clamp(1rem, 2vw, 1.25rem); 
+            color: rgba(255,255,255,0.9); 
+            font-family: var(--font-sans); 
+            line-height: 1.8; 
+            font-weight: 300;
+        }
 
         footer { background-color: var(--color-bg-alt); padding: var(--spacing-xxl) var(--container-padding) var(--spacing-md); position: relative; z-index: 2; border-top: 1px solid var(--color-border); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
         .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 4rem; margin-bottom: var(--spacing-xl); }
@@ -473,7 +1189,7 @@
         .footer-bottom { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; padding-top: var(--spacing-md); border-top: 1px solid var(--color-border); font-size: 0.85rem; color: var(--color-text-light); font-weight: 500; text-align: center; }
 
         /* ==========================================================================
-           13. RESPONSIVE
+           14. RESPONSIVE
            ========================================================================== */
         @media (max-width: 1024px) {
             .footer-top { grid-template-columns: 1fr 1fr; gap: 3rem; }
@@ -484,7 +1200,6 @@
             .modal-bottom { margin-top: 2rem; }
             .products-grid.list-view .product-card { flex-direction: column; }
             .products-grid.list-view .product-card-inner { width: 100%; max-width: 400px; margin: 0 auto; }
-            .carousel-btn, .zoom-btn { opacity: 1; pointer-events: auto; }
         }
 
         @media (max-width: 768px) {
@@ -494,7 +1209,7 @@
             header.scrolled .logo-img { max-height: 50px; }
             .nav-actions { gap: 1rem; }
             
-            .theme-toggle-btn .text { display: none; } 
+            .theme-toggle-btn .text, .lang-toggle-btn .text { display: none; } 
             .theme-toggle-btn .icon { width: 22px; height: 22px; }
             .lang-toggle-btn { font-size: 1rem; font-weight: 700; }
             .cart-btn { font-size: 0; padding: 0;} 
@@ -503,7 +1218,7 @@
             .cart-btn::after { display: none; }
             .cart-count { top: -8px; right: -8px; width: 18px; height: 18px; font-size: 0.55rem; }
             
-            .hero-title { font-size: clamp(2.5rem, 12vw, 4rem); line-height: 1.25; }
+            .hero-title { font-size: clamp(1.4rem, 4vw, 3rem); line-height: 1.3; }
             .footer-top { grid-template-columns: 1fr; gap: 2.5rem; }
             .shop-toolbar { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
             .shop-controls { width: 100%; justify-content: space-between; }
@@ -521,8 +1236,15 @@
             .modal-right { padding: 2rem 2rem 4rem; height: auto; overflow-y: visible; }
             .modal-bottom { flex-direction: column; align-items: stretch; gap: 1rem; }
             .modal-price { text-align: center; }
-
-            #easypack-widget-modal { padding: 0 !important; }
+            
+            .about-content { padding: 3rem 1.5rem; }
+            .about-content::before { top: -20px; font-size: 5rem; }
+            .about-content::after { display: none; }
+            .about-text { font-size: clamp(1.2rem, 4vw, 1.5rem); }
+            
+            .wholesale-banner h3 { font-size: 1.6rem; }
+            .parallax-content-inner { padding: 1.5rem; }
+            .parallax-content h2 { font-size: 2rem; }
         }
     </style>
 </head>
@@ -603,7 +1325,7 @@
         <div class="cart-footer">
             <div class="delivery-details">
                 <h4 data-i18n="del_title">Dane dostawy</h4>
-                <input type="tel" id="user-phone" class="delivery-input hover-target" data-i18n-ph="del_phone_ph" placeholder="Numer telefonu (dla kuriera)" required>
+                <input type="tel" id="user-phone" class="delivery-input hover-target" data-i18n-ph="del_phone_ph" placeholder="Numer telefonu" required>
                 
                 <button type="button" id="open-inpost-btn" class="inpost-btn hover-target">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
@@ -651,6 +1373,7 @@
                 </div>
                 <div class="modal-right">
                     <div class="modal-content-inner">
+                        <span class="bilingual-badge modal-anim-el" data-i18n="bilingual_badge">Edycja polsko-angielska</span>
                         <div class="modal-meta modal-anim-el" id="modal-category"></div>
                         <h2 class="modal-title modal-anim-el" id="modal-title"></h2>
                         <p class="modal-desc modal-anim-el" id="modal-desc"></p>
@@ -658,6 +1381,7 @@
                             <div class="modal-price" id="modal-price"></div>
                             <button class="modal-add-btn hover-target" id="modal-add-btn" data-i18n="add_to_cart">Dodaj do koszyka</button>
                         </div>
+                        <span class="wholesale-note modal-anim-el"><span data-i18n="wholesale_txt">Zamówienie hurtowe?</span> <a href="mailto:samuel.ksiazki@gmail.com" class="hover-target" data-i18n="wholesale_link">Skontaktuj się z nami</a></span>
                     </div>
                 </div>
             </div>
@@ -671,15 +1395,18 @@
                 <div class="hero-subtitle" data-i18n="hero_sub">Kolekcja Premium</div>
                 <h1 class="hero-title">
                     <span class="text-reveal"><span class="text-reveal-inner" data-i18n="hero_t1">Odkrywaj wiarę</span></span><br>
-                    <span class="text-reveal"><span class="text-reveal-inner" data-i18n="hero_t2">poprzez <em>najpiękniejsze</em></span></span><br>
-                    <span class="text-reveal"><span class="text-reveal-inner" data-i18n="hero_t3">opowieści.</span></span>
+                    <span class="text-reveal"><span class="text-reveal-inner" data-i18n="hero_t2">poprzez historie <em>ludzi,</em></span></span><br>
+                    <span class="text-reveal"><span class="text-reveal-inner" data-i18n="hero_t3">którzy uczynili świętość swoją drogą życia.</span></span>
                 </h1>
             </section>
 
             <section class="about">
+                <div class="about-bg-shape about-shape-1"></div>
+                <div class="about-bg-shape about-shape-2"></div>
+                <div class="about-bg-shape about-shape-3"></div>
                 <div class="about-content">
                     <h2 class="about-text" id="about-text" data-i18n="about_text">
-                        Wierzymy, że słowa mają moc kształtowania dusz. Nasze książki to nie tylko papier i atrament, to starannie zaprojektowane artefakty, które wprowadzają najmłodszych w świat duchowych wartości, ucząc miłości, empatii i prawdy poprzez sztukę najwyższej próby.
+                        Wierzymy, że słowa mają moc kształtowania serc. Nasze książki to coś więcej niż papier – to starannie tworzone historie, które wprowadzają dzieci w świat wartości, ucząc miłości, empatii i prawdy.
                     </h2>
                 </div>
             </section>
@@ -692,7 +1419,7 @@
                         <div class="shop-filters">
                             <button class="active hover-target" data-filter="all" data-i18n="filter_all">Wszystko</button>
                             <button class="hover-target" data-filter="swietosc" data-i18n="filter_swietosc">Seria „Świętość nie jest nudna”</button>
-                            <button class="hover-target" data-filter="kolorowanki" data-i18n="filter_kolorowanki">Kolorowanki</button>
+                            <button class="hover-target" data-filter="inne" data-i18n="filter_inne">Książki poza serią</button>
                         </div>
                         <div class="shop-controls">
                             <input type="text" id="shop-search" class="shop-search hover-target" data-i18n-ph="search_ph" placeholder="Szukaj...">
@@ -714,13 +1441,20 @@
                 </div>
                 
                 <div class="products-grid" id="products-grid"></div>
+
+                <div class="wholesale-banner">
+                    <h3 data-i18n="wholesale_txt">Zamówienie hurtowe?</h3>
+                    <p><a href="mailto:samuel.ksiazki@gmail.com" class="hover-target" data-i18n="wholesale_link">Skontaktuj się z nami</a></p>
+                </div>
             </section>
 
             <section class="parallax-section">
                 <div class="parallax-bg" id="parallax-bg"></div>
                 <div class="parallax-content">
-                    <h2 class="parallax-title" data-i18n="parallax_title">Sztuka i Duchowość</h2>
-                    <p data-i18n="parallax_desc">Każda ilustracja to modlitwa, każda strona to krok ku światłu.</p>
+                    <div class="parallax-content-inner">
+                        <h2 class="parallax-title" data-i18n="parallax_title">ŚWIĘTOŚĆ NIE JEST NUDNA</h2>
+                        <p data-i18n="parallax_desc">Książki z tej serii wyróżnia dwujęzyczna forma (polski i angielski), dzięki której dzieci mogą rozwijać się także językowo. Każda publikacja zawiera kod QR prowadzący do Padletu z dodatkowymi materiałami dla dzieci, rodziców i katechetów.<br><br>Seria przeznaczona jest dla dzieci w wieku 8–13 lat.</p>
+                    </div>
                 </div>
             </section>
 
@@ -738,23 +1472,24 @@
                     <div class="footer-links">
                         <h4 data-i18n="footer_explore">Eksploruj</h4>
                         <ul>
-                            <li><a href="#" class="hover-target" data-i18n="footer_l1">Kolekcja</a></li>
-                            <li><a href="#" class="hover-target" data-i18n="footer_l2">O wydawnictwie</a></li>
-                            <li><a href="#" class="hover-target" data-i18n="footer_l3">Dla szkół i parafii</a></li>
+                            <li><a href="#kolekcja" class="hover-target" data-i18n="footer_l1">Kolekcja</a></li>
+                            <li><a href="mailto:samuel.ksiazki@gmail.com" class="hover-target" data-i18n="footer_l2">O wydawnictwie</a></li>
+                            <li><a href="mailto:samuel.ksiazki@gmail.com" class="hover-target" data-i18n="footer_l3">Dla szkół i parafii</a></li>
                         </ul>
                     </div>
                     <div class="footer-links">
                         <h4 data-i18n="footer_help">Pomoc & Kontakt</h4>
                         <ul>
-                            <li><a href="#" class="hover-target">hello@samuelforchildren.pl</a></li>
-                            <li><a href="#" class="hover-target" data-i18n="footer_l4">Wysyłka i zwroty</a></li>
-                            <li><a href="#" class="hover-target" data-i18n="footer_l5">Regulamin sklepu</a></li>
+                            <li><a href="mailto:samuel.ksiazki@gmail.com" class="hover-target">samuel.ksiazki@gmail.com</a></li>
+                            <li><a href="tel:+48572001688" class="hover-target">+48 572 001 688</a></li>
+                            <li><a href="mailto:samuel.ksiazki@gmail.com" class="hover-target" data-i18n="footer_l4">Wysyłka i zwroty</a></li>
+                            <li><a href="mailto:samuel.ksiazki@gmail.com" class="hover-target" data-i18n="footer_l5">Regulamin sklepu</a></li>
                         </ul>
                     </div>
                 </div>
                 <div class="footer-bottom">
                     <span data-i18n="footer_copy">&copy; 2026 Samuel for Children. Wszystkie prawa zastrzeżone.</span>
-                    <span>Zaprojektowane by Elite AI</span>
+                    <span>Zaprojektowane przez <a href="https://gswebb2.netlify.app/" target="_blank" rel="noopener" class="hover-target" style="color: var(--color-accent); font-weight: 600;">gsweb</a></span>
                 </div>
             </footer>
 
@@ -771,27 +1506,27 @@
                 cart_title: "Twój Koszyk",
                 cart_total: "Razem:",
                 cart_checkout: "Przejdź do kasy",
-                cart_empty: "Twój koszyk jest pusty.<br>Odkryj naszą kolekcję.",
+                cart_empty: "Twój koszyk jest pusty.",
                 add_to_cart: "Dodaj do koszyka",
-                added: "Dodano pomyślnie!",
+                added: "Dodano!",
                 remove: "Usuń",
-                view_details: "ZOBACZ SZCZEGÓŁY",
+                view_details: "SZCZEGÓŁY",
                 hero_sub: "Kolekcja Premium",
                 hero_t1: "Odkrywaj wiarę",
-                hero_t2: "poprzez <em>najpiękniejsze</em>",
-                hero_t3: "opowieści.",
-                about_text: "Wierzymy, że słowa mają moc kształtowania dusz. Nasze książki to nie tylko papier i atrament, to starannie zaprojektowane artefakty, które wprowadzają najmłodszych w świat duchowych wartości, ucząc miłości, empatii i prawdy poprzez sztukę najwyższej próby.",
+                hero_t2: "poprzez historie <em>ludzi,</em>",
+                hero_t3: "którzy uczynili świętość swoją drogą życia.",
+                about_text: "Wierzymy, że słowa mają moc kształtowania serc. Nasze książki to coś więcej niż papier – to starannie tworzone historie, które wprowadzają dzieci w świat wartości, ucząc miłości, empatii i prawdy.",
                 shop_title: "Kolekcja.",
                 filter_all: "Wszystko",
                 filter_swietosc: "Seria „Świętość nie jest nudna”",
-                filter_kolorowanki: "Kolorowanki",
+                filter_inne: "Książki poza serią",
                 search_ph: "Szukaj...",
                 sort_default: "Domyślnie",
                 sort_cheap: "Od najtańszych",
                 sort_exp: "Od najdroższych",
                 no_results: "Brak produktów spełniających kryteria.",
-                parallax_title: "Sztuka i Duchowość",
-                parallax_desc: "Każda ilustracja to modlitwa, każda strona to krok ku światłu.",
+                parallax_title: "ŚWIĘTOŚĆ NIE JEST NUDNA",
+                parallax_desc: "Książki z tej serii wyróżnia dwujęzyczna forma (polski i angielski), dzięki której dzieci mogą rozwijać się także językowo. Każda publikacja zawiera kod QR prowadzący do Padletu z dodatkowymi materiałami dla dzieci, rodziców i katechetów.<br><br>Seria przeznaczona jest dla dzieci w wieku 8–13 lat.",
                 footer_desc: "Tworzymy literaturę, która zostaje w sercu na całe życie. Projekt premium dla wymagających czytelników poszukujących piękna i głębi.",
                 footer_explore: "Eksploruj",
                 footer_help: "Pomoc & Kontakt",
@@ -800,11 +1535,14 @@
                 footer_l3: "Dla szkół i parafii",
                 footer_l4: "Wysyłka i zwroty",
                 footer_l5: "Regulamin sklepu",
-                footer_copy: "&copy; 2026 Samuel for Children. Wszystkie prawa zastrzeżone.",
+                footer_copy: "© 2026 Samuel for Children. Wszystkie prawa zastrzeżone.",
                 del_title: "Dane dostawy",
-                del_phone_ph: "Numer telefonu (dla kuriera)",
+                del_phone_ph: "Numer telefonu",
                 del_inpost_btn: "Wybierz Paczkomat",
-                del_selected: "Wybrano:"
+                del_selected: "Wybrano:",
+                bilingual_badge: "Edycja polsko-angielska",
+                wholesale_txt: "Zamówienie hurtowe?",
+                wholesale_link: "Skontaktuj się z nami"
             },
             en: {
                 theme_dark: "Dark",
@@ -814,27 +1552,27 @@
                 cart_title: "Your Cart",
                 cart_total: "Total:",
                 cart_checkout: "Checkout",
-                cart_empty: "Your cart is empty.<br>Discover our collection.",
+                cart_empty: "Your cart is empty.",
                 add_to_cart: "Add to cart",
-                added: "Added successfully!",
+                added: "Added!",
                 remove: "Remove",
-                view_details: "VIEW DETAILS",
+                view_details: "DETAILS",
                 hero_sub: "Premium Collection",
                 hero_t1: "Discover faith",
-                hero_t2: "through the <em>most beautiful</em>",
-                hero_t3: "stories.",
-                about_text: "We believe that words have the power to shape souls. Our books are not just paper and ink; they are carefully designed artifacts that introduce the youngest to the world of spiritual values, teaching love, empathy, and truth through the highest quality of art.",
+                hero_t2: "through the stories of <em>people,</em>",
+                hero_t3: "who made holiness their way of life.",
+                about_text: "We believe that words have the power to shape hearts. Our books are more than just paper – they are carefully crafted stories that introduce children to the world of values, teaching love, empathy, and truth.",
                 shop_title: "Collection.",
                 filter_all: "All",
                 filter_swietosc: "„Holiness is Not Boring” Series",
-                filter_kolorowanki: "Coloring Books",
+                filter_inne: "Other Books",
                 search_ph: "Search...",
                 sort_default: "Default",
                 sort_cheap: "Price: Low to High",
                 sort_exp: "Price: High to Low",
                 no_results: "No products match your criteria.",
-                parallax_title: "Art & Spirituality",
-                parallax_desc: "Every illustration is a prayer, every page a step towards the light.",
+                parallax_title: "HOLINESS IS NOT BORING",
+                parallax_desc: "The books in this series are distinguished by their bilingual format (Polish and English), allowing children to develop their language skills as well. Each publication includes a QR code leading to a Padlet with additional materials for children, parents, and catechists.<br><br>The series is designed for children aged 8–13.",
                 footer_desc: "We create literature that stays in the heart for a lifetime. A premium project for demanding readers seeking beauty and depth.",
                 footer_explore: "Explore",
                 footer_help: "Help & Contact",
@@ -843,83 +1581,57 @@
                 footer_l3: "For Schools & Parishes",
                 footer_l4: "Shipping & Returns",
                 footer_l5: "Terms of Service",
-                footer_copy: "&copy; 2026 Samuel for Children. All rights reserved.",
-                del_title: "Delivery Details",
-                del_phone_ph: "Phone number (for courier)",
+                footer_copy: "© 2026 Samuel for Children. All rights reserved.",
+                del_title: "Delivery",
+                del_phone_ph: "Phone number",
                 del_inpost_btn: "Select Parcel Locker",
-                del_selected: "Selected:"
+                del_selected: "Selected:",
+                bilingual_badge: "Polish-English Edition",
+                wholesale_txt: "Wholesale order?",
+                wholesale_link: "Contact us"
             }
         };
 
         const ProductsTranslations = {
             'p1': {
-                en: { title: "St. Francis of Assisi", desc: "The figure of Saint Francis of Assisi has remained a wonderful guide for children on the path of faith and love for all creation for centuries. This bilingual publication reveals to the youngest readers the true face of the young man who rebuilt the Church with great power and gave the world its first Christmas nativity scene. Through this beautiful story by Brother Łukasz Woźniak, readers can discover the life of a man in love with the Gospel, whose joyful journey continues to inspire and invites everyone to a shared adventure with God.", category: "„Holiness is Not Boring” Series" },
-                pl: { title: "Św. Franciszek z Asyżu", desc: "Postać świętego Franciszka z Asyżu od stuleci pozostaje dla dzieci wspaniałym przewodnikiem na drodze wiary oraz miłości do całego stworzenia. Ta dwujęzyczna publikacja odkrywa przed najmłodszymi prawdziwe oblicze młodzieńca, który z wielką mocą odbudowywał Kościół i podarował światu pierwszą bożonarodzeniową szopkę. Dzięki pięknej opowieści autorstwa brata Łukasza Woźniaka, czytelnicy mogą poznać historię człowieka zakochanego w Ewangelii, którego radosne życie do dziś inspiruje i zaprasza do wspólnej przygody z Bogiem.", category: "Seria „Świętość nie jest nudna”" }
+                en: { title: "St. Francis of Assisi", desc: "Discover the extraordinary story of St. Francis – a young man who loved God and people with all his heart. This beautiful, bilingual book introduces children to the world of faith, joy, and love for all creation. Thanks to the story by Br. Łukasz Woźniak OFMCap, the youngest readers will discover how Francis rebuilt the Church, preached the Gospel, and gave the world its first Christmas nativity scene. It is an inspiring story that shows that holiness is possible and can be a true adventure with God.", category: "„Holiness is Not Boring” Series" },
+                pl: { title: "Św. Franciszek z Asyżu", desc: "Poznaj niezwykłą historię św. Franciszka – młodzieńca, który całym sercem pokochał Boga i ludzi. Ta piękna, dwujęzyczna książka wprowadza dzieci w świat wiary, radości i miłości do całego stworzenia. Dzięki opowieści br. Łukasza Woźniaka OFMCap najmłodsi odkryją, jak Franciszek odbudowywał Kościół, głosił Ewangelię i podarował światu pierwszą bożonarodzeniową szopkę. To inspirująca historia, która pokazuje, że świętość jest możliwa i może być prawdziwą przygodą z Bogiem.", category: "Seria „Świętość nie jest nudna”" }
             },
             'p2': {
                 en: { title: "Diary of Bl. Michał Czartoryski", desc: "Discover the extraordinary story of a young prince who chose to become a monk! „Let me tell you about myself...” is a fascinating, richly illustrated tale of the life of Jan Franciszek Czartoryski – later known as Blessed Father Michał.", category: "„Holiness is Not Boring” Series" },
                 pl: { title: "Pamiętnik bł. Michała Czartoryskiego", desc: "Poznaj niezwykłą historię młodego księcia, który postanowił zostać zakonnikiem! „Opowiem Ci o sobie...” to fascynująca, bogato ilustrowana opowieść o życiu Jana Franciszka Czartoryskiego – późniejszego błogosławionego ojca Michała.", category: "Seria „Świętość nie jest nudna”" }
             },
             'p3': {
-                en: { title: "Miss Hanna", desc: "Discover the remarkable story of Blessed Hanna Chrzanowska, a woman with a huge heart who dedicated her entire life to caring for the sick. „Miss Hanna – A Great Nurse” is an inspiring, richly illustrated journey through the life of this famous Krakow nurse, told in a simple and touching way perfect for young readers.", category: "„Holiness is Not Boring” Series" },
-                pl: { title: "Panna Hanna", desc: "Odkryjcie niezwykłą historię błogosławionej Hanny Chrzanowskiej, kobiety o wielkim sercu, która całe swoje życie poświęciła opiece nad chorymi. „O pannie Hannie...” to inspirująca, bogato ilustrowana podróż przez życie krakowskiej pielęgniarki, opowiedziana w prosty i poruszający sposób, idealny dla młodych czytelników.", category: "Seria „Świętość nie jest nudna”" }
+                en: { title: "Miss Hanna", desc: "Discover the story of Blessed Hanna Chrzanowska – a woman who changed the world around her with her daily care and tenderness. Her life shows that great love for God is expressed in small gestures towards another person. „About Miss Hanna...” is a beautifully illustrated tale that introduces young readers to the world of sensitivity, service, and courage. As a nurse and apostle of the sick, Hanna brought help to those who needed it most, teaching that every human being is priceless. It is a story that inspires us to see the good, teaches empathy, and shows that holiness is born in everyday love and care for others.", category: "„Holiness is Not Boring” Series" },
+                pl: { title: "Panna Hanna", desc: "Poznaj historię błogosławionej Hanny Chrzanowskiej – kobiety, która swoją codzienną troską i czułością zmieniała świat wokół siebie. Jej życie pokazuje, że wielka miłość do Boga wyraża się w małych gestach wobec drugiego człowieka. „O pannie Hannie…” to pięknie ilustrowana opowieść, która wprowadza młodych czytelników w świat wrażliwości, służby i odwagi. Jako pielęgniarka i apostołka chorych Hanna niosła pomoc tym, którzy najbardziej jej potrzebowali, ucząc, że każdy człowiek jest bezcenny. To historia, która inspiruje do dostrzegania dobra, uczy empatii i pokazuje, że świętość rodzi się w codziennej miłości i trosce o innych.", category: "Seria „Świętość nie jest nudna”" }
             },
             'p4': {
-                en: { title: "The Brother Smelling of Wood", desc: "The figure of the Blessed sculptor Guy of Montpellier becomes a wonderful example for children on how to combine passion with love for God. This bilingual publication shows the life of a French nobleman who abandoned wealth to serve the sick and poor in hospitals with simplicity and joy. Through this story, the youngest readers can discover the journey of a man in love with the Gospel, whose joyful life continues to inspire and invites everyone to a shared adventure with the Lord.", category: "Coloring Books" },
-                pl: { title: "Brat pachnący drewnem", desc: "Postać błogosławionego rzeźbiarza Gwidona z Montpellier staje się dla dzieci wspaniałym przykładem na to, jak łączyć pasję z miłością do Boga. Ta dwujęzyczna publikacja ukazuje losy francuskiego szlachcica, który porzucił bogactwo, aby w prostocie i radości służyć chorym oraz ubogim w szpitalach. Dzięki tej opowieści najmłodsi mogą poznać historię człowieka zakochanego w Ewangelii, który swoim radosnym życiem do dziś inspiruje i zaprasza do wspólnej przygody z Panem Bogiem.", category: "Kolorowanki" }
+                en: { title: "The Brother Smelling of Wood", desc: "Discover the extraordinary story of the Servant of God Brother Kalikst Kłoczko – a Capuchin, carpenter, and humble friar who testified to simplicity, hard work, and deep faith with his entire life. The book introduces his everyday life to young readers in an accessible and moving way, showing that holiness is born in ordinary duties and quiet devotion to God. Brother Kalikst passed away to the Lord in Lublin in 2013, and his beatification process began in 2023. Those who knew him spoke of him with admiration: „he was the spitting image of Saint Joseph”.", category: "„Holiness is Not Boring” Series" },
+                pl: { title: "Brat pachnący drewnem", desc: "Poznaj niezwykłą historię sługi Bożego brata Kaliksta Kłoczki – kapucyna, stolarza i pokornego brata zakonnego, który całym swoim życiem świadczył o prostocie, pracowitości i głębokiej wierze. Książka w przystępny i poruszający sposób przybliża młodym czytelnikom jego codzienność, ukazując, że świętość rodzi się w zwykłych obowiązkach i cichym oddaniu Bogu. Brat Kalikst odszedł do Pana w Lublinie w 2013 roku, a jego proces beatyfikacyjny rozpoczął się w 2023 roku. Ci, którzy go znali, mówili o nim z podziwem: „to był wypisz wymaluj święty Józef”.", category: "Seria „Świętość nie jest nudna”" }
             },
             'p5': {
-                en: { title: "About Father Honorat, a Monk Full of Secrets", desc: "Can God transform even the most rebellious heart? The life story of Father Honorat proves that He can! „On father Honorat, a friar full of mysteries” is an extraordinary tale of a man who traveled a long and winding road – from youthful rebellion and atheism to total devotion to God as a holy Capuchin friar.", category: "„Holiness is Not Boring” Series" },
-                pl: { title: "O ojcu Honoracie, zakonniku pełnym tajemnic", desc: "Czy Bóg jest w stanie przemienić nawet najbardziej buntownicze serce? Historia życia ojca Honorata pokazuje, że tak! „O ojcu Honoracie, zakonniku pełnym tajemnic” to niezwykła opowieść o człowieku, który przeszedł długą i krętą drogę – od młodzieńczego buntu i ateizmu, aż po całkowite oddanie się Bogu jako święty kapucyn.", category: "Seria „Świętość nie jest nudna”" }
-            },
-            'p6': {
-                en: { title: "How Mary Loved the Mother of God from Jasna Góra", desc: "A touching story about love for the Mother of God, coming soon. From the series „Holiness is Not Boring”. Authors: Barbara Nowosielska, Anna Pecyna, illustrations: Zofia Kowalska.", category: "„Holiness is Not Boring” Series" },
-                pl: { title: "Jak Marysia pokochała Matkę Bożą z Jasnej Góry", desc: "Książka w przygotowaniu. W ramach serii „Świętość nie jest nudna”. Autorzy: Barbara Nowosielska, Anna Pecyna, ilustracje: Zofia Kowalska.", category: "Seria „Świętość nie jest nudna”" }
+                en: { title: "About Father Honorat", desc: "Discover the extraordinary story of Father Honorat Koźmiński – a man whose life shows that no path is lost. As young Wacław, he underwent a change of heart that led him from doubt to holiness. This moving tale reveals to children the world of faith, courage, and trust in God. Father Honorat – a confessor and founder of non-habited congregations – served people with devotion in difficult times. It is a story that reminds us that God can transform every heart and give life profound meaning.", category: "„Holiness is Not Boring” Series" },
+                pl: { title: "O ojcu Honoracie", desc: "Odkryj niezwykłą historię ojca Honorata Koźmińskiego – człowieka, którego życie pokazuje, że żadna droga nie jest stracona. Jako młody Wacław przeszedł przemianę serca, która zaprowadziła go od zwątpienia do świętości. Ta poruszająca opowieść ukazuje dzieciom świat wiary, odwagi i zaufania Bogu. Ojciec Honorat – spowiednik i założyciel zgromadzeń bezhabitowych – służył ludziom z oddaniem w trudnych czasach. To historia, która przypomina, że Bóg potrafi przemienić każde serce i nadać życiu głęboki sens.", category: "Seria „Świętość nie jest nudna”" }
             },
             'p7': {
-                en: { title: "Michael and God's Great Fishing Rod", desc: "The story of Blessed Michał Czartoryski becomes a joyful adventure with faith and a unique lesson in values for children. This bilingual publication skillfully combines a traditional story with numerous coloring pages, a set of stickers, and creative tasks. Thanks to this format, the youngest readers can actively participate in learning about the young Dominican friar's life while developing their imagination and language skills.", category: "Coloring Books" },
-                pl: { title: "Michał i wielka wędka Pana Boga", desc: "Historia błogosławionego Michała Czartoryskiego staje się dla dzieci radosną przygodą z wiarą i niezwykłą lekcją wartości. Ta dwujęzyczna publikacja umiejętnie łączy tradycyjną opowieść z licznymi kolorowankami, zestawem naklejek oraz kreatywnymi zadaniami. Dzięki takiej formie najmłodsi mogą aktywnie uczestniczyć w poznawaniu losów młodego dominikanina, rozwijając przy tym swoją wyobraźnię oraz umiejętności językowe.", category: "Kolorowanki" }
+                en: { title: "Michael and God's Great Fishing Rod", desc: "Discover the story of Blessed Michał Czartoryski OP told in the form of a diary. „Let me tell you about myself...” is a tale about Jasiu, who, instead of a life of honors, chose the path of faith and service, trading his noble coat of arms for a Dominican habit. This moving story shows young readers that true happiness is born from choices made with the heart and fidelity to God. The book was created to mark the 25th anniversary of the beatification and the 80th anniversary of the death of Blessed Michał Czartoryski.", category: "Other Books" },
+                pl: { title: "Michał i wielka wędka Pana Boga", desc: "Poznaj historię błogosławionego Michała Czartoryskiego OP opowiedzianą w formie pamiętnika. „Opowiem Ci o sobie…” to opowieść o Jasiu, który zamiast życia wśród zaszczytów wybrał drogę wiary i służby, zamieniając herb szlachecki na dominikański habit. Ta poruszająca historia pokazuje młodym czytelnikom, że prawdziwe szczęście rodzi się z wyborów podejmowanych sercem i wierności Bogu. Książka powstała z okazji 25. rocznicy beatyfikacji oraz 80. rocznicy śmierci bł. Michała Czartoryskiego.", category: "Książki poza serią" }
             }
         };
 
         const productsDB = [
-            { 
-                id: 'p1', title: "Św. Franciszek z Asyżu", price: 45.00, category: "swietosc",
-                img: "img/franciszek-z-asyzu.webp", 
-                gallery: ["img/franciszek-z-asyzu.webp", "img/franciszek-z-asyzu-2strona.webp", "img/franciszek-z-asyzu-opis.webp"] 
-            },
-            { 
-                id: 'p2', title: "Pamiętnik bł. Michała Czartoryskiego", price: 50.00, category: "swietosc",
-                img: "img/opowiem-ci-o-sobie.webp", 
-                gallery: ["img/opowiem-ci-o-sobie.webp", "img/opowiem-ci-o-sobie-2strona.webp", "img/opowiem-ci-o-sobie-opis.webp"] 
-            },
-            { 
-                id: 'p3', title: "Panna Hanna", price: 50.00, category: "swietosc",
-                img: "img/o-pannie-hannie.webp", 
-                gallery: ["img/o-pannie-hannie.webp", "img/o-pannie-hannie-2strona.webp", "img/o-pannie-hannie-opis.webp"] 
-            },
-            { 
-                id: 'p4', title: "Brat pachnący drewnem", price: 45.00, category: "kolorowanki",
-                img: "img/brat-pachnacy-drewnem.webp", 
-                gallery: ["img/brat-pachnacy-drewnem.webp", "img/brat-pachnacy-drewnem-2strona.webp", "img/brat-pachnacy-drewnem-opis.webp"] 
-            },
-            { 
-                id: 'p5', title: "O ojcu Honoracie, zakonniku pełnym tajemnic", price: 45.00, category: "swietosc",
-                img: "img/o-ojcu-honoracie.webp", 
-                gallery: ["img/o-ojcu-honoracie.webp", "img/o-ojcu-honoracie-2strona.webp", "img/o-ojcu-honoracie-opis.webp"] 
-            },
-            { 
-                id: 'p7', title: "Michał i wielka wędka Pana Boga", price: 35.00, category: "kolorowanki",
-                img: "img/michal-i-wedka.webp", 
-                gallery: ["img/michal-i-wedka.webp", "img/michal-i-wedka-2strona.webp", "img/michal-i-wedka-opis.webp"] 
-            }
+            { id: 'p1', title: "Św. Franciszek z Asyżu", price: 25.00, category: "swietosc", img: "img/franciszek-z-asyzu.webp", gallery: ["img/franciszek-z-asyzu.webp", "img/franciszek-z-asyzu-2strona.webp", "img/franciszek-z-asyzu-opis.webp"] },
+            { id: 'p2', title: "Pamiętnik bł. Michała Czartoryskiego", price: 25.00, category: "swietosc", img: "img/opowiem-ci-o-sobie.webp", gallery: ["img/opowiem-ci-o-sobie.webp", "img/opowiem-ci-o-sobie-2strona.webp", "img/opowiem-ci-o-sobie-opis.webp"] },
+            { id: 'p3', title: "Panna Hanna", price: 25.00, category: "swietosc", img: "img/o-pannie-hannie.webp", gallery: ["img/o-pannie-hannie.webp", "img/o-pannie-hannie-2strona.webp", "img/o-pannie-hannie-opis.webp"] },
+            { id: 'p4', title: "Brat pachnący drewnem", price: 25.00, category: "swietosc", img: "img/brat-pachnacy-drewnem.webp", gallery: ["img/brat-pachnacy-drewnem.webp", "img/brat-pachnacy-drewnem-2strona.webp", "img/brat-pachnacy-drewnem-opis.webp"] },
+            { id: 'p5', title: "O ojcu Honoracie, zakonniku pełnym tajemnic", price: 25.00, category: "swietosc", img: "img/o-ojcu-honoracie.webp", gallery: ["img/o-ojcu-honoracie.webp", "img/o-ojcu-honoracie-2strona.webp", "img/o-ojcu-honoracie-opis.webp"] },
+            { id: 'p7', title: "Michał i wielka wędka Pana Boga", price: 25.00, category: "inne", img: "img/michal-i-wedka.webp", gallery: ["img/michal-i-wedka.webp", "img/michal-i-wedka-2strona.webp", "img/michal-i-wedka-opis.webp"] }
         ];
 
         const AppState = {
             cart: JSON.parse(localStorage.getItem('sfc_cart')) || [],
             lang: localStorage.getItem('sfc_lang') || 'pl',
-            lenis: null,
-            isTouch: window.matchMedia("(pointer: coarse)").matches
+            lenis: null
         };
 
         const formatPrice = (price) => {
@@ -1019,7 +1731,6 @@
 
         class CursorController {
             constructor() {
-                if (AppState.isTouch) return;
                 this.dot = document.getElementById('cursor-dot');
                 this.outline = document.getElementById('cursor-outline');
                 this.pos = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
@@ -1027,17 +1738,17 @@
                 this.init();
             }
             init() {
-                gsap.set(this.dot, { xPercent: -50, yPercent: -50 });
-                gsap.set(this.outline, { xPercent: -50, yPercent: -50 });
-
+                if (!this.dot || !this.outline) return;
+                gsap.set([this.dot, this.outline], { xPercent: -50, yPercent: -50 });
+                
                 window.addEventListener('mousemove', (e) => {
+                    if (document.body.classList.contains('map-open')) return;
                     this.mouse.x = e.clientX; 
                     this.mouse.y = e.clientY;
                     gsap.to(this.dot, { x: this.mouse.x, y: this.mouse.y, duration: 0 });
                 });
                 
                 gsap.ticker.add(() => {
-                    const dt = 1.0 - Math.pow(0.8, gsap.ticker.deltaRatio());
                     this.pos.x += (this.mouse.x - this.pos.x) * 0.2;
                     this.pos.y += (this.mouse.y - this.pos.y) * 0.2;
                     gsap.set(this.outline, { x: this.pos.x, y: this.pos.y });
@@ -1063,7 +1774,6 @@
                     gsap.to(this.outline, { scale: 1, duration: 0.2 });
                 });
             }
-            refresh() {}
         }
 
         class WebGLBackground {
@@ -1072,7 +1782,7 @@
                 this.scene = new THREE.Scene();
                 this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
                 this.renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-                this.particlesCount = AppState.isTouch ? 300 : 800;
+                this.particlesCount = window.matchMedia("(pointer: coarse)").matches ? 300 : 800;
                 this.mouseX = 0; 
                 this.mouseY = 0; 
                 this.scrollY = 0;
@@ -1110,7 +1820,7 @@
                 this.mesh = new THREE.Points(geo, this.mat);
                 this.scene.add(this.mesh);
 
-                if (!AppState.isTouch) {
+                if (!window.matchMedia("(pointer: coarse)").matches) {
                     document.addEventListener('mousemove', e => {
                         this.mouseX = e.clientX / window.innerWidth - 0.5;
                         this.mouseY = e.clientY / window.innerHeight - 0.5;
@@ -1214,7 +1924,7 @@
                     }
                 }
                 
-                const cnt = AppState.isTouch ? 30 : 80;
+                const cnt = window.matchMedia("(pointer: coarse)").matches ? 30 : 80;
                 for(let i = 0; i < cnt; i++) {
                     pts.push(new Pt());
                 }
@@ -1241,7 +1951,6 @@
                     }
                 });
 
-                // Obsługa Slidera
                 this.btnPrev.addEventListener('click', () => {
                     this.carousel.scrollBy({ left: -this.carousel.clientWidth, behavior: 'smooth' });
                 });
@@ -1258,7 +1967,6 @@
                     });
                 });
                 
-                // Obsługa Lupy (Lightbox)
                 this.zoomBtn.addEventListener('click', () => this.openLightbox());
                 this.lightboxClose.addEventListener('click', () => this.closeLightbox());
                 this.lightbox.addEventListener('click', (e) => {
@@ -1306,7 +2014,6 @@
                 document.getElementById('modal-price').textContent = formatPrice(baseP.price);
                 document.getElementById('modal-category').textContent = pInfo.category;
                 
-                // Generowanie Karuzeli Zdjęć
                 this.carousel.innerHTML = '';
                 this.dotsContainer.innerHTML = '';
                 
@@ -1439,53 +2146,39 @@
                     }
                 });
 
-                // INPOST MAP V4 WITH INTERNAL SEARCH
                 const openInpostBtn = document.getElementById('open-inpost-btn');
                 if (openInpostBtn) {
-                    if (window.easyPack) {
-                        window.easyPack.init({ 
-                            defaultLocale: AppState.lang === 'en' ? 'en' : 'pl',
-                            mapType: 'osm',
-                            searchType: 'osm'
-                        });
-                    }
-
                     openInpostBtn.addEventListener('click', (e) => {
                         e.preventDefault();
-                        window.easyPack.modalMap(function(point, modal) {
-                            const paczkomatCode = point.name;
-                            document.getElementById('paczkomat-input').value = paczkomatCode;
-                            document.getElementById('paczkomat-code').innerText = paczkomatCode;
-                            document.getElementById('selected-paczkomat-text').style.display = 'block';
-                            modal.closeModal(); 
-                        }, { width: 500, height: 600 });
+                        if (typeof easyPack !== 'undefined') {
+                            document.body.classList.add('map-open');
+                            try {
+                                window.easyPack.modalMap(function(point, modal) {
+                                    const paczkomatCode = point.name;
+                                    document.getElementById('paczkomat-input').value = paczkomatCode;
+                                    document.getElementById('paczkomat-code').innerText = paczkomatCode;
+                                    document.getElementById('selected-paczkomat-text').style.display = 'block';
+                                    modal.closeModal(); 
+                                    document.body.classList.remove('map-open');
+                                }, { width: 500, height: 600 });
+                            } catch (err) {
+                                document.body.classList.remove('map-open');
+                                showToast("InPost API Error.");
+                            }
+                        } else {
+                            showToast(AppState.lang === 'en' ? "Loading map. Try again in a moment." : "Trwa ładowanie mapy paczkomatów. Spróbuj ponownie za chwilę.");
+                        }
                     });
                 }
                 
-                // DEBOUNCED CURSOR FIX FOR INPOST
-                let mapCloseTimeout;
                 setInterval(() => {
-                    const inpostElements = document.querySelectorAll('[id*="easypack"], [class*="easypack"]');
-                    let isVisible = false;
-                    inpostElements.forEach(el => {
-                        if (window.getComputedStyle(el).display !== 'none' && el.offsetHeight > 0) {
-                            isVisible = true;
-                        }
-                    });
-
-                    if (isVisible) {
-                        clearTimeout(mapCloseTimeout);
-                        mapCloseTimeout = null;
-                        document.body.classList.add('map-open');
+                    const mapModal = document.getElementById('easypack-widget-modal');
+                    if (mapModal && window.getComputedStyle(mapModal).display !== 'none') {
+                        if (!document.body.classList.contains('map-open')) document.body.classList.add('map-open');
                     } else {
-                        if (document.body.classList.contains('map-open') && !mapCloseTimeout) {
-                            mapCloseTimeout = setTimeout(() => {
-                                document.body.classList.remove('map-open');
-                                mapCloseTimeout = null;
-                            }, 800);
-                        }
+                        if (document.body.classList.contains('map-open')) document.body.classList.remove('map-open');
                     }
-                }, 150);
+                }, 500);
 
                 const checkoutBtn = document.getElementById('checkout-button');
                 if (checkoutBtn) {
@@ -1724,6 +2417,7 @@
                         card.innerHTML = `
                             <div class="product-card-inner">
                                 <div class="product-image-wrapper">
+                                    <span class="bilingual-badge">${getI18n('bilingual_badge')}</span>
                                     <img src="${p.img}" alt="${pInfo.title}" class="product-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                                     <div class="product-fallback" style="display:none;">${pInfo.title}</div>
                                     <div class="product-overlay"><span class="view-details-hint">${getI18n('view_details')}</span></div>
