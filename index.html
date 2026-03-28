@@ -459,6 +459,7 @@
         .modal-image { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(-15px 25px 35px rgba(0,0,0,0.3)); transition: transform 0.1s linear; background-color: transparent; }
         html[data-theme="dark"] .modal-image { filter: drop-shadow(-15px 25px 35px rgba(0,0,0,0.7)); }
 
+        /* BUTTONY ZMIENIONE NA ZAWSZE WIDOCZNE NA MOBILE */
         .carousel-btn { position: absolute; top: 50%; transform: translateY(-50%); width: 45px; height: 45px; background: var(--color-bg-alt); backdrop-filter: blur(5px); border: 1px solid var(--color-border); border-radius: 50%; color: var(--color-text); display: flex; justify-content: center; align-items: center; cursor: pointer; z-index: 10; opacity: 0; transition: opacity 0.3s, transform 0.3s; }
         .modal-image-wrapper:hover .carousel-btn { opacity: 1; }
         .carousel-btn.prev { left: 20px; }
@@ -542,6 +543,7 @@
             .modal-bottom { margin-top: 2rem; }
             .products-grid.list-view .product-card { flex-direction: column; }
             .products-grid.list-view .product-card-inner { width: 100%; max-width: 400px; margin: 0 auto; }
+            .carousel-btn, .zoom-btn { opacity: 1 !important; pointer-events: auto; }
         }
 
         @media (max-width: 768px) {
@@ -751,6 +753,9 @@
             </section>
 
             <section class="about">
+                <div class="about-bg-shape about-shape-1"></div>
+                <div class="about-bg-shape about-shape-2"></div>
+                <div class="about-bg-shape about-shape-3"></div>
                 <div class="about-content">
                     <h2 class="about-text" id="about-text" data-i18n="about_text">
                         Wierzymy, że słowa mają moc kształtowania serc. Nasze książki to coś więcej niż papier – to starannie tworzone historie, które wprowadzają dzieci w świat wartości, ucząc miłości, empatii i prawdy.
@@ -993,7 +998,7 @@
             },
             'p2': {
                 en: { title: "Diary of Bl. Michał Czartoryski", desc: "Discover the extraordinary story of a young prince who chose to become a monk! ”Let me tell you about myself...„ is a fascinating, richly illustrated tale of the life of Jan Franciszek Czartoryski – later known as Blessed Father Michał.", category: "”Holiness is Not Boring„ Series" },
-                pl: { title: "Pamiętnik bł. Michała Czartoryskiego", desc: "Poznaj niezwykłą historię młodego księcia, który postanowił zostać zakonnikiem! ”Opowiem Ci o sobie...„ to fascynująca, bogato ilustrowana opowieść o życiu Jana Franciszka Czartoryskiego – późniejszego błogosławionego ojca Michała.", category: "Seria ”Świętość nie jest nudna„" }
+                pl: { title: "Pamiętnik bł. Michała Czartoryskiego", desc: "Discover the story of Blessed Michał Czartoryski OP told in the form of a diary. ”Let me tell you about myself...„ is a tale about Jasiu, who, instead of a life of honors, chose the path of faith and service, trading his noble coat of arms for a Dominican habit. This moving story shows young readers that true happiness is born from choices made with the heart and fidelity to God. The book was created to mark the 25th anniversary of the beatification and the 80th anniversary of the death of Blessed Michał Czartoryski.", category: "Seria ”Świętość nie jest nudna„" }
             },
             'p3': {
                 en: { title: "Miss Hanna", desc: "Discover the story of Blessed Hanna Chrzanowska – a woman who changed the world around her with her daily care and tenderness. Her life shows that great love for God is expressed in small gestures towards another person. ”About Miss Hanna...„ is a beautifully illustrated tale that introduces young readers to the world of sensitivity, service, and courage. As a nurse and apostle of the sick, Hanna brought help to those who needed it most, teaching that every human being is priceless. It is a story that inspires us to see the good, teaches empathy, and shows that holiness is born in everyday love and care for others.", category: "”Holiness is Not Boring„ Series" },
@@ -1008,8 +1013,8 @@
                 pl: { title: "O ojcu Honoracie", desc: "Odkryj niezwykłą historię ojca Honorata Koźmińskiego – człowieka, którego życie pokazuje, że żadna droga nie jest stracona. Jako młody Wacław przeszedł przemianę serca, która zaprowadziła go od zwątpienia do świętości. Ta poruszająca opowieść ukazuje dzieciom świat wiary, odwagi i zaufania Bogu. Ojciec Honorat – spowiednik i założyciel zgromadzeń bezhabitowych – służył ludziom z oddaniem w trudnych czasach. To historia, która przypomina, że Bóg potrafi przemienić każde serce i nadać życiu głęboki sens.", category: "Seria ”Świętość nie jest nudna„" }
             },
             'p7': {
-                en: { title: "Michael and God's Great Fishing Rod", desc: "Discover the story of Blessed Michał Czartoryski OP told in the form of a diary. ”Let me tell you about myself...„ is a tale about Jasiu, who, instead of a life of honors, chose the path of faith and service, trading his noble coat of arms for a Dominican habit. This moving story shows young readers that true happiness is born from choices made with the heart and fidelity to God. The book was created to mark the 25th anniversary of the beatification and the 80th anniversary of the death of Blessed Michał Czartoryski.", category: "Other Books" },
-                pl: { title: "Michał i wielka wędka Pana Boga", desc: "Poznaj historię błogosławionego Michała Czartoryskiego OP opowiedzianą w formie pamiętnika. ”Opowiem Ci o sobie…„ to opowieść o Jasiu, który zamiast życia wśród zaszczytów wybrał drogę wiary i służby, zamieniając herb szlachecki na dominikański habit. Ta poruszająca historia pokazuje młodym czytelnikom, że prawdziwe szczęście rodzi się z wyborów podejmowanych sercem i wierności Bogu. Książka powstała z okazji 25. rocznicy beatyfikacji oraz 80. rocznicy śmierci bł. Michała Czartoryskiego.", category: "Książki poza serią" }
+                en: { title: "Michael and God's Great Fishing Rod", desc: "Discover the childhood of Blessed Michał Czartoryski in the book “Michael and God’s Great Fishing Rod”, a unique activity workbook that combines a simple story with engaging tasks for young children, where they explore the everyday life of little Janek through play, coloring pages, and creative activities while learning about faith and sensitivity, ideal for children aged 6–9.", category: "Other Books" },
+                pl: { title: "Michał i wielka wędka Pana Boga", desc: "Poznaj dzieciństwo błogosławionego Michała Czartoryskiego w książce „Michał i wielka wędka Pana Boga”. To wyjątkowy zeszyt ćwiczeń, który łączy prostą opowieść z angażującymi zadaniami dla najmłodszych. Dzieci odkryją codzienne życie małego Janka poprzez zabawę, kolorowanki i kreatywne aktywności, ucząc się przy tym wiary i wrażliwości. Idealna propozycja dla dzieci 6-9 lat.", category: "Książki poza serią" }
             }
         };
 
@@ -1442,8 +1447,10 @@
                 this.lightbox.style.display = 'flex';
                 document.body.classList.add('lightbox-open');
                 
+                const zoomScale = window.innerWidth <= 768 ? 1.2 : 1.5;
+                
                 gsap.to(this.lightbox, { opacity: 1, duration: 0.4, ease: 'power2.out' });
-                gsap.fromTo(this.lightboxImg, { scale: 0.8 }, { scale: 2.2, duration: 0.5, ease: 'back.out(1.2)' });
+                gsap.fromTo(this.lightboxImg, { scale: 0.8 }, { scale: zoomScale, duration: 0.5, ease: 'back.out(1.2)' });
             }
             closeLightbox() {
                 gsap.to(this.lightboxImg, { scale: 0.8, duration: 0.3, ease: 'power2.in' });
