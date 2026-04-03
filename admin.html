@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Samuel for Children | Premium Admin</title>
+    
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --color-bg: #FCFBF9; --color-card: #FFFFFF; --color-text: #2C2825;
+            --color-text-light: #7A7268; --color-accent: #C29B45; --color-accent-hover: #A38032;
+            --color-border: rgba(44, 40, 37, 0.12); --radius: 20px;
+            --font-serif: 'Playfair Display', serif; --font-sans: 'Plus Jakarta Sans', sans-serif;
+            --transition: all 0.3s ease;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: var(--font-sans); background: var(--color-bg); color: var(--color-text); min-height: 100vh; overflow-x: hidden; }
+
+        .bg-pattern {
+            position: fixed; inset: 0; z-index: -1; opacity: 0.4;
+            background-image: radial-gradient(#C29B45 0.5px, transparent 0.5px), radial-gradient(#C29B45 0.5px, #FCFBF9 0.5px);
+            background-size: 20px 20px; background-position: 0 0, 10px 10px;
+        }
+
+        /* --- EKRAN LOGOWANIA --- */
+        #login-overlay {
+            position: fixed; inset: 0; background: rgba(252, 251, 249, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            display: flex; justify-content: center; align-items: center; z-index: 1000; transition: opacity 0.6s;
+        }
+        .login-card {
+            background: var(--color-card); padding: 50px 40px; border-radius: var(--radius);
+            box-shadow: 0 20px 60px rgba(194, 155, 69, 0.15); border: 1px solid rgba(194, 155, 69, 0.3); width: 90%; max-width: 400px; text-align: center;
+        }
+        .login-card h2 { font-family: var(--font-serif); font-size: 2.2rem; color: var(--color-text); margin-bottom: 30px; }
+        .login-card input { width: 100%; padding: 18px; margin-bottom: 25px; border: 1px solid var(--color-border); border-radius: 12px; font-size: 1.1rem; text-align: center; font-family: var(--font-sans); letter-spacing: 2px; }
+        .login-card input:focus { border-color: var(--color-accent); outline: none; box-shadow: 0 0 0 4px rgba(194, 155, 69, 0.1); }
+        .error-msg { color: #e74c3c; font-size: 0.9rem; margin-top: -15px; margin-bottom: 15px; display: none; font-weight: 600; }
+        .btn-gold {
+            width: 100%; padding: 18px; border: none; border-radius: 12px; background: linear-gradient(135deg, #d6ae58 0%, #C29B45 100%);
+            color: white; font-family: var(--font-sans); font-weight: 700; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; transition: var(--transition); box-shadow: 0 10px 25px rgba(194, 155, 69, 0.4);
+        }
+        .btn-gold:hover { transform: translateY(-3px); box-shadow: 0 15px 35px rgba(194, 155, 69, 0.5); }
+
+        /* --- ZAKŁADKI (TABS) --- */
+        .admin-nav { display: flex; justify-content: center; gap: 15px; margin-bottom: 40px; }
+        .nav-btn {
+            padding: 14px 30px; border-radius: 30px; background: transparent; border: 2px solid var(--color-accent);
+            color: var(--color-accent); font-family: var(--font-sans); font-weight: 700; font-size: 1rem; cursor: pointer; transition: var(--transition);
+        }
+        .nav-btn.active, .nav-btn:hover { background: var(--color-accent); color: white; box-shadow: 0 10px 20px rgba(194, 155, 69, 0.3); }
+
+        /* --- GŁÓWNY PANEL --- */
+        .admin-wrapper { width: 100%; max-width: 1000px; margin: 0 auto; padding: 40px 20px; display: none; flex-direction: column; opacity: 0; }
+        .admin-header { text-align: center; margin-bottom: 40px; }
+        .admin-header h1 { font-family: var(--font-serif); font-size: 3rem; color: var(--color-accent); margin-bottom: 10px; }
+        .admin-header p { color: var(--color-text-light); font-size: 1.1rem; }
+
+        .view-section { display: none; animation: fadeIn 0.4s ease; }
+        .view-section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .admin-card { background: var(--color-card); padding: 45px; border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--color-border); position: relative; }
+        
+        .cancel-edit-btn { display: none; position: absolute; top: 30px; right: 30px; padding: 10px 20px; background: #e74c3c; color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; transition: var(--transition); z-index: 10; }
+        .cancel-edit-btn:hover { background: #c0392b; transform: scale(1.05); }
+
+        .form-section-title { font-family: var(--font-serif); font-size: 1.6rem; color: var(--color-text); margin: 40px 0 20px; padding-bottom: 10px; border-bottom: 1px solid var(--color-border); }
+        .form-section-title:first-child { margin-top: 0; }
+
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
+        .full-width { grid-column: 1 / -1; }
+        .form-group { display: flex; flex-direction: column; gap: 8px; }
+
+        label { font-weight: 600; font-size: 0.85rem; color: var(--color-text-light); text-transform: uppercase; letter-spacing: 1px; }
+        input[type="text"], input[type="number"], textarea, select { 
+            width: 100%; padding: 16px; border: 1px solid var(--color-border); border-radius: 12px; 
+            font-family: var(--font-sans); font-size: 1rem; transition: var(--transition); background: #fcfcfc;
+        }
+        input:focus, textarea:focus, select:focus { border-color: var(--color-accent); outline: none; background: #fff; box-shadow: 0 5px 15px rgba(194, 155, 69, 0.1); transform: translateY(-2px); }
+        input:read-only { background: #e9ecef; cursor: not-allowed; color: #6c757d; }
+        textarea { min-height: 120px; }
+
+        /* GALERIA ZDJĘĆ - UŁOŻENIE I PODGLĄD */
+        .media-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; align-items: start; }
+        .file-drop-area { background: #fafbfc; padding: 25px 15px; border-radius: 12px; border: 2px dashed #cbd5e1; text-align: center; cursor: pointer; position: relative; transition: var(--transition); }
+        .file-drop-area:hover { border-color: var(--color-accent); background: #fffdf8; }
+        .file-drop-area input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+        .file-label { font-weight: 600; color: var(--color-accent); margin-bottom: 5px; display: block; font-size: 0.9rem;}
+        
+        /* Naprawiony podgląd - nie ucina obrazków! */
+        .preview-box { 
+            display: none; width: 100%; margin-top: 15px; border-radius: 10px; overflow: hidden; 
+            border: 1px solid var(--color-border); background: #fdfdfd; padding: 10px; text-align: center;
+        }
+        .preview-box img { 
+            max-width: 100%; height: auto; max-height: 350px; 
+            display: block; margin: 0 auto; object-fit: contain; 
+        }
+
+        .checkbox-wrapper { display: flex; align-items: center; gap: 15px; background: #fffdf8; padding: 20px; border-radius: 12px; border: 1px solid rgba(194, 155, 69, 0.2); margin-top: 20px; }
+        .checkbox-danger { background: #fff5f5; border-color: #ffcdd2; }
+        .checkbox-danger input[type="checkbox"] { accent-color: #e74c3c; }
+        
+        input[type="checkbox"] { width: 24px; height: 24px; accent-color: var(--color-accent); cursor: pointer; border-radius: 5px; }
+        .check-text { display: flex; flex-direction: column; }
+        .check-text strong { color: var(--color-text); font-size: 1.05rem;}
+        .check-text span { font-size: 0.85rem; color: var(--color-text-light); }
+
+        #statusMessage { position: fixed; bottom: 30px; right: 30px; padding: 20px 30px; border-radius: 12px; font-weight: 600; box-shadow: 0 10px 30px rgba(0,0,0,0.15); display: none; z-index: 1001; animation: slideIn 0.4s ease; }
+        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        .success { background: #2e7d32; color: white; }
+        .error { background: #c62828; color: white; }
+        .loading { background: var(--color-accent); color: white; }
+
+        /* WIDOK EDYCJI (LISTA KSIĄŻEK) */
+        .books-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
+        .book-edit-card { background: white; border-radius: 16px; overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--color-border); display: flex; flex-direction: column; transition: var(--transition); }
+        .book-edit-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+        .book-edit-img { width: 100%; height: 250px; object-fit: contain; padding: 15px; background: #fdfdfd; border-bottom: 1px solid var(--color-border); }
+        .book-edit-info { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
+        .book-edit-title { font-family: var(--font-serif); font-size: 1.2rem; font-weight: 600; margin-bottom: 10px; }
+        .stock-badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; margin-bottom: 10px; width: fit-content; }
+        .stock-in { background: #e8f5e9; color: #2e7d32; }
+        .stock-out { background: #ffebee; color: #c62828; }
+        .stripe-badge-ok { font-size:0.75rem; color:#2e7d32; margin-top:8px; font-weight: 600; background: #e8f5e9; display: inline-block; padding: 2px 8px; border-radius: 10px;}
+        .stripe-badge-err { font-size:0.75rem; color:#c62828; margin-top:8px; font-weight: bold; background: #ffebee; display: inline-block; padding: 2px 8px; border-radius: 10px; border: 1px solid #ffcdd2;}
+        .edit-action-btn { width: 100%; padding: 12px; background: var(--color-text); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; margin-top: 15px;}
+        .edit-action-btn:hover { background: var(--color-accent); }
+
+        /* ZAJĘTE ID */
+        .taken-ids-box { background: #fffdf8; border: 1px solid rgba(194, 155, 69, 0.3); border-radius: 15px; padding: 20px; margin-bottom: 40px; box-shadow: 0 5px 15px rgba(194, 155, 69, 0.05); }
+        .taken-ids-box h3 { font-size: 0.9rem; color: var(--color-text); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; }
+        .tags-container { display: flex; flex-wrap: wrap; gap: 10px; }
+        .tag { background: var(--color-accent); color: white; padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; letter-spacing: 1px; box-shadow: 0 4px 10px rgba(194, 155, 69, 0.3); }
+
+        /* RWD */
+        @media (max-width: 768px) {
+            .admin-wrapper { padding: 20px 15px; }
+            .admin-header h1 { font-size: 2.2rem; }
+            .admin-card { padding: 30px 20px; }
+            .form-grid { grid-template-columns: 1fr; gap: 20px; }
+            .media-grid { grid-template-columns: 1fr; gap: 20px; }
+            .admin-nav { flex-direction: column; gap: 10px; }
+            .cancel-edit-btn { position: relative; top: auto; right: auto; width: 100%; margin-bottom: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="bg-pattern"></div>
+
+<div id="login-overlay">
+    <div class="login-card">
+        <h2>Administrator</h2>
+        <input type="password" id="adminPassword" placeholder="Wprowadź hasło" autocomplete="new-password">
+        <div id="loginError" class="error-msg">Błędne hasło!</div>
+        <button id="loginBtn" class="btn-gold">Zaloguj się</button>
+    </div>
+</div>
+
+<div class="admin-wrapper" id="admin-wrapper">
+    <div class="admin-header">
+        <h1>Zarządzanie Sklepem</h1>
+        <p>Dodawaj nowe książki lub edytuj istniejące</p>
+    </div>
+
+    <div class="admin-nav">
+        <button class="nav-btn active" id="tab-add" onclick="switchTab('add')">Dodaj Nową Książkę</button>
+        <button class="nav-btn" id="tab-edit" onclick="switchTab('edit')">Edytuj Istniejące</button>
+    </div>
+
+    <div id="view-edit" class="view-section">
+        <div class="books-grid" id="books-list-container">
+            </div>
+    </div>
+
+    <div id="view-form" class="view-section active">
+        
+        <div class="taken-ids-box" id="takenIdsSection">
+            <h3>📌 Poniższe numery ID są już w bazie (użyj innego):</h3>
+            <div id="taken-ids-list" class="tags-container">Ładowanie...</div>
+        </div>
+
+        <div class="admin-card">
+            <button class="cancel-edit-btn" id="cancelEditBtn" onclick="cancelEdit()">✕ Anuluj Edycję</button>
+            <h2 class="form-section-title" id="formMainTitle" style="margin-top:0; border:none; font-size: 2rem; color: var(--color-accent); text-align: center;">Dodaj Nową Książkę</h2>
+            
+            <form id="bookForm">
+                
+                <input type="hidden" id="existing_img">
+                <input type="hidden" id="existing_img_back">
+                <input type="hidden" id="existing_img_desc">
+
+                <div class="form-section-title">Wymagane parametry i Stripe</div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>ID Produktu (np. p1, sw-teresa)</label>
+                        <input type="text" id="id" placeholder="Wpisz unikalne ID..." required>
+                    </div>
+                    <div class="form-group">
+                        <label>Cena brutto (PLN)</label>
+                        <input type="number" step="0.01" id="price" placeholder="np. 45.00" required>
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Stripe Price ID</label>
+                        <input type="text" id="stripe_price_id" placeholder="np. price_1TG7YNRz1h8nQpqYJpkrKIw3" required>
+                        <small style="color: var(--color-text-light); margin-top: 5px;">Skopiuj to ID ze swojego konta Stripe dla tego produktu. Bez tego koszyk nie zadziała!</small>
+                    </div>
+                </div>
+
+                <div class="form-section-title">Treść i Kategoria</div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Tytuł (PL)</label>
+                        <input type="text" id="title_pl" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Tytuł (EN)</label>
+                        <input type="text" id="title_en" required>
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Kategoria</label>
+                        <select id="category">
+                            <option value="swietosc">Seria „Świętość nie jest nudna”</option>
+                            <option value="inne">Książki poza serią</option>
+                        </select>
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Opis (PL)</label>
+                        <textarea id="desc_pl" required></textarea>
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Opis (EN)</label>
+                        <textarea id="desc_en" required></textarea>
+                    </div>
+                </div>
+
+                <div class="form-section-title">Galeria Zdjęć</div>
+                <p style="color: #e74c3c; font-size: 0.85rem; font-weight: bold; margin-bottom: 20px; display: none;" id="editImageNotice">Tryb Edycji: Wybierz plik TYLKO jeśli chcesz podmienić obecne zdjęcie.</p>
+                
+                <div class="media-grid">
+                    
+                    <div class="form-group">
+                        <span class="file-label">1. Główna Okładka (Wymagane)</span>
+                        <div class="file-drop-area">
+                            <input type="file" id="img_main" accept="image/*" required onchange="previewImage(this, 'preview_main')">
+                            <p style="font-size: 0.9rem; color: #7A7268;">Wybierz okładkę</p>
+                        </div>
+                        <div class="preview-box" id="preview_main"><img src=""></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <span class="file-label">2. Środek Książki (Opcjonalnie)</span>
+                        <div class="file-drop-area">
+                            <input type="file" id="img_back" accept="image/*" onchange="previewImage(this, 'preview_back')">
+                            <p style="font-size: 0.9rem; color: #7A7268;">Wybierz zdjęcie środka</p>
+                        </div>
+                        <div class="preview-box" id="preview_back"><img src=""></div>
+                    </div>
+
+                    <div class="form-group">
+                        <span class="file-label">3. Tył Książki (Opcjonalnie)</span>
+                        <div class="file-drop-area">
+                            <input type="file" id="img_desc" accept="image/*" onchange="previewImage(this, 'preview_desc')">
+                            <p style="font-size: 0.9rem; color: #7A7268;">Wybierz zdjęcie tyłu</p>
+                        </div>
+                        <div class="preview-box" id="preview_desc"><img src=""></div>
+                    </div>
+
+                </div>
+
+                <div class="form-section-title">Ustawienia Sklepu</div>
+                
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" id="is_bilingual" checked>
+                    <div class="check-text">
+                        <strong>Książka dwujęzyczna</strong>
+                        <span>Dodaje złotą plakietkę "Polska/Angielska edycja" na stronie sklepu.</span>
+                    </div>
+                </div>
+
+                <div class="checkbox-wrapper checkbox-danger">
+                    <input type="checkbox" id="out_of_stock">
+                    <div class="check-text">
+                        <strong>Zablokuj sprzedaż (Brak w magazynie)</strong>
+                        <span>Zaznacz, jeśli nakład się wyczerpał. Klienci nie będą mogli dodać jej do koszyka.</span>
+                    </div>
+                </div>
+
+                <button type="submit" id="submitBtn" class="btn-gold" style="margin-top: 40px;">Dodaj książkę do bazy</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="statusMessage"></div>
+
+<script>
+    const ADMIN_PASSWORD = "samuel"; 
+    let isEditMode = false;
+    let allProducts = [];
+
+    // Logowanie
+    const loginBtn = document.getElementById('loginBtn');
+    const passInput = document.getElementById('adminPassword');
+    const overlay = document.getElementById('login-overlay');
+    const wrapper = document.getElementById('admin-wrapper');
+    
+    function checkLogin() {
+        if (passInput.value === ADMIN_PASSWORD) {
+            overlay.style.opacity = '0';
+            setTimeout(() => {
+                overlay.style.display = 'none';
+                wrapper.style.display = 'flex';
+                wrapper.animate([{ opacity: 0, transform: 'translateY(20px)' }, { opacity: 1, transform: 'translateY(0)' }], { duration: 600, fill: 'forwards' });
+                fetchTakenIds();
+            }, 500);
+        } else {
+            document.getElementById('loginError').style.display = 'block';
+            document.querySelector('.login-card').animate([{ transform: 'translateX(-10px)' }, { transform: 'translateX(10px)' }, { transform: 'translateX(0)' }], { duration: 300 });
+            passInput.value = '';
+        }
+    }
+
+    loginBtn.addEventListener('click', checkLogin);
+    passInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') checkLogin(); });
+    window.onload = () => passInput.focus();
+
+    // Zakładki
+    function switchTab(tab) {
+        document.getElementById('tab-add').classList.remove('active');
+        document.getElementById('tab-edit').classList.remove('active');
+        document.getElementById(`tab-${tab}`).classList.add('active');
+
+        if(tab === 'add') {
+            document.getElementById('view-edit').classList.remove('active');
+            document.getElementById('view-form').classList.add('active');
+            document.getElementById('takenIdsSection').style.display = 'block';
+            
+            isEditMode = false;
+            resetForm();
+            resetFormUI();
+            fetchTakenIds();
+        } else {
+            document.getElementById('view-form').classList.remove('active');
+            document.getElementById('view-edit').classList.add('active');
+            document.getElementById('takenIdsSection').style.display = 'none';
+            fetchProducts();
+            
+            if (isEditMode) {
+                isEditMode = false;
+                resetForm();
+                resetFormUI();
+            }
+        }
+    }
+
+    function resetFormUI() {
+        document.getElementById('formMainTitle').textContent = "Dodaj Nową Książkę";
+        document.getElementById('submitBtn').textContent = "Dodaj książkę do bazy";
+        document.getElementById('cancelEditBtn').style.display = "none";
+        document.getElementById('editImageNotice').style.display = "none";
+        document.getElementById('id').readOnly = false;
+        document.getElementById('img_main').required = true; 
+    }
+
+    // Lista zajętych ID
+    async function fetchTakenIds() {
+        try {
+            const res = await fetch('/api/products');
+            const data = await res.json();
+            const list = document.getElementById('taken-ids-list');
+            list.innerHTML = '';
+            
+            if(data.length === 0) {
+                list.innerHTML = '<span class="tag">Baza jest pusta</span>';
+                return;
+            }
+            
+            data.forEach(item => {
+                const span = document.createElement('span');
+                span.className = 'tag';
+                span.innerText = item.id;
+                list.appendChild(span);
+            });
+        } catch(e) {
+            document.getElementById('taken-ids-list').innerText = 'Błąd wczytywania ID.';
+        }
+    }
+
+    // Lista Książek
+    async function fetchProducts() {
+        try {
+            const res = await fetch('/api/products');
+            allProducts = await res.json();
+            const list = document.getElementById('books-list-container');
+            list.innerHTML = '';
+            
+            if(allProducts.length === 0) {
+                list.innerHTML = '<p style="text-align:center; grid-column:1/-1;">Baza jest pusta. Dodaj pierwszą książkę!</p>';
+                return;
+            }
+            
+            allProducts.forEach(item => {
+                const stockStatus = item.out_of_stock ? '<span class="stock-badge stock-out">Brak w magazynie</span>' : '<span class="stock-badge stock-in">Dostępna</span>';
+                const stripeStatus = item.stripe_price_id ? `<span class="stripe-badge-ok">✅ Stripe ID gotowe</span>` : `<span class="stripe-badge-err">⚠️ Zaktualizuj Stripe ID!</span>`;
+
+                const card = document.createElement('div');
+                card.className = 'book-edit-card';
+                card.innerHTML = `
+                    <img src="${item.img || 'https://via.placeholder.com/300x400?text=Brak+Okładki'}" class="book-edit-img">
+                    <div class="book-edit-info">
+                        <div>
+                            ${stockStatus}
+                            <div class="book-edit-title">${item.title_pl}</div>
+                            <div style="font-size:0.85rem; color: gray;">ID: ${item.id} | ${item.price} PLN</div>
+                            ${stripeStatus}
+                        </div>
+                        <button type="button" class="edit-action-btn" onclick="startEdit('${item.id}')">Edytuj Produkt</button>
+                    </div>
+                `;
+                list.appendChild(card);
+            });
+        } catch(e) {
+            document.getElementById('books-list-container').innerHTML = '<p>Błąd wczytywania bazy z serwera.</p>';
+        }
+    }
+
+    // Odpalenie Edycji
+    window.startEdit = function(id) {
+        const product = allProducts.find(p => p.id === id);
+        if(!product) return;
+
+        isEditMode = true;
+        
+        document.getElementById('formMainTitle').textContent = `Edytujesz: ${product.title_pl}`;
+        document.getElementById('submitBtn').textContent = "Zapisz Zmiany";
+        document.getElementById('cancelEditBtn').style.display = "block";
+        document.getElementById('editImageNotice').style.display = "block";
+        document.getElementById('takenIdsSection').style.display = 'none';
+        
+        document.getElementById('view-edit').classList.remove('active');
+        document.getElementById('view-form').classList.add('active');
+        document.getElementById('tab-edit').classList.remove('active');
+
+        document.getElementById('id').value = product.id;
+        document.getElementById('id').readOnly = true; 
+        
+        document.getElementById('price').value = product.price;
+        document.getElementById('stripe_price_id').value = product.stripe_price_id !== null && product.stripe_price_id !== undefined ? product.stripe_price_id : "";
+        
+        document.getElementById('title_pl').value = product.title_pl;
+        document.getElementById('title_en').value = product.title_en;
+        document.getElementById('desc_pl').value = product.desc_pl;
+        document.getElementById('desc_en').value = product.desc_en;
+        document.getElementById('category').value = product.category;
+        
+        document.getElementById('is_bilingual').checked = product.is_bilingual;
+        document.getElementById('out_of_stock').checked = product.out_of_stock;
+
+        document.getElementById('img_main').required = false; 
+        
+        // Zgodnie z ustaleniami: img_back to środek, img_desc to tył
+        document.getElementById('existing_img').value = product.img || "";
+        document.getElementById('existing_img_back').value = product.img_back || ""; // Środek
+        document.getElementById('existing_img_desc').value = product.img_desc || ""; // Tył
+
+        // 1. Okładka
+        if(product.img) {
+            document.querySelector('#preview_main img').src = product.img;
+            document.getElementById('preview_main').style.display = 'block';
+        } else {
+            document.getElementById('preview_main').style.display = 'none';
+        }
+        
+        // 2. Środek
+        if(product.img_back) {
+            document.querySelector('#preview_back img').src = product.img_back;
+            document.getElementById('preview_back').style.display = 'block';
+        } else {
+            document.getElementById('preview_back').style.display = 'none';
+        }
+
+        // 3. Tył
+        if(product.img_desc) {
+            document.querySelector('#preview_desc img').src = product.img_desc;
+            document.getElementById('preview_desc').style.display = 'block';
+        } else {
+            document.getElementById('preview_desc').style.display = 'none';
+        }
+    };
+
+    window.cancelEdit = function() {
+        switchTab('edit'); 
+    };
+
+    function resetForm() {
+        document.getElementById('bookForm').reset();
+        document.getElementById('existing_img').value = "";
+        document.getElementById('existing_img_back').value = "";
+        document.getElementById('existing_img_desc').value = "";
+        document.querySelectorAll('.preview-box').forEach(el => el.style.display = 'none');
+        document.querySelectorAll('.preview-box img').forEach(img => img.src = '');
+    }
+
+    function previewImage(input, previewId) {
+        const previewContainer = document.getElementById(previewId);
+        const previewImg = previewContainer.querySelector('img');
+        if (input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                previewImg.src = e.target.result;
+                previewContainer.style.display = 'block';
+            }
+            reader.readAsDataURL(input.files[0]);
+        } else {
+            if(!isEditMode) previewContainer.style.display = 'none';
+        }
+    }
+
+    document.getElementById('bookForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const statusToast = document.getElementById('statusMessage');
+        const submitBtn = document.getElementById('submitBtn');
+        
+        const showToast = (text, type) => {
+            statusToast.textContent = text;
+            statusToast.className = type; 
+            statusToast.style.display = 'block';
+            if(type !== 'loading') { setTimeout(() => { statusToast.style.display = 'none'; }, 4000); }
+        };
+
+        showToast("⏳ Zapisywanie...", "loading");
+        submitBtn.disabled = true;
+
+        const formData = new FormData();
+        formData.append('id', document.getElementById('id').value.trim());
+        formData.append('price', document.getElementById('price').value);
+        formData.append('stripe_price_id', document.getElementById('stripe_price_id').value.trim()); 
+        formData.append('title_pl', document.getElementById('title_pl').value.trim());
+        formData.append('title_en', document.getElementById('title_en').value.trim());
+        formData.append('desc_pl', document.getElementById('desc_pl').value.trim());
+        formData.append('desc_en', document.getElementById('desc_en').value.trim());
+        formData.append('category', document.getElementById('category').value);
+        
+        formData.append('is_bilingual', document.getElementById('is_bilingual').checked);
+        formData.append('out_of_stock', document.getElementById('out_of_stock').checked);
+
+        formData.append('existing_img', document.getElementById('existing_img').value);
+        formData.append('existing_img_back', document.getElementById('existing_img_back').value);
+        formData.append('existing_img_desc', document.getElementById('existing_img_desc').value);
+
+        const imgMain = document.getElementById('img_main').files[0];
+        const imgBack = document.getElementById('img_back').files[0]; // Środek
+        const imgDesc = document.getElementById('img_desc').files[0]; // Tył
+
+        if(imgMain) formData.append('img', imgMain);
+        if(imgBack) formData.append('img_back', imgBack); 
+        if(imgDesc) formData.append('img_desc', imgDesc); 
+
+        try {
+            const response = await fetch('/api/products', { method: 'POST', body: formData });
+            const result = await response.json();
+
+            if (result.success) {
+                showToast("✅ Zapisano pomyślnie!", "success");
+                if(!isEditMode) {
+                    resetForm(); 
+                    fetchTakenIds();
+                }
+            } else {
+                showToast("❌ Błąd: " + result.error, "error");
+            }
+        } catch (error) {
+            showToast("❌ Błąd połączenia z serwerem.", "error");
+        } finally {
+            submitBtn.disabled = false;
+        }
+    });
+</script>
+
+</body>
+</html>
